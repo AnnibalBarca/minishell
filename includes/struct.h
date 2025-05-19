@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/14 15:43:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:15:25 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "../libft/all.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <string.h>
@@ -26,7 +24,6 @@
 
 # define CHARSET "abcdefghijklmnopqrstuvwxyz"
 
-// struct to build a string in the second phase of parsing
 typedef struct s_str_builder
 {
 	char			*str;
@@ -34,7 +31,6 @@ typedef struct s_str_builder
 	size_t			capacity;
 }					t_str_builder;
 
-//tokenization struct
 typedef enum e_token_type
 {
 	T_WORD,
@@ -45,7 +41,6 @@ typedef enum e_token_type
 	T_HEREDOC
 }					t_token_type;
 
-//typing struct
 typedef enum e_type
 {
 	CMD,
@@ -57,7 +52,6 @@ typedef enum e_type
 	FD1
 }					t_type;
 
-//quote-typing struct
 typedef enum e_quote
 {
 	Q_NONE,
@@ -65,29 +59,23 @@ typedef enum e_quote
 	Q_DOUBLE
 }					t_quote;
 
-// NEW: Structure for a segment within a T_WORD token
-// This structure will hold parts of a word, like 'abc' or "def" or $VAR
-// from an input like abc"def"$VAR
 typedef struct s_word_segment
 {
-	char					*value;     // Literal value of this segment (content *within* quotes, or unquoted part)
-	t_quote					quote_type; // Original quoting style of this segment (Q_NONE, Q_SINGLE, Q_DOUBLE)
+	char					*value;
+	t_quote					quote_type;
 	struct s_word_segment	*next;
 }							t_word_segment;
 
-// list used during tokenization
+
 typedef struct s_token
 {
-	char			*value;          // For operators, or for T_WORD *after* expansion and segment concatenation
+	char			*value;
 	t_token_type	type;
-	t_quote			quote;           // For operators (Q_NONE). For T_WORD *after* expansion (Q_NONE).
-                                     // This field is less relevant for raw T_WORD tokens from the lexer.
-	t_word_segment	*segments;       // For T_WORD tokens from the lexer: a list of its constituent parts.
-                                     // Set to NULL for operators, or for T_WORD after expansion.
+	t_quote			quote;
+	t_word_segment	*segments;
 	struct s_token	*next;
 }					t_token;
 
-// enum to indicate the presence of an env
 typedef enum e_env
 {
 	NO_ENV,
