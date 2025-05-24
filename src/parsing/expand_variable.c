@@ -6,15 +6,12 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:08:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 14:37:32 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:34:37 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
 
-// Expand les variables dans un seul string.
-// Retourne une nvl string expansee, l'appel doit free ensuite.
-// La string originale n est pas modifiee.
 static char	*process_variable_expansion(const char **str_ptr, char **envp,
 		int last_exit_status)
 {
@@ -51,7 +48,7 @@ static char	*process_variable_expansion(const char **str_ptr, char **envp,
 			sb_append_char(&var_name_sb, **str_ptr);
 			(*str_ptr)++;
 		}
-		var_name = sb_to_string_and_free_sb(&var_name_sb);
+		var_name = sb_to_string_and_free(&var_name_sb);
 	}
 	if (!var_name)
 		return (ft_strdup("$"));
@@ -60,9 +57,6 @@ static char	*process_variable_expansion(const char **str_ptr, char **envp,
 	return (var_value);
 }
 
-// input str c'est le char * original qui contient des var a expand
-// on oublie pas de passer le last_exit_status qui contient lexit de la derniere
-// commande executee !
 char	*expand_variables_in_str(const char *input_str, t_quote quote_type,
 		char **envp, int last_exit_status)
 {
@@ -94,9 +88,9 @@ char	*expand_variables_in_str(const char *input_str, t_quote quote_type,
 		else
 		{
 			if (!sb_append_char(&sb, *ip))
-				return (sb_free_and_free_sb(&sb));
+				return (sb_free_and_return_null(&sb));
 			ip++;
 		}
 	}
-	return (sb_to_string_and_free_sb(&sb));
+	return (sb_to_string_and_free(&sb));
 }

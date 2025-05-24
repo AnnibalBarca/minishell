@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:59:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 14:32:47 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:28:34 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@ void	sb_init(t_str_builder *sb)
 		return ;
 	sb->str = NULL;
 	sb->len = 0;
-	sb->capacity = 0; // Pas forcement utile
+	sb->capacity = 0;
 }
 
-// Append un charactere au string builder
-// Version pas tres efficace avec tous els appels a strjoin
-// Une meilleure version serait plus opti
 int	sb_append_char(t_str_builder *sb, char c)
 {
 	char	*new_str;
@@ -41,13 +38,12 @@ int	sb_append_char(t_str_builder *sb, char c)
 		free(sb->str);
 	}
 	if (!new_str)
-		return (0); // alloc echoue
+		return (0);
 	sb->str = new_str;
-	sb->len = ft_strlen(new_str); // met a jour la longueur de la string
+	sb->len = ft_strlen(new_str);
 	return (1);
 }
 
-// Append une chaine de char au builder
 int	sb_append_str(t_str_builder *sb, const char *s)
 {
 	char	*new_str;
@@ -62,29 +58,28 @@ int	sb_append_str(t_str_builder *sb, const char *s)
 		free(sb->str);
 	}
 	if (!new_str)
-		return (0); // Allocation fail
+		return (0);
 	sb->str = new_str;
 	sb->len = ft_strlen(new_str);
 	return (1);
 }
 
-// finalise et re;plit la string
 char	*sb_to_string(t_str_builder *sb)
 {
 	char	*result;
 
 	if (!sb || !sb->str)
 	{
-		result = ft_strdup(""); // retourne string vide si le builder est vide
+		result = ft_strdup("");
 		if (!result)
-			return (NULL); // fail Malloc
+			return (NULL);
 		return (result);
 	}
-	result = ft_strdup(sb->str); // Dupliaue la string interne
+	result = ft_strdup(sb->str);
 	return (result);
 }
 
-char	*sb_to_string_and_free_sb(t_str_builder *sb)
+char	*sb_to_string_and_free(t_str_builder *sb)
 {
 	char	*result;
 
@@ -100,7 +95,6 @@ char	*sb_to_string_and_free_sb(t_str_builder *sb)
 	return (result);
 }
 
-// Libere la string interne (sb) du builder et renvoie NULL pour eco des lignes
 char	*sb_free_and_return_null(t_str_builder *sb)
 {
 	if (sb)
@@ -112,8 +106,18 @@ char	*sb_free_and_return_null(t_str_builder *sb)
 	}
 	return (NULL);
 }
+int	sb_free_and_return_zero(t_str_builder *sb)
+{
+	if (sb)
+	{
+		free(sb->str);
+		sb->str = NULL;
+		sb->len = 0;
+		sb->capacity = 0;
+	}
+	return (0);
+}
 
-// Libere la string interne (sb) du builder 
 void	sb_free(t_str_builder *sb)
 {
 	if (sb)

@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:28:44 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 18:27:57 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:00:58 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**convert_token_list_to_char_array(t_token *token_list)
 			if (!char_array[i])
 				return (free_partial_char_array(char_array, i), NULL);
 		}
-		else                              
+		else
 			char_array[i] = ft_strdup("");
 		i++;
 		current = current->next;

@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 11:56:40 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:04:24 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static char	*process_and_concatenate_segments(t_word_segment *segments,
 	t_word_segment	*current_seg;
 	char			*expanded_val;
 	t_str_builder	local_sb;
-	char			*result_string;
 
 	current_seg = segments;
 	sb_init(&local_sb);
@@ -71,22 +70,16 @@ static char	*process_and_concatenate_segments(t_word_segment *segments,
 	{
 		expanded_val = expand_one_segment(current_seg, envp, exit_status);
 		if (!expanded_val)
-		{
-			sb_free(&local_sb);
-			return (NULL);
-		}
+			return (sb_free_and_return_null(&local_sb));
 		if (!sb_append_str(&local_sb, expanded_val))
 		{
 			free(expanded_val);
-			sb_free(&local_sb);
-			return (NULL);
+			return (sb_free_and_return_null(&local_sb));
 		}
 		free(expanded_val);
 		current_seg = current_seg->next;
 	}
-	result_string = sb_to_string(&local_sb);
-	sb_free(&local_sb);
-	return (result_string);
+	return (sb_to_string_and_free(&local_sb));
 }
 
 static int	process_expanded_word_token(t_token *raw_token,
