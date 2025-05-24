@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:59:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 12:53:07 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:32:47 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,22 @@ char	*sb_to_string(t_str_builder *sb)
 		return (result);
 	}
 	result = ft_strdup(sb->str); // Dupliaue la string interne
+	return (result);
+}
+
+char	*sb_to_string_and_free_sb(t_str_builder *sb)
+{
+	char	*result;
+
+	if (!sb || !sb->str)
+	{
+		result = ft_strdup("");
+		if (!result)
+			return (NULL);
+		return (result);
+	}
+	result = ft_strdup(sb->str);
+	sb_free(sb);
 	return (result);
 }
 
