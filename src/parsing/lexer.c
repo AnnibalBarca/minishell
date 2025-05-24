@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:20:29 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 12:53:42 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:23:30 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,21 +118,27 @@ static int	process_one_segment(const char **line_ptr,
 	t_str_builder	sb_unq;
 	char			*seg_val;
 	int				status_extract;
+	t_quote			segments_quote;
 
 	if (**line_ptr == '\'' || **line_ptr == '"')
 	{
+		if (**line_ptr == '"')
+			segments_quote = Q_DOUBLE;
+		else
+			segments_quote = Q_SINGLE;
 		seg_val = extract_quoted_content(line_ptr, **line_ptr, &status_extract);
 		if (status_extract <= 0)
 			return (status_extract);
-		if (!add_segment_to_list(segments_head, seg_val, (*(*line_ptr
-						- 1) == '"') ? Q_DOUBLE : Q_SINGLE))
+		if (!add_segment_to_list(segments_head, seg_val,
+				segments_quote))
 			return (0);
 	}
 	else
 	{
 		if (!process_unquoted_segment(line_ptr, &sb_unq))
-			return (sb_free(&sb_unq), 0);
+			return (sb_free_and_return_null(&sb_unq));
 		seg_val = sb_to_string(&sb_unq);
+		sb_free(&sb_unq);
 		if (!seg_val)
 			return (0);
 		if (ft_strlen(seg_val) > 0 || (*segments_head != NULL)
@@ -225,8 +231,8 @@ static int	process_operator_token(const char **line_ptr, t_token **head)
 
 t_token	*lexer(const char *line)
 {
-	t_token *head;
-	int status;
+	t_token	*head;
+	int		status;
 
 	head = NULL;
 	status = 1;
