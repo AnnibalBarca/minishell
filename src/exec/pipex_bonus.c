@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/14 15:50:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:20:35 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ void	ft_parse(t_exec *exec)
 	// 		free_parent(exec, -1, NULL, NULL);
 	// 		usage();
 	// 	}
-	if (exec->append[exec->i] == 1)
+	if (exec->append == 1)
 	{
-		if (exec->infile_name[exec->i] != NULL)
-			open_infile(exec, exec->infile_name[exec->i]);
-		if (exec->outfile_name[exec->i] != NULL)
-			open_outfile(exec, exec->outfile_name[exec->i], 0);
+		if (exec->infile_name != NULL)
+			open_infile(exec, exec->infile_name);
+		if (exec->outfile_name != NULL)
+			open_outfile(exec, exec->outfile_name, 0);
 	}
 	else
 	{
-		if (exec->infile_name[exec->i] != NULL)
-			open_infile(exec, exec->infile_name[exec->i]);
-		if (exec->outfile_name[exec->i] != NULL)
-			open_outfile(exec, exec->outfile_name[exec->i], 1);
+		if (exec->infile_name != NULL)
+			open_infile(exec, exec->infile_name);
+		if (exec->outfile_name != NULL)
+			open_outfile(exec, exec->outfile_name, 1);
 	}
 }
 
@@ -66,7 +66,7 @@ int	pipex(t_exec *exec, int ac, char **av, char **envp)
 			exec_one(exec, av[exec->pipex.i], envp);
 	while (++exec->pipex.i_wait < ac)
 		waitpid(exec->pipex.pids[exec->pipex.i_wait], &exec->pipex.status, 0);
-	// free_pipex(exec, -1, NULL, NULL);
+	free_pipex_core(exec);
 	if (WIFEXITED(exec->pipex.status))
 		return (WEXITSTATUS(exec->pipex.status));
 	return (exec->pipex.status);

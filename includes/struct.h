@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/19 20:15:25 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 12:23:06 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <limits.h>
+
 
 # define CHARSET "abcdefghijklmnopqrstuvwxyz"
-
 typedef struct s_str_builder
 {
 	char			*str;
@@ -65,8 +66,6 @@ typedef struct s_word_segment
 	t_quote					quote_type;
 	struct s_word_segment	*next;
 }							t_word_segment;
-
-
 typedef struct s_token
 {
 	char			*value;
@@ -91,8 +90,6 @@ typedef struct s_pipex
 	char			*path;
 	int				infile;
 	int				outfile;
-	char			*infile_name;
-	char			*outfile_name;
 	int				fd[2];
 	int				status;
 	int				here_doc;
@@ -105,28 +102,27 @@ typedef struct s_pipex
 
 typedef struct s_exec
 {
-	int				count;
-	char			***groups;
-	char			**cmds;
-	int				i;
-	int				ncmd;
-	int				ng;
-	char			**infile_name;
-	char			**outfile_name;
-	int				*append;
+    char            **group;
+    char            *infile_name;
+    char            *outfile_name;
 	int				infile;
 	int				outfile;
-	char			**group;
-	int				total;
-	int				idx;
-	int				j;
-	int				redir;
-	int				redir_in;
-	int				redir_out;
+    int             append;
+	int				heredoc;
 	t_pipex			pipex;
-}					t_exec;
+    struct s_exec   *next;
+    struct s_exec   *prev;
 
-extern int g_exit_status; // For the shell's exit status
-extern volatile sig_atomic_t g_signal_received; // To flag if a signal was caught
+}               t_exec;
+typedef struct s_exec_list_builder_state
+{
+	t_token		*current_token;
+	t_exec		*list_head;
+	t_exec		*current_exec_node;
+	t_list *temp_arg_list;
+	int build_status;
+}				t_exec_list_builder_state;
+
+extern int g_exit_status;
 
 #endif
