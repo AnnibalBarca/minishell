@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 18:13:50 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:56:40 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ static int	should_field_split(t_word_segment *segments)
 	{
 		if (current->quote_type == Q_SINGLE || current->quote_type == Q_DOUBLE)
 			return (0);
-        if (current->quote_type == Q_NONE)
-            return (2);
-		current = current->next;
 	}
 	return (1);
 }
@@ -50,8 +47,6 @@ static int	create_tokens_from_fields(char **fields,
 	return (1);
 }
 
-// --- New Helper Functions for Decomposition ---
-
 static char	*expand_one_segment(t_word_segment *segment, char **envp,
 		int exit_status)
 {
@@ -62,44 +57,47 @@ static char	*expand_one_segment(t_word_segment *segment, char **envp,
 		return (ft_strdup(segment->value));
 }
 
-// Processes all segments of a T_WORD token, returning the concatenated result.
-// Returns NULL on malloc error.
 static char	*process_and_concatenate_segments(t_word_segment *segments,
-		char **envp, int exit_status, t_str_builder *sb)
+		char **envp, int exit_status)
 {
 	t_word_segment	*current_seg;
 	char			*expanded_val;
+	t_str_builder	local_sb;
+	char			*result_string;
 
 	current_seg = segments;
-	sb_init(sb);
+	sb_init(&local_sb);
 	while (current_seg)
 	{
 		expanded_val = expand_one_segment(current_seg, envp, exit_status);
 		if (!expanded_val)
-			return (sb_free(sb), NULL);
-		if (!sb_append_str(sb, expanded_val))
+		{
+			sb_free(&local_sb);
+			return (NULL);
+		}
+		if (!sb_append_str(&local_sb, expanded_val))
 		{
 			free(expanded_val);
-			return (sb_free(sb), NULL);
+			sb_free(&local_sb);
+			return (NULL);
 		}
 		free(expanded_val);
 		current_seg = current_seg->next;
 	}
-	return (sb_to_string(sb)); // sb_free is done by sb_to_string
+	result_string = sb_to_string(&local_sb);
+	sb_free(&local_sb);
+	return (result_string);
 }
 
-// Handles a T_WORD token: expands, optionally field splits, adds to list.
-// Returns 0 on error (expanded_list_head will be freed by caller).
 static int	process_expanded_word_token(t_token *raw_token,
 		t_token **expanded_list_head, char **envp, int exit_status)
 {
-	t_str_builder	final_word_sb;
-	char			*final_value;
-	char			**fields;
-	int				split_this;
+	char	*final_value;
+	char	**fields;
+	int		split_this;
 
 	final_value = process_and_concatenate_segments(raw_token->segments, envp,
-			exit_status, &final_word_sb);
+			exit_status);
 	if (!final_value)
 		return (0);
 	split_this = should_field_split(raw_token->segments);
@@ -110,20 +108,21 @@ static int	process_expanded_word_token(t_token *raw_token,
 		if (!fields)
 			return (0);
 		if (!create_tokens_from_fields(fields, expanded_list_head))
-			return (free_char_array(fields), 0);
+		{
+			free_char_array(fields);
+			return (0);
+		}
 		free_char_array(fields);
 	}
 	else
 	{
 		if (!create_and_append_token(expanded_list_head, final_value, T_WORD,
 				Q_NONE, NULL))
-			return (0); // create_and_append_token frees final_value on failure
+			return (0);
 	}
 	return (1);
 }
 
-// Handles an operator token (non-T_WORD).
-// Returns 0 on error (expanded_list_head will be freed by caller).
 static int	process_operator_token_expansion(t_token *raw_token,
 		t_token **expanded_list_head)
 {
@@ -134,14 +133,9 @@ static int	process_operator_token_expansion(t_token *raw_token,
 		return (0);
 	if (!create_and_append_token(expanded_list_head, value_copy,
 			raw_token->type, Q_NONE, NULL))
-	{
-		// create_and_append_token frees value_copy on its failure
 		return (0);
-	}
 	return (1);
 }
-
-// --- Main Expansion Function ---
 
 t_token	*perform_all_expansions(t_token *raw_list_head, char **envp,
 		int current_exit_status)
