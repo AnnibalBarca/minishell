@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:30:28 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 18:26:59 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 12:06:03 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static int	is_ifs(char c, const char *ifs)
 	return (0);
 }
 
-static size_t	count_fields(const char *str, const char *ifs)
+static int	count_fields(const char *str, const char *ifs)
 {
-	size_t	count;
-	int		in_field;
+	int	count;
+	int	in_field;
 
 	count = 0;
 	in_field = 0;
@@ -62,24 +62,32 @@ static char	*extract_one_field(const char **str_ptr, const char *current_ifs)
 	return (field);
 }
 
+// voir si le passage en int pose probleme et si on peut raccourcir 111
 char	**perform_field_splitting(const char *str, const char *ifs_val)
 {
 	char		**fields;
-	size_t		num_fields;
+	int			num_fields;
 	int			idx;
 	const char	*current_str_ptr;
 	const char	*current_ifs;
+	int			field_count_size_t;
 
 	if (!str)
 		return (NULL);
-	current_ifs = ifs_val ? ifs_val : " \t\n";
-	num_fields = count_fields(str, current_ifs);
+	if (ifs_val)
+		current_ifs = ifs_val;
+	else
+		current_ifs = " \t\n";
+	field_count_size_t = count_fields(str, current_ifs);
+	if (field_count_size_t > INT_MAX)
+		return (NULL);
+	num_fields = (int)field_count_size_t;
 	fields = (char **)ft_calloc(num_fields + 1, sizeof(char *));
 	if (!fields)
 		return (NULL);
 	idx = 0;
 	current_str_ptr = str;
-	while (idx < (int)num_fields)
+	while (idx < num_fields)
 	{
 		fields[idx] = extract_one_field(&current_str_ptr, current_ifs);
 		if (!fields[idx])
