@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:20:29 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 18:25:00 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 12:53:42 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static char	*extract_quoted_content(const char **line_ptr, char quote_char,
 		(*line_ptr)++;
 	}
 	if (*status == 0)
-		return (sb_free(&sb), NULL);
+		return (sb_free_and_return_null(&sb));
 	if (**line_ptr == quote_char)
 	{
 		(*line_ptr)++;
@@ -73,7 +73,7 @@ static char	*extract_quoted_content(const char **line_ptr, char quote_char,
 	}
 	report_syntax_error_detail("unclosed quote", (char[]){quote_char, 0});
 	*status = -1;
-	return (sb_free(&sb), NULL);
+	return (sb_free_and_return_null(&sb));
 }
 
 static int	process_unquoted_segment(const char **line_ptr,

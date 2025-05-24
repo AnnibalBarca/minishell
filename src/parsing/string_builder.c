@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:59:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 17:54:49 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/24 12:53:07 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,20 @@ char	*sb_to_string(t_str_builder *sb)
 	return (result);
 }
 
-// Libere la string interne (sb) du builder
+// Libere la string interne (sb) du builder et renvoie NULL pour eco des lignes
+char	*sb_free_and_return_null(t_str_builder *sb)
+{
+	if (sb)
+	{
+		free(sb->str);
+		sb->str = NULL;
+		sb->len = 0;
+		sb->capacity = 0;
+	}
+	return (NULL);
+}
+
+// Libere la string interne (sb) du builder 
 void	sb_free(t_str_builder *sb)
 {
 	if (sb)
