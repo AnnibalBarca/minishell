@@ -6,226 +6,87 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:20:29 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 15:32:59 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:47:42 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
 
-static int	append_escaped_char_dq(t_str_builder *sb, const char **line_ptr)
+static t_quote	determine_quote_type(int has_single, int has_double,
+		int has_unquoted)
 {
-	(*line_ptr)++;
-	if (**line_ptr == '$' || **line_ptr == '"' || **line_ptr == '\\'
-		|| **line_ptr == '`')
-	{
-		if (!sb_append_char(sb, **line_ptr))
-			return (0);
-	}
-	else
-	{
-		if (!sb_append_char(sb, '\\'))
-			return (0);
-		if (!sb_append_char(sb, **line_ptr))
-			return (0);
-	}
-	return (1);
+	int	quote_types;
+
+	quote_types = has_single + has_double + has_unquoted;
+	if (quote_types > 1)
+		return (Q_MIXED);
+	if (has_single)
+		return (Q_SINGLE);
+	if (has_double)
+		return (Q_DOUBLE);
+	return (Q_NONE);
 }
 
-static int	append_char_to_quoted_sb(t_str_builder *sb, const char **line_ptr,
-		char quote_char)
-{
-	if (quote_char == '"' && **line_ptr == '\\' && *(*line_ptr + 1) != '\0')
-	{
-		if (!append_escaped_char_dq(sb, line_ptr))
-			return (0);
-	}
-	else
-	{
-		if (!sb_append_char(sb, **line_ptr))
-			return (0);
-	}
-	return (1);
-}
-
-static char	*extract_quoted_content(const char **line_ptr, char quote_char,
-		int *status)
+static int	process_word(const char **line, t_token **head)
 {
 	t_str_builder	sb;
+	char			*word_value;
+	int				has_single;
+	int				has_double;
+	int				has_unquoted;
 
 	sb_init(&sb);
-	(*line_ptr)++;
-	*status = 1;
-	while (**line_ptr && **line_ptr != quote_char)
+	has_single = 0;
+	has_double = 0;
+	has_unquoted = 0;
+	while (**line && is_word_char(**line) && !is_operator_start(**line))
 	{
-		if (!append_char_to_quoted_sb(&sb, line_ptr, quote_char))
+		if (**line == '\'')
 		{
-			*status = 0;
-			break ;
+			has_single = 1;
+			if (!extract_quoted_content(line, '\'', &sb))
+				return (sb_free_and_return_zero(&sb));
 		}
-		(*line_ptr)++;
-	}
-	if (*status == 0)
-		return (sb_free_and_return_null(&sb));
-	if (**line_ptr == quote_char)
-	{
-		(*line_ptr)++;
-		return (sb_to_string_and_free(&sb));
-	}
-	report_syntax_error_detail("unclosed quote", (char[]){quote_char, 0});
-	*status = -1;
-	return (sb_free_and_return_null(&sb));
-}
-
-static int	process_unquoted_segment(const char **line_ptr,
-		t_str_builder *sb_unquoted)
-{
-	sb_init(sb_unquoted);
-	while (**line_ptr && is_word_char(**line_ptr)
-		&& !is_operator_start(**line_ptr) && **line_ptr != '\''
-		&& **line_ptr != '"')
-	{
-		if (**line_ptr == '\\' && *(*line_ptr + 1) != '\0')
+		else if (**line == '"')
 		{
-			(*line_ptr)++;
-			if (!sb_append_char(sb_unquoted, **line_ptr))
-				return (0);
+			has_double = 1;
+			if (!extract_quoted_content(line, '"', &sb))
+				return (sb_free_and_return_zero(&sb));
 		}
 		else
 		{
-			if (!sb_append_char(sb_unquoted, **line_ptr))
-				return (0);
+			has_unquoted = 1;
+			if (!extract_unquoted_content(line, &sb))
+				return (sb_free_and_return_zero(&sb));
 		}
-		(*line_ptr)++;
 	}
-	return (1);
-}
-
-static int	add_segment_to_list(t_word_segment **segments_head, char *seg_val,
-		t_quote q_type)
-{
-	t_word_segment	*new_seg;
-
-	new_seg = create_word_segment(seg_val, q_type);
-	if (!new_seg)
+	word_value = sb_to_string_and_free(&sb);
+	if (!word_value)
 		return (0);
-	append_segment(segments_head, new_seg);
-	return (1);
+	return (create_and_append_token(head, word_value, T_WORD,
+			determine_quote_type(has_single, has_double, has_unquoted)));
 }
 
-static int	process_one_segment(const char **line_ptr,
-		t_word_segment **segments_head)
+static int	process_operator(const char **line, t_token **head)
 {
-	t_str_builder	sb_unq;
-	char			*seg_val;
-	int				status_extract;
-	t_quote			segments_quote;
-
-	if (**line_ptr == '\'' || **line_ptr == '"')
-	{
-		if (**line_ptr == '"')
-			segments_quote = Q_DOUBLE;
-		else
-			segments_quote = Q_SINGLE;
-		seg_val = extract_quoted_content(line_ptr, **line_ptr, &status_extract);
-		if (status_extract <= 0)
-			return (status_extract);
-		if (!add_segment_to_list(segments_head, seg_val,
-				segments_quote))
-			return (0);
-	}
-	else
-	{
-		if (!process_unquoted_segment(line_ptr, &sb_unq))
-			return (sb_free_and_return_zero(&sb_unq));
-		seg_val = sb_to_string_and_free(&sb_unq);
-		if (!seg_val)
-			return (0);
-		if (ft_strlen(seg_val) > 0 || (*segments_head != NULL)
-			|| (**line_ptr == '\'' || **line_ptr == '"'))
-		{
-			if (!add_segment_to_list(segments_head, seg_val, Q_NONE))
-				return (0);
-		}
-		else
-			free(seg_val);
-	}
-	return (1);
+	if (**line == '|')
+		return (handle_pipe_operator(line, head));
+	else if (**line == '<')
+		return (handle_less_operator(line, head));
+	else if (**line == '>')
+		return (handle_greater_operator(line, head));
+	return (0);
 }
 
-static int	process_word_token(const char **line_ptr, t_token **head)
+int	has_content(const char *line)
 {
-	t_word_segment	*segments_head;
-	int				status;
-
-	segments_head = NULL;
-	status = 1;
-	while (**line_ptr && is_word_char(**line_ptr)
-		&& !is_operator_start(**line_ptr) && status > 0)
+	while (*line)
 	{
-		status = process_one_segment(line_ptr, &segments_head);
+		if (!is_whitespace(*line))
+			return (1);
+		line++;
 	}
-	if (status <= 0)
-	{
-		free_segment_list(segments_head); // New helper needed
-		return (status);
-	}
-	if (segments_head)
-	{
-		if (!create_and_append_token(head, NULL, T_WORD, Q_NONE, segments_head))
-			return (0);
-	}
-	return (1);
-}
-
-static int	process_operator_token(const char **line_ptr, t_token **head)
-{
-	char			*op_val;
-	t_token_type	type;
-
-	op_val = NULL;
-	if (**line_ptr == '|')
-	{
-		op_val = ft_strdup("|");
-		type = T_PIPE;
-		(*line_ptr)++;
-	}
-	else if (**line_ptr == '<')
-	{
-		if (*(*line_ptr + 1) == '<')
-		{
-			op_val = ft_strdup("<<");
-			type = T_HEREDOC;
-			(*line_ptr) += 2;
-		}
-		else
-		{
-			op_val = ft_strdup("<");
-			type = T_REDIRECT_IN;
-			(*line_ptr)++;
-		}
-	}
-	else if (**line_ptr == '>')
-	{
-		if (*(*line_ptr + 1) == '>')
-		{
-			op_val = ft_strdup(">>");
-			type = T_APPEND;
-			(*line_ptr) += 2;
-		}
-		else
-		{
-			op_val = ft_strdup(">");
-			type = T_REDIRECT_OUT;
-			(*line_ptr)++;
-		}
-	}
-	else
-		return (0);
-	if (!op_val)
-		return (0);
-	if (!create_and_append_token(head, op_val, type, Q_NONE, NULL))
-		return (0);
-	return (1);
+	return (0);
 }
 
 t_token	*lexer(const char *line)
@@ -233,26 +94,26 @@ t_token	*lexer(const char *line)
 	t_token	*head;
 	int		status;
 
+	if (!line || !has_content(line))
+		return (NULL);
+	if (has_unclosed_quotes(line))
+		return (NULL);
 	head = NULL;
-	status = 1;
-	while (*line && status > 0)
+	while (*line)
 	{
-		while (*line && is_whitespace(*line))
+		while (is_whitespace(*line))
 			line++;
-		if (*line == '\0')
+		if (!*line)
 			break ;
 		if (is_operator_start(*line))
-			status = process_operator_token(&line, &head);
-		else if (is_word_char(*line))
-			status = process_word_token(&line, &head);
+			status = process_operator(&line, &head);
 		else
+			status = process_word(&line, &head);
+		if (!status)
 		{
-			report_syntax_error_detail("unexpected character", (char[]){*line,
-				0});
-			status = -1;
+			cleanup_and_return_zero(&head);
+			return (NULL);
 		}
 	}
-	if (status <= 0)
-		return (free_token_list(head), NULL);
 	return (head);
 }
