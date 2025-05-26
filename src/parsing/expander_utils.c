@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:15:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/19 20:05:28 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:56:21 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ int	handle_glob_matches(char **glob_matches, t_token **head, char **fields)
 	j = 0;
 	while (glob_matches[j])
 	{
-		if (!create_and_append_token(head, glob_matches[j], T_WORD, Q_NONE,
-				NULL))
+		if (!create_and_append_token(head, glob_matches[j], T_WORD, Q_NONE))
 		{
 			while (glob_matches[j])
 				free(glob_matches[j++]);
