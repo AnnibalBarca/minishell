@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:59:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/26 17:03:06 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:49:49 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,13 @@ char	*sb_to_string_and_free(t_str_builder *sb)
 {
 	char	*result;
 
-	if (!sb || !sb->str)
+	if (!sb)
 		return (ft_strdup(""));
+	if (!sb->str)
+	{
+		sb_free(sb);
+		return (ft_strdup(""));
+	}
 	result = ft_strdup(sb->str);
 	sb_free(sb);
 	return (result);
