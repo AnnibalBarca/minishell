@@ -6,26 +6,11 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:39:08 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 18:26:15 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:55:09 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
-
-void	free_segment_list(t_word_segment *list)
-{
-	t_word_segment	*current;
-	t_word_segment	*next;
-
-	current = list;
-	while (current)
-	{
-		next = current->next;
-		free(current->value);
-		free(current);
-		current = next;
-	}
-}
 
 void	free_token_list(t_token *list)
 {
@@ -37,14 +22,13 @@ void	free_token_list(t_token *list)
 	{
 		next_token = current_token->next;
 		free(current_token->value);
-		free_segment_list(current_token->segments);
 		free(current_token);
 		current_token = next_token;
 	}
 }
 
 int	create_and_append_token(t_token **head, char *value, t_token_type type,
-		t_quote quote_status, t_word_segment *segments)
+		t_quote quote_status)
 {
 	t_token	*new_token;
 	t_token	*current;
@@ -53,13 +37,11 @@ int	create_and_append_token(t_token **head, char *value, t_token_type type,
 	if (!new_token)
 	{
 		free(value);
-		free_segment_list(segments);
 		return (0);
 	}
 	new_token->value = value;
 	new_token->type = type;
 	new_token->quote = quote_status;
-	new_token->segments = segments;
 	new_token->next = NULL;
 	if (*head == NULL)
 		*head = new_token;
@@ -89,4 +71,91 @@ int	is_word_char(char c)
 int	is_operator_start(char c)
 {
 	return (c == '|' || c == '<' || c == '>');
+}
+
+char	*create_pipe_token(void)
+{
+	return (ft_strdup("|"));
+}
+
+char	*create_heredoc_token(void)
+{
+	return (ft_strdup("<<"));
+}
+
+char	*create_redirect_in_token(void)
+{
+	return (ft_strdup("<"));
+}
+
+char	*create_append_token(void)
+{
+	return (ft_strdup(">>"));
+}
+
+char	*create_redirect_out_token(void)
+{
+	return (ft_strdup(">"));
+}
+
+int	handle_pipe_operator(const char **line, t_token **head)
+{
+	char	*op_val;
+
+	op_val = create_pipe_token();
+	if (!op_val)
+		return (0);
+	(*line)++;
+	return (create_and_append_token(head, op_val, T_PIPE, Q_NONE));
+}
+
+int	handle_less_operator(const char **line, t_token **head)
+{
+	char			*op_val;
+	t_token_type	type;
+
+	if (*(*line + 1) == '<')
+	{
+		op_val = create_heredoc_token();
+		type = T_HEREDOC;
+		*line += 2;
+	}
+	else
+	{
+		op_val = create_redirect_in_token();
+		type = T_REDIRECT_IN;
+		(*line)++;
+	}
+	if (!op_val)
+		return (0);
+	return (create_and_append_token(head, op_val, type, Q_NONE));
+}
+
+int	handle_greater_operator(const char **line, t_token **head)
+{
+	char			*op_val;
+	t_token_type	type;
+
+	if (*(*line + 1) == '>')
+	{
+		op_val = create_append_token();
+		type = T_APPEND;
+		*line += 2;
+	}
+	else
+	{
+		op_val = create_redirect_out_token();
+		type = T_REDIRECT_OUT;
+		(*line)++;
+	}
+	if (!op_val)
+		return (0);
+	return (create_and_append_token(head, op_val, type, Q_NONE));
+}
+
+int	cleanup_and_return_zero(t_token **head)
+{
+	free_token_list(*head);
+	*head = NULL;
+	return (0);
 }
