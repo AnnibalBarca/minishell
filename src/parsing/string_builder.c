@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:59:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/26 17:49:49 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:34:20 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,54 +90,4 @@ char	*sb_to_string(t_str_builder *sb)
 	}
 	result = ft_strdup(sb->str);
 	return (result);
-}
-
-char	*sb_to_string_and_free(t_str_builder *sb)
-{
-	char	*result;
-
-	if (!sb)
-		return (ft_strdup(""));
-	if (!sb->str)
-	{
-		sb_free(sb);
-		return (ft_strdup(""));
-	}
-	result = ft_strdup(sb->str);
-	sb_free(sb);
-	return (result);
-}
-
-char	*sb_free_and_return_null(t_str_builder *sb)
-{
-	if (sb)
-	{
-		free(sb->str);
-		sb->str = NULL;
-		sb->len = 0;
-		sb->capacity = 0;
-	}
-	return (NULL);
-}
-int	sb_free_and_return_zero(t_str_builder *sb)
-{
-	if (sb)
-	{
-		free(sb->str);
-		sb->str = NULL;
-		sb->len = 0;
-		sb->capacity = 0;
-	}
-	return (0);
-}
-
-void	sb_free(t_str_builder *sb)
-{
-	if (sb)
-	{
-		free(sb->str);
-		sb->str = NULL;
-		sb->len = 0;
-		sb->capacity = 0;
-	}
 }
