@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:15:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/26 15:56:21 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:24:52 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,31 +45,3 @@ int	is_valid_var_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-int	handle_glob_matches(char **glob_matches, t_token **head, char **fields)
-{
-	int j;
-
-	if (!glob_matches)
-	{
-		free_char_array(fields);
-		free_token_list(*head);
-		return (0);
-	}
-	j = 0;
-	while (glob_matches[j])
-	{
-		if (!create_and_append_token(head, glob_matches[j], T_WORD, Q_NONE))
-		{
-			while (glob_matches[j])
-				free(glob_matches[j++]);
-			free(glob_matches);
-			free_char_array(fields);
-			free_token_list(*head);
-			return (0);
-		}
-		glob_matches[j] = NULL;
-		j++;
-	}
-	free(glob_matches);
-	return (1);
-}
