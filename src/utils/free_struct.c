@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/23 16:03:32 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:07:12 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void	free_exec_core(t_exec *node)
 			close(head->infile);
 		if (head->outfile > STDERR_FILENO)
 			close(head->outfile);
-		if (head->infile_name >= 0)
+		if (head->infile_name)
 			free(head->infile_name);
-		if (head->outfile_name >= 0)
+		if (head->outfile_name)
 			free(head->outfile_name);
 		free(head);
 		head = next;
@@ -144,3 +144,4 @@ void	free_exec(t_exec *exec, int status, char *str, char *str2)
 	if (status != -1)
 		exit(status);
 }
+
