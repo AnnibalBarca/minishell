@@ -6,13 +6,13 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:33:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/23 17:57:26 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:02:38 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing.h"
 
-static int	is_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (0);
@@ -28,13 +28,19 @@ int	execute_builtin(char **args, char ***env_ptr)
 {
 	if (!args || !args[0])
 		return (-1);
-	if (ft_strcmp(args[0], "exit") == 0)
-		return (builtin_exit(args));
+	if (ft_strcmp(args[0], "echo") == 0)
+		return (builtin_echo(args, env_ptr));
 	else if (ft_strcmp(args[0], "cd") == 0)
 		return (builtin_cd(args, env_ptr));
-	else if (ft_strcmp(args[0], "echo") == 0)
-		return (builtin_echo(args, env_ptr));
-	else if (ft_strcmp(args[0], "") == 0)
-		return (builtin_(args, env_ptr));
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		return (builtin_pwd(args, env_ptr));
+	else if (ft_strcmp(args[0], "export") == 0)
+		return (builtin_export(args, env_ptr));
+	else if (ft_strcmp(args[0], "unset") == 0)
+		return (builtin_unset(args, env_ptr));
+	else if (ft_strcmp(args[0], "env") == 0)
+		return (builtin_env(args, env_ptr));
+	else if (ft_strcmp(args[0], "exit") == 0)
+		return (builtin_exit(args));
 	return (-1);
 }
