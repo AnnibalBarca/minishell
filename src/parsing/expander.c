@@ -6,154 +6,105 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 15:04:24 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:26:08 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
 
-static int	should_field_split(t_word_segment *segments)
+static char	*expand_token_value(const char *value, t_quote quote_type,
+		char **envp, int exit_status)
 {
-	t_word_segment	*current;
-
-	current = segments;
-	while (current)
-	{
-		if (current->quote_type == Q_SINGLE || current->quote_type == Q_DOUBLE)
-			return (0);
-	}
-	return (1);
+	if (quote_type == Q_SINGLE)
+		return (ft_strdup(value));
+	return (expand_variables_in_str(value, quote_type, envp, exit_status));
 }
 
-static int	create_tokens_from_fields(char **fields,
-		t_token **expanded_list_head)
+static int	should_field_split(t_quote quote_type)
+{
+	return (quote_type == Q_NONE || quote_type == Q_MIXED);
+}
+
+static int	add_expanded_tokens(char **fields, t_token **head)
 {
 	int		i;
 	char	*field_copy;
 
 	i = 0;
-	if (!fields)
-		return (1);
-	while (fields[i])
+	while (fields && fields[i])
 	{
 		field_copy = ft_strdup(fields[i]);
 		if (!field_copy)
 			return (0);
-		if (!create_and_append_token(expanded_list_head, field_copy, T_WORD,
-				Q_NONE, NULL))
+		if (!create_and_append_token(head, field_copy, T_WORD, Q_NONE))
+		{
+			free(field_copy);
 			return (0);
+		}
 		i++;
 	}
 	return (1);
 }
 
-static char	*expand_one_segment(t_word_segment *segment, char **envp,
-		int exit_status)
-{
-	if (segment->quote_type != Q_SINGLE)
-		return (expand_variables_in_str(segment->value, segment->quote_type,
-				envp, exit_status));
-	else
-		return (ft_strdup(segment->value));
-}
-
-static char	*process_and_concatenate_segments(t_word_segment *segments,
+static int	process_word_expansion(t_token *token, t_token **expanded_head,
 		char **envp, int exit_status)
 {
-	t_word_segment	*current_seg;
-	char			*expanded_val;
-	t_str_builder	local_sb;
-
-	current_seg = segments;
-	sb_init(&local_sb);
-	while (current_seg)
-	{
-		expanded_val = expand_one_segment(current_seg, envp, exit_status);
-		if (!expanded_val)
-			return (sb_free_and_return_null(&local_sb));
-		if (!sb_append_str(&local_sb, expanded_val))
-		{
-			free(expanded_val);
-			return (sb_free_and_return_null(&local_sb));
-		}
-		free(expanded_val);
-		current_seg = current_seg->next;
-	}
-	return (sb_to_string_and_free(&local_sb));
-}
-
-static int	process_expanded_word_token(t_token *raw_token,
-		t_token **expanded_list_head, char **envp, int exit_status)
-{
-	char	*final_value;
+	char	*expanded_value;
 	char	**fields;
-	int		split_this;
 
-	final_value = process_and_concatenate_segments(raw_token->segments, envp,
+	expanded_value = expand_token_value(token->value, token->quote, envp,
 			exit_status);
-	if (!final_value)
+	if (!expanded_value)
 		return (0);
-	split_this = should_field_split(raw_token->segments);
-	if (split_this && final_value[0] != '\0')
+	if (should_field_split(token->quote) && *expanded_value)
 	{
-		fields = perform_field_splitting(final_value, NULL);
-		free(final_value);
+		fields = perform_field_splitting(expanded_value, NULL);
+		free(expanded_value);
 		if (!fields)
 			return (0);
-		if (!create_tokens_from_fields(fields, expanded_list_head))
-		{
-			free_char_array(fields);
-			return (0);
-		}
+		if (!add_expanded_tokens(fields, expanded_head))
+			return (free_char_array(fields), 0);
 		free_char_array(fields);
 	}
 	else
 	{
-		if (!create_and_append_token(expanded_list_head, final_value, T_WORD,
-				Q_NONE, NULL))
+		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
+				Q_NONE))
 			return (0);
 	}
 	return (1);
 }
 
-static int	process_operator_token_expansion(t_token *raw_token,
-		t_token **expanded_list_head)
+t_token	*expand_tokens(t_token *tokens, char **envp, int exit_status)
 {
-	char	*value_copy;
+	t_token	*current;
+	t_token	*expanded_head;
+	char	*op_copy;
 
-	value_copy = ft_strdup(raw_token->value);
-	if (!value_copy)
-		return (0);
-	if (!create_and_append_token(expanded_list_head, value_copy,
-			raw_token->type, Q_NONE, NULL))
-		return (0);
-	return (1);
-}
-
-t_token	*perform_all_expansions(t_token *raw_list_head, char **envp,
-		int current_exit_status)
-{
-	t_token *current_raw;
-	t_token *expanded_list_head;
-	int success;
-
-	expanded_list_head = NULL;
-	current_raw = raw_list_head;
-	success = 1;
-	while (current_raw)
+	expanded_head = NULL;
+	current = tokens;
+	while (current)
 	{
-		if (current_raw->type == T_WORD)
-			success = process_expanded_word_token(current_raw,
-					&expanded_list_head, envp, current_exit_status);
-		else
-			success = process_operator_token_expansion(current_raw,
-					&expanded_list_head);
-		if (!success)
+		if (current->type == T_WORD)
 		{
-			free_token_list(expanded_list_head);
-			return (NULL);
+			if (!process_word_expansion(current, &expanded_head, envp,
+					exit_status))
+			{
+				free_token_list(expanded_head);
+				return (NULL);
+			}
 		}
-		current_raw = current_raw->next;
+		else
+		{
+			op_copy = ft_strdup(current->value);
+			if (!op_copy || !create_and_append_token(&expanded_head, op_copy,
+					current->type, Q_NONE))
+			{
+				free_token_list(expanded_head);
+				return (NULL);
+			}
+		}
+		current = current->next;
 	}
-	return (expanded_list_head);
+	return (expanded_head);
 }
