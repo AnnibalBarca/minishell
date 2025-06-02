@@ -6,10 +6,11 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:33:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/29 16:02:38 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:09:02 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/builtins.h"
 #include "../includes/parsing.h"
 
 int	is_builtin(char *cmd)
@@ -39,7 +40,7 @@ int	execute_builtin(char **args, char ***env_ptr)
 	else if (ft_strcmp(args[0], "unset") == 0)
 		return (builtin_unset(args, env_ptr));
 	else if (ft_strcmp(args[0], "env") == 0)
-		return (builtin_env(args, env_ptr));
+		return (builtin_env(env_ptr));
 	else if (ft_strcmp(args[0], "exit") == 0)
 		return (builtin_exit(args));
 	return (-1);
