@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 16:33:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/02 15:09:02 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:40:45 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	execute_builtin(char **args, char ***env_ptr)
 	if (!args || !args[0])
 		return (-1);
 	if (ft_strcmp(args[0], "echo") == 0)
-		return (builtin_echo(args, env_ptr));
+		return (builtin_echo(args));
 	else if (ft_strcmp(args[0], "cd") == 0)
 		return (builtin_cd(args, env_ptr));
 	else if (ft_strcmp(args[0], "pwd") == 0)

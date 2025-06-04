@@ -6,13 +6,13 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:48:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/02 15:39:45 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:40:31 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 
-int	builtin_echo(char **args, char ***env_ptr)
+int	builtin_echo(char **args)
 {
 	int i;
 
