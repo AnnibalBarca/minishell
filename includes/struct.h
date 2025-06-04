@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/26 17:19:18 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:12:44 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ typedef enum e_parse_status
 	PARSE_MEMORY_ERROR
 }					t_parse_status;
 
+typedef enum e_parse_result
+{
+	PARSE_ERROR = -1,
+	PARSE_CONTINUE = 0,
+	PARSE_SUCCESS = 1
+}					t_parse_result;
+
 typedef enum e_prompt_type
 {
 	PROMPT_MAIN,
@@ -47,15 +54,6 @@ typedef enum e_prompt_type
 	PROMPT_REDIR,
 	PROMPT_HEREDOC
 }					t_prompt_type;
-
-typedef struct s_syntax_result
-{
-	t_parse_status	status;
-	t_prompt_type	next_prompt;
-	char			*error_token;
-	t_token			*tokens;
-}					t_syntax_result;
-
 typedef enum e_parser_state
 {
 	STATE_START,
@@ -64,13 +62,6 @@ typedef enum e_parser_state
 	STATE_EXPECT_FILENAME
 }					e_parser_state;
 
-typedef struct s_parser_context
-{
-	t_token			*current;
-	e_parser_state	state;
-	int				has_command;
-	t_syntax_result	*result;
-}					t_parser_context;
 typedef struct s_str_builder
 {
 	char			*str;
@@ -103,6 +94,21 @@ typedef struct s_token
 	t_quote			quote;
 	struct s_token	*next;
 }					t_token;
+typedef struct s_syntax_result
+{
+	t_parse_status	status;
+	t_prompt_type	next_prompt;
+	char			*error_token;
+	t_token			*tokens;
+}					t_syntax_result;
+
+typedef struct s_parser_context
+{
+	t_token			*current;
+	e_parser_state	state;
+	int				has_command;
+	t_syntax_result	*result;
+}					t_parser_context;
 
 typedef enum e_type
 {
@@ -152,7 +158,15 @@ typedef struct s_exec
 	t_pipex			pipex;
 	struct s_exec	*next;
 	struct s_exec	*prev;
+
 }					t_exec;
+
+typedef struct s_cmd
+{
+	char			**cmds;
+	int				ncmd;
+	int				max;
+}					t_cmd;
 
 typedef struct s_exec_list_builder_state
 {
