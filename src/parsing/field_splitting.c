@@ -6,26 +6,26 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:30:28 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/24 12:06:03 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:07:20 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parsing.h"
 
-static int	is_ifs(char c, const char *ifs)
+static int	is_sep(char c, const char *sep)
 {
-	if (!ifs)
+	if (!sep)
 		return (c == ' ' || c == '\t' || c == '\n');
-	while (*ifs)
+	while (*sep)
 	{
-		if (c == *ifs)
+		if (c == *sep)
 			return (1);
-		ifs++;
+		sep++;
 	}
 	return (0);
 }
 
-static int	count_fields(const char *str, const char *ifs)
+static int	count_fields(const char *str, const char *sep)
 {
 	int	count;
 	int	in_field;
@@ -34,7 +34,7 @@ static int	count_fields(const char *str, const char *ifs)
 	in_field = 0;
 	while (*str)
 	{
-		if (is_ifs(*str, ifs))
+		if (is_sep(*str, sep))
 			in_field = 0;
 		else if (!in_field)
 		{
@@ -46,57 +46,53 @@ static int	count_fields(const char *str, const char *ifs)
 	return (count);
 }
 
-static char	*extract_one_field(const char **str_ptr, const char *current_ifs)
+static char	*extract_one_field(const char **str_ptr, const char *sep)
 {
-	const char	*start_of_field;
+	const char	*start;
 	char		*field;
 
-	while (**str_ptr && is_ifs(**str_ptr, current_ifs))
+	while (**str_ptr && is_sep(**str_ptr, sep))
 		(*str_ptr)++;
 	if (!**str_ptr)
 		return (NULL);
-	start_of_field = *str_ptr;
-	while (**str_ptr && !is_ifs(**str_ptr, current_ifs))
+	start = *str_ptr;
+	while (**str_ptr && !is_sep(**str_ptr, sep))
 		(*str_ptr)++;
-	field = ft_substr(start_of_field, 0, *str_ptr - start_of_field);
+	field = ft_substr(start, 0, *str_ptr - start);
 	return (field);
 }
 
-// voir si le passage en int pose probleme et si on peut raccourcir 111
-char	**perform_field_splitting(const char *str, const char *ifs_val)
+static char	**allocate_field_array(const char *str, const char *sep)
+{
+	int	field_count;
+
+	field_count = count_fields(str, sep);
+	return (ft_calloc(field_count + 1, sizeof(char *)));
+}
+
+char	**perform_field_splitting(const char *str, const char *sep_val)
 {
 	char		**fields;
-	int			num_fields;
-	int			idx;
-	const char	*current_str_ptr;
-	const char	*current_ifs;
-	int			field_count_size_t;
+	int			index;
+	const char	*current_ptr;
+	const char	*current_sep;
 
 	if (!str)
 		return (NULL);
-	if (ifs_val)
-		current_ifs = ifs_val;
-	else
-		current_ifs = " \t\n";
-	field_count_size_t = count_fields(str, current_ifs);
-	if (field_count_size_t > INT_MAX)
-		return (NULL);
-	num_fields = (int)field_count_size_t;
-	fields = (char **)ft_calloc(num_fields + 1, sizeof(char *));
+	current_sep = sep_val;
+	if (!current_sep)
+		current_sep = " \t\n";
+	fields = allocate_field_array(str, current_sep);
 	if (!fields)
 		return (NULL);
-	idx = 0;
-	current_str_ptr = str;
-	while (idx < num_fields)
+	index = 0;
+	current_ptr = str;
+	while ((fields[index] = extract_one_field(&current_ptr, current_sep)))
 	{
-		fields[idx] = extract_one_field(&current_str_ptr, current_ifs);
-		if (!fields[idx])
-		{
-			free_char_array(fields);
-			return (NULL);
-		}
-		idx++;
+		if (!fields[index])
+			return(ft_freesplit(fields));
+		index++;
 	}
-	fields[idx] = NULL;
+	fields[index] = NULL;
 	return (fields);
 }

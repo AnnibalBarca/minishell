@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/05/29 16:26:08 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/06 18:09:51 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static int	process_word_expansion(t_token *token, t_token **expanded_head,
 		if (!fields)
 			return (0);
 		if (!add_expanded_tokens(fields, expanded_head))
-			return (free_char_array(fields), 0);
-		free_char_array(fields);
+			return (ft_freesplit_int(fields, 0));
+		ft_freesplit(fields);
 	}
 	else
 	{
@@ -89,20 +89,14 @@ t_token	*expand_tokens(t_token *tokens, char **envp, int exit_status)
 		{
 			if (!process_word_expansion(current, &expanded_head, envp,
 					exit_status))
-			{
-				free_token_list(expanded_head);
-				return (NULL);
-			}
+				return (free_token_list_and_return_null(expanded_head));
 		}
 		else
 		{
 			op_copy = ft_strdup(current->value);
 			if (!op_copy || !create_and_append_token(&expanded_head, op_copy,
 					current->type, Q_NONE))
-			{
-				free_token_list(expanded_head);
-				return (NULL);
-			}
+				return (free_token_list_and_return_null(expanded_head));
 		}
 		current = current->next;
 	}
