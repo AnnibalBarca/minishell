@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:47:15 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/27 21:47:25 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:58:07 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,26 +115,50 @@ typedef struct s_pipex
 	int				envp;
 }					t_pipex;
 
+typedef struct s_args
+{
+	char	*cmd_args;
+	struct s_args	*next;
+	struct s_args	*prev;
+}	t_args;
+
+typedef struct s_files // Un seul fichier par node
+{
+	char	*infile_name;
+	char	*outfile_name;
+	int				heredoc;
+	int				append;
+	struct s_files	*next;
+	struct s_files	*prev;
+}	t_files;
+
+typedef struct s_cmd
+{
+	t_args			*args;
+	char			*cmd_path;		// Chemin complet de la commande
+	int				input_fd;		// FD d'entrée -1 si stdin
+	int				output_fd;		// FD de sortie -1 si stdout
+	t_files			*files;			// Liste des fichier (in/out)
+	int				is_builtin;		// 1 si c'est un builtin
+	struct s_cmd	*next;			// Pour chaîner avec des pipes
+	struct s_cmd	*prev;			// Pour chaîner avec des pipes
+} t_cmd;
+
 typedef struct s_exec
 {
-    char            **group;
-    char            *infile_name;
-    char            *outfile_name;
-	int				infile;
-	int				outfile;
-    int             append;
-	int				heredoc;
-	t_pipex			pipex;
-    struct s_exec   *next;
-    struct s_exec   *prev;
+    t_token		*tokens;	// Liste des tokens parsés
+    t_cmd		*cmd_list; // Liste des commandes
+    char		**envp; // Variables d'environnement
+    char		**paths; // Chemins du PATH
+    pid_t		*pids; // PIDs des processus fils
+    int			**pipes; // Pipes pour communication
+    int			cmd_count;
+    int			exit_status; // Status de sortie
+    int			envp_exists;
+    int			stdin_backup; // Sauvegarde stdin
+    int			stdout_backup;  // Sauvegarde stdout
+} t_exec;
 
-}               t_exec;
-
-typedef struct s_cmd {
-    char **cmds;
-    int ncmd;
-    int max;
-} t_cmd;
 
 extern int g_exit_status; // For the shell's exit status
 extern volatile sig_atomic_t g_signal_received; // To flag if a signal was caught
