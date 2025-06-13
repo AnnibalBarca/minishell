@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:47:28 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 18:45:10 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:38:07 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,19 +149,6 @@ void	print_single_cmd_detailed(t_cmd *cmd, int cmd_index)
     /* Basic info */
     printf("📂 Command path: %s\n", cmd->cmd_path ? cmd->cmd_path : "(not set)");
 
-    /* File descriptors */
-    printf("📥 Input FD: ");
-    if (cmd->input_fd == -1)
-        printf("default (stdin)\n");
-    else
-        printf("%d\n", cmd->input_fd);
-
-    printf("📤 Output FD: ");
-    if (cmd->output_fd == -1)
-        printf("default (stdout)\n");
-    else
-        printf("%d\n", cmd->output_fd);
-
     /* Flags */
     printf("🔧 Builtin: %s\n", cmd->is_builtin ? "✅ YES" : "❌ NO");
 
@@ -240,12 +227,12 @@ int	main(int ac, char **av)
 	tail = NULL;
 	head = NULL;
 
-	add_token(&tokens, &tail, T_REDIRECT_IN, "<");
+	add_token(&tokens, &tail, T_HEREDOC, "<<");
 	add_token(&tokens, &tail, T_WORD, "Makefile");
-    add_token(&tokens, &tail, T_WORD, "cat");
+    add_token(&tokens, &tail, T_WORD, "cd");
     add_token(&tokens, &tail, T_PIPE, "|");
     add_token(&tokens, &tail, T_WORD, "cat");
-	add_token(&tokens, &tail, T_REDIRECT_OUT, ">");
+	add_token(&tokens, &tail, T_APPEND, ">>");
     add_token(&tokens, &tail, T_WORD, "out2");
 	add_token(&tokens, &tail, T_REDIRECT_IN, "<");
 	add_token(&tokens, &tail, T_WORD, "Makefile");

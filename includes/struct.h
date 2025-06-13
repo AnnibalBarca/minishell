@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:47:15 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 18:58:07 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:36:18 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,6 @@ typedef struct s_cmd
 {
 	t_args			*args;
 	char			*cmd_path;		// Chemin complet de la commande
-	int				input_fd;		// FD d'entrée -1 si stdin
-	int				output_fd;		// FD de sortie -1 si stdout
 	t_files			*files;			// Liste des fichier (in/out)
 	int				is_builtin;		// 1 si c'est un builtin
 	struct s_cmd	*next;			// Pour chaîner avec des pipes
@@ -146,7 +144,6 @@ typedef struct s_cmd
 
 typedef struct s_exec
 {
-    t_token		*tokens;	// Liste des tokens parsés
     t_cmd		*cmd_list; // Liste des commandes
     char		**envp; // Variables d'environnement
     char		**paths; // Chemins du PATH
