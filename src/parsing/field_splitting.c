@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:30:28 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/11 18:04:37 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:55:08 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,22 @@ static int	count_fields(const char *str, const char *sep)
 	while (*str)
 	{
 		if (is_sep(*str, sep))
-			in_field = 0;
-		else if (!in_field)
 		{
-			in_field = 1;
-			count++;
+			if (in_field)
+				count++;
+			in_field = 0;
+			while (*str && is_sep(*str, sep))
+				str++;
 		}
-		str++;
+		else
+		{
+			if (!in_field)
+				in_field = 1;
+			str++;
+		}
 	}
+	if (in_field)
+		count++;
 	return (count);
 }
 
@@ -50,6 +58,7 @@ static char	*extract_one_field(const char **str_ptr, const char *sep)
 {
 	const char	*start;
 	char		*field;
+	size_t		field_len;
 
 	while (**str_ptr && is_sep(**str_ptr, sep))
 		(*str_ptr)++;
@@ -58,7 +67,10 @@ static char	*extract_one_field(const char **str_ptr, const char *sep)
 	start = *str_ptr;
 	while (**str_ptr && !is_sep(**str_ptr, sep))
 		(*str_ptr)++;
-	field = ft_substr(start, 0, *str_ptr - start);
+	field_len = *str_ptr - start;
+	field = ft_substr(start, 0, field_len);
+	if (!field)
+		return (NULL);
 	return (field);
 }
 
@@ -76,6 +88,7 @@ char	**perform_field_splitting(const char *str, const char *sep_val)
 	int			index;
 	const char	*current_ptr;
 	const char	*current_sep;
+	char		*field;
 
 	if (!str)
 		return (NULL);
@@ -87,13 +100,16 @@ char	**perform_field_splitting(const char *str, const char *sep_val)
 		return (NULL);
 	index = 0;
 	current_ptr = str;
-	while ((fields[index] = extract_one_field(&current_ptr, current_sep)))
+	while ((field = extract_one_field(&current_ptr, current_sep)))
 	{
+		fields[index] = field;
 		if (!fields[index])
-			return(ft_freesplit(fields));
+		{
+			ft_freesplit(fields);
+			return (NULL);
+		}
 		index++;
 	}
 	fields[index] = NULL;
 	return (fields);
 }
-
