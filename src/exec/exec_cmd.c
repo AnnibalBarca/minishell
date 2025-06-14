@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/27 19:39:23 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:19:20 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	check_exec_file(t_exec *exec, char *cmd)
 		free_pipex(exec, 127, cmd, "no such file or directory");
 	if (access(cmd, X_OK) == -1)
 		free_pipex(exec, 126, cmd, "Permission denied");
-	exec->pipex.cmd = cmd;
+	exec->cmd_list->cmd_path = cmd;
 }
 
 void	check_exec(t_exec *exec, char *cmd)
 {
 	if (access(cmd, F_OK) == -1)
-		free_pipex(exec, 127, cmd, "Command not found");
+		free_pipex(exec, 127, cmd, "command not found");
 	if (access(cmd, X_OK) == -1)
 		free_pipex(exec, 126, cmd, "Permission denied");
 }
@@ -40,33 +40,34 @@ void	find_path(t_exec *exec, char *cmd)
 		check_exec_file(exec, cmd);
 		return ;
 	}
-	while (exec->pipex.envp && exec->pipex.paths[++i])
+	while (exec->envp && exec->paths[++i])
 	{
-		tmp = ft_strjoin(exec->pipex.paths[i], "/");
+		tmp = ft_strjoin(exec->paths[i], "/");
 		if (!tmp)
 			free_pipex(exec, 1, "malloc", strerror(errno));
-		exec->pipex.cmd = ft_strjoin(tmp, cmd);
+		exec->cmd_list->cmd_path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (!exec->pipex.cmd)
+		if (!exec->cmd_list->cmd_path)
 			free_pipex(exec, 1, "malloc", strerror(errno));
-		if (access(exec->pipex.cmd, F_OK) == 0)
+		if (access(exec->cmd_list->cmd_path, F_OK) == 0)
 			break ;
-		free(exec->pipex.cmd);
-		exec->pipex.cmd = NULL;
+		free(exec->cmd_list->cmd_path);
+		exec->cmd_list->cmd_path = NULL;
 	}
-	if (exec->pipex.cmd)
-		check_exec(exec, exec->pipex.cmd);
+	if (exec->cmd_list->cmd_path)
+		check_exec(exec, exec->cmd_list->cmd_path);
 }
 
 void	execute_bonus(t_exec *exec, char *argv, char **envp)
 {
-	exec->pipex.cmd_args = ft_split(argv, ' ');
-	if (exec->pipex.cmd_args[0] == NULL)
+	if (exec->cmd_list->args->cmd_args == NULL)
 		free_pipex(exec, 127, argv, "Command not found");
-	find_path(exec, exec->pipex.cmd_args[0]);
-	if (!exec->pipex.cmd)
-		free_pipex(exec, 127, exec->pipex.cmd_args[0], "Command not found");
-	if (execve(exec->pipex.cmd, exec->pipex.cmd_args, envp) == -1)
+	find_path(exec, exec->cmd_list->args->cmd_args);
+	if (!exec->cmd_list->cmd_path)
+		free_pipex(exec, 127, exec->cmd_list->args->cmd_args,
+			"Command not found");
+	if (execve(exec->cmd_list->cmd_path,
+			struct_to_char(exec->cmd_list->args->cmd_args), envp) == -1)
 	{
 		if (errno == EACCES || errno == EISDIR)
 			free_pipex(exec, 126, "pipex: execve", strerror(errno));

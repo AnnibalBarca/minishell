@@ -72,7 +72,7 @@ OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_ALL:%.c=%.o))
 DEPS = $(OBJ:.o=.d)
 
-SRC_EXEC =	src/exec/parsing_exec.c		\
+SRC_EXEC =	src/exec/parsing_cmd.c		\
 
 SRC_PARSING =	src/parsing/convert_token_list.c	\
 				src/parsing/error.c					\

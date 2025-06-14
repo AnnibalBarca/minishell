@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:46:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/27 19:39:32 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:03:13 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	pipex_init(t_exec *exec, char **envp)
 {
 	size_t	i;
 
-	exec->pipex = (t_pipex){0};
+	exec->pipex = (t_exec){0};
 	exec->pipex.infile = -1;
 	exec->pipex.outfile = -1;
 	exec->pipex.here_doc = 1;

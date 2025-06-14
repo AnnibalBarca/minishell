@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:47:28 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 19:38:07 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:30:23 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,20 +227,8 @@ int	main(int ac, char **av)
 	tail = NULL;
 	head = NULL;
 
-	add_token(&tokens, &tail, T_HEREDOC, "<<");
-	add_token(&tokens, &tail, T_WORD, "Makefile");
-    add_token(&tokens, &tail, T_WORD, "cd");
-    add_token(&tokens, &tail, T_PIPE, "|");
-    add_token(&tokens, &tail, T_WORD, "cat");
-	add_token(&tokens, &tail, T_APPEND, ">>");
-    add_token(&tokens, &tail, T_WORD, "out2");
-	add_token(&tokens, &tail, T_REDIRECT_IN, "<");
-	add_token(&tokens, &tail, T_WORD, "Makefile");
-    add_token(&tokens, &tail, T_WORD, "cat");
-	add_token(&tokens, &tail, T_REDIRECT_OUT, ">");
-    add_token(&tokens, &tail, T_WORD, "out");
-    add_token(&tokens, &tail, T_WORD, "cat");
-    add_token(&tokens, &tail, T_WORD, "cat");
+    add_token(&tokens, &tail, T_WORD, "ls");
+    add_token(&tokens, &tail, T_WORD, "");
 
 
 	// // quand y'a | > bash skip tout ce qu'il y avait avant (mais pas toujours)
