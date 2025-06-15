@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/27 19:39:46 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:41:31 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,16 @@ void	setup_redirections(t_exec *exec)
 	close(exec->pipex.fd[1]);
 }
 
-void	execute_child(t_exec *exec, char *argv, char **envp)
+void	execute_child(t_exec *exec, int cmd_index, char **envp)
 {
 	close(exec->pipex.fd[0]);
 	setup_redirections(exec);
 	execute_bonus(exec, argv, envp);
 }
 
-void	child_process(t_exec *exec, char *argv, char **envp)
+void	child_process(t_exec *exec, int cmd_index, char **envp)
 {
+	exec->cmd_list->files = find_first_files(exec->cmd_list->files);
 	if (pipe(exec->pipex.fd) == -1)
 		free_pipex(exec, 1, "pipe", strerror(errno));
 	exec->pipex.pids[exec->pipex.i] = fork();

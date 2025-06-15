@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/27 21:36:41 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/15 19:20:42 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,58 +21,31 @@ int	usage(void)
 	return (-1);
 }
 
-void	ft_parse(t_exec *exec)
+int	pipex(t_exec *exec, char **envp)
 {
-	if (exec->append == 1)
-	{
-		if (exec->infile_name != NULL)
-			open_infile(exec, exec->infile_name);
-		if (exec->outfile_name != NULL)
-			open_outfile(exec, exec->outfile_name, 0);
-	}
-	else
-	{
-		if (exec->infile_name != NULL)
-			open_infile(exec, exec->infile_name);
-		if (exec->outfile_name != NULL)
-			open_outfile(exec, exec->outfile_name, 1);
-	}
-}
+	t_exec exec;
+	int i;
 
-void check_cmds(t_exec *exec, char *av)
-{
-	exec->pipex.cmd_args = ft_split(av, ' ');
-	if (exec->pipex.cmd_args[0] == NULL)
-		free_pipex(exec, 127, av, "Command not found");
-	find_path(exec, exec->pipex.cmd_args[0]);
-	if (!exec->pipex.cmd)
-		free_pipex(exec, 127, exec->pipex.cmd_args[0], "Command not found");
-}
-
-int	pipex(t_exec *exec, int ac, char **av, char **envp)
-{
-	if (ac < 1)
+	exec->cmd_count = find_size_cmd(exec->cmd_list);
+	if (exec->cmd_count < 1)
 		return (usage());
-	pipex_init(exec, envp);
-	exec->pipex.cmd_nbr = ac;
-	ft_parse(exec);
-	exec->pipex.pids = malloc(sizeof(pid_t) * ac);
-	if (!exec->pipex.pids)
+	exec = parsing_exec(exec, envp);
+	if (exec == NULL)
+		free_exec();
+	exec->pids = malloc(sizeof(pid_t) * exec->cmd_count);
+	if (!exec->pids)
 		free_pipex(exec, -1, "pipex: malloc: %s\n", strerror(errno));
-	if (ac > 1)
-		while (++exec->pipex.i < ac)
-			check_cmds(exec, av[exec->pipex.i]);
-	exec->pipex.i = -1;
-	if (ac > 1)
-		while (++exec->pipex.i < ac)
-			child_process(exec, av[exec->pipex.i], envp);
+	i = -1;
+	if (exec->cmd_count > 1)
+		while (++i < exec->cmd_count)
+			child_process(exec, i, envp);
 	else
-		while (++exec->pipex.i < ac)
-			exec_one(exec, av[exec->pipex.i], envp);
-	while (++exec->pipex.i_wait < ac)
-		waitpid(exec->pipex.pids[exec->pipex.i_wait], &exec->pipex.status, 0);
+			exec_one(exec, envp);
+	i = -1;
+	while (++i < exec->cmd_count)
+		waitpid(exec->pids[i], &exec->exit_status, 0);
 	free_pipex_core(exec);
-	if (WIFEXITED(exec->pipex.status))
-		return (WEXITSTATUS(exec->pipex.status));
-	return (exec->pipex.status);
+	if (WIFEXITED(exec->exit_status))
+		return (WEXITSTATUS(exec->exit_status));
+	return (exec->exit_status);
 }

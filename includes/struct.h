@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:47:15 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/14 19:32:13 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:16:50 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <limits.h>
 
 
-# define CHARSET "abcdefghijklmnopqrstuvwxyz"
+# define CHARSET "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 // struct to build a string in the second phase of parsing
 typedef struct s_str_builder
@@ -138,6 +138,8 @@ typedef struct s_cmd
 	char			*cmd_path;		// Chemin complet de la commande
 	t_files			*files;			// Liste des fichier (in/out)
 	int				is_builtin;		// 1 si c'est un builtin
+	int				fd_input;		// -1 si c'est STDIN
+	int				fd__output;		// -1 si c'est STDOUT
 	struct s_cmd	*next;			// Pour chaîner avec des pipes
 	struct s_cmd	*prev;			// Pour chaîner avec des pipes
 } t_cmd;

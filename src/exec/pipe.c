@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:22:03 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 17:25:32 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:54:43 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 int	create_pipes(t_exec *exec)
 {
 	int	i;
-
-	exec->cmd_count = find_size_cmd(exec->cmd_list);
+	
 	if (exec->cmd_count <= 1)
 		return (0);
 	exec->pipes = ft_calloc(exec->cmd_count - 1, sizeof(int *));
 	if (!exec->pipes)
 		return (-1);
-		
+
 	for (i = 0; i < exec->cmd_count - 1; i++)
 	{
 		exec->pipes[i] = ft_calloc(2, sizeof(int));
