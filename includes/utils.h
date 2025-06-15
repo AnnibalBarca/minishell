@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:46:54 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 18:24:44 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:41:50 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ t_cmd	*find_first_cmd(t_cmd *lst);
 t_args	*find_first_args(t_args *lst);
 int		find_size(t_token *lst);
 int		find_size_cmd(t_cmd *lst);
+int	find_size_args(t_args *lst);
 char	*ft_strjoin_space(char const *s1, char const *s2);
 #endif

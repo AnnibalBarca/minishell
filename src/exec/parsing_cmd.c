@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:27:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/14 18:56:09 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:54:33 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,11 +232,12 @@ t_cmd	*parsing_cmd(t_token *tokens)
 		if (tokens && tokens->type == T_PIPE)
 		{
 			tokens = tokens->next;
-			if (!tokens)
-            {
-                //free_cmd(head);
-                return (NULL);
-            }
+			// if (!tokens)
+            // {
+			// 	printf("minishell: syntax error near unexpected token '|'\n");
+            //     //free_cmd(head);
+            //     return (NULL);
+            // }
 			cmd = append_cmd_node(cmd);
 			if (!cmd)
 			{

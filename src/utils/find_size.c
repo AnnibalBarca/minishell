@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 10:22:17 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 15:29:15 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:41:41 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ int	find_size(t_token *lst)
 }
 
 int	find_size_cmd(t_cmd *lst)
+{
+	size_t	size;
+
+	size = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		size++;
+	}
+	return (size);
+}
+
+int	find_size_args(t_args *lst)
 {
 	size_t	size;
 
