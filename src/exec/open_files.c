@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:23:18 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 20:36:21 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:58:36 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void	open_infile(t_exec *exec, int previous_fd)
 {
 	if (exec->cmd_list->files->heredoc == 1)
-		exec->cmd_list->fd_input = here_doc(exec,
-				exec->cmd_list->files->infile_name);
+		here_doc(exec, exec->cmd_list->files->infile_name);
 	else
 		exec->cmd_list->fd_input = open(exec->cmd_list->files->infile_name,
 				O_RDONLY);

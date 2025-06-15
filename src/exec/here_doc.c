@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 20:40:12 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:59:14 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	here_doc(t_exec *exec, char *limiter)
 {
 	char	*temp;
 
-	free(exec->cmd_list->args->cmd_args);
+	free(exec->cmd_list->files->infile_name);
 	random_filename(exec);
 	open_infile(exec, -1);
 	temp = readline("> ");
