@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:39:17 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 19:40:14 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:44:58 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,15 @@ void	exec_init(t_exec *exec, char **envp)
 		return ;
 	}
 	exec->paths = ft_split(envp[i] + 5, ':');
-	// if (!exec->paths)
-	// 	exec_error(exec, 1, "minishell: malloc: %s\n", strerror(errno));
+	if (!exec->paths)
+		free_parent(exec, 1, "minishell: malloc: %s\n", strerror(errno));
 }
 
-t_exec *parsing_exec(t_token *tokens, char **envp)
+void parsing_exec(t_token *tokens, t_exec *exec)
 {
-	t_cmd *cmd;
-	t_exec *exec;
-	if (!tokens)
-		return (NULL);
-	cmd = parsing_cmd(tokens);
-	if (!cmd)
-		return (NULL);
-	exec = malloc(sizeof(t_exec));
-	if (!exec)
-	{
-		//free_cmd()
-		return (NULL);
-	}
-	exec_init(exec, envp);
-	exec->cmd_list = cmd;
-	return (exec);
+	if (!tokens || !exec)
+		return ;
+	exec->cmd_list = parsing_cmd(tokens);
+	if (!exec->cmd_list)
+		return ;
 }

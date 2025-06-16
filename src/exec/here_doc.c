@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 20:59:14 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:02:41 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,22 @@ void	random_filename(t_exec *exec)
 	i = -1;
 	exec->cmd_list->files->infile_name = malloc(sizeof(char) * 9);
 	if (!exec->cmd_list->files->infile_name)
-		free_pipex(exec, 1, "malloc", strerror(errno));
+		free_child(exec, 1, "malloc", strerror(errno));
 	urandom_fd = open("/dev/urandom", O_RDONLY);
 	if (urandom_fd < 0)
-		free_pipex(exec, 1, "open", strerror(errno));
+		free_child(exec, 1, "open", strerror(errno));
 	while (++i < 8)
 	{
 		if (read(urandom_fd, &random, 1) < 0)
 		{
 			close(urandom_fd);
-			free_pipex(exec, 1, "read", strerror(errno));
+			free_child(exec, 1, "read", strerror(errno));
 		}
 		exec->cmd_list->files->infile_name[i] = CHARSET[random
 			% (sizeof(CHARSET) - 1)];
 	}
 	exec->cmd_list->files->infile_name[8] = '\0';
 	close(urandom_fd);
-	return (exec->cmd_list->files->infile_name);
 }
 
 void	here_doc(t_exec *exec, char *limiter)
@@ -49,7 +48,7 @@ void	here_doc(t_exec *exec, char *limiter)
 	open_infile(exec, -1);
 	temp = readline("> ");
 	if (!temp)
-		free_pipex(exec, 1, "malloc", strerror(errno));
+		free_child(exec, 1, "malloc", strerror(errno));
 	while (temp != NULL)
 	{
 		if (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
@@ -63,7 +62,7 @@ void	here_doc(t_exec *exec, char *limiter)
 		free(temp);
 		temp = readline("> ");
 		if (!temp)
-			free_pipex(exec, 1, "malloc:", strerror(errno));
+			free_child(exec, 1, "malloc:", strerror(errno));
 	}
 	close(exec->cmd_list->fd_input);
 	open_infile(exec, -1);

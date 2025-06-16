@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:47:28 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/14 19:54:43 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:42:13 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void	print_cmd_list_detailed(t_cmd *cmd_list)
     printf("\n╚═══════════════════ END OF ANALYSIS ═══════════════════════╝\n");
 }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	t_cmd *head;
 	t_token *tokens;
@@ -244,14 +244,10 @@ int	main(int ac, char **av)
     add_token(&tokens, &tail, T_WORD, "cat");
 
 
-	// // quand y'a | > bash skip tout ce qu'il y avait avant (mais pas toujours)
-	head = parsing_cmd(tokens);
+	// // quand y'a | > bash skip tout ce qu'il y avait avant (mais pas toujours
+
 	//free_token(tokens, -1, NULL, NULL);
-	if (!head)
-	{
-		fprintf(stderr, "Error: failed to split pipeline\n");
-		return (EXIT_FAILURE);
-	}
+    pipex(tokens, envp);
 	print_cmd_list_detailed(head);
 	return (0);
 }

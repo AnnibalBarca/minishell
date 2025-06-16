@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 19:40:02 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:02:32 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	is_directory(t_exec *exec)
 	{
 		ft_message(exec->cmd_list->args->cmd_args, "Is a directory");
 		if (access(exec->cmd_list->args->cmd_args, F_OK) == -1)
-			exec_error(exec, 127, "minishell: %s: No such file or directory\n",
+			free_child(exec, 127, "minishell: %s: No such file or directory\n",
 				exec->cmd_list->args->cmd_args);
 		if (access(exec->cmd_list->args->cmd_args, X_OK) == -1)
-			exec_error(exec, 126, "minishell: %s: Permission denied\n",
+			free_child(exec, 126, "minishell: %s: Permission denied\n",
 				exec->cmd_list->args->cmd_args);
 		return (1);
 	}
@@ -56,18 +56,18 @@ int	is_directory(t_exec *exec)
 void	check_exec_file(t_exec *exec, char *cmd)
 {
 	if (access(cmd, F_OK) == -1)
-		free_pipex(exec, 127, cmd, "No such file or directory");
+		free_child(exec, 127, cmd, "No such file or directory");
 	if (access(cmd, X_OK) == -1)
-		free_pipex(exec, 126, cmd, "Permission denied");
+		free_child(exec, 126, cmd, "Permission denied");
 	exec->cmd_list->cmd_path = cmd;
 }
 
 void	check_exec(t_exec *exec, char *cmd)
 {
 	if (access(cmd, F_OK) == -1)
-		free_pipex(exec, 127, cmd, "command not found");
+		free_child(exec, 127, cmd, "command not found");
 	if (access(cmd, X_OK) == -1)
-		free_pipex(exec, 126, cmd, "Permission denied");
+		free_child(exec, 126, cmd, "Permission denied");
 }
 
 void	find_path(t_exec *exec, char *cmd)
@@ -85,11 +85,11 @@ void	find_path(t_exec *exec, char *cmd)
 	{
 		tmp = ft_strjoin(exec->paths[i], "/");
 		if (!tmp)
-			free_pipex(exec, 1, "malloc", strerror(errno));
+			free_child(exec, 1, "malloc", strerror(errno));
 		exec->cmd_list->cmd_path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (!exec->cmd_list->cmd_path)
-			free_pipex(exec, 1, "malloc", strerror(errno));
+			free_child(exec, 1, "malloc", strerror(errno));
 		if (access(exec->cmd_list->cmd_path, F_OK) == 0)
 			break ;
 		free(exec->cmd_list->cmd_path);
@@ -99,25 +99,26 @@ void	find_path(t_exec *exec, char *cmd)
 		check_exec(exec, exec->cmd_list->cmd_path);
 }
 
-void	execute_bonus(t_exec *exec, char *argv, char **envp)
+void	execute_bonus(t_exec *exec, char **envp)
 {
 	exec->cmd_list->args = find_first_args(exec->cmd_list->args);
 	if (exec->cmd_list->args->cmd_args == NULL)
-		free_pipex(exec, 127, argv, "Command not found");
+		free_child(exec, 127, exec->cmd_list->args->cmd_args,
+			"Command not found");
 	if (is_directory(exec) == 1)
 		return ;
 	find_path(exec, exec->cmd_list->args->cmd_args);
 	if (!exec->cmd_list->cmd_path)
-		free_pipex(exec, 127, exec->cmd_list->args, "Command not found");
+		free_child(exec, 127, exec->cmd_list->args->cmd_args, "Command not found");
 	if (execve(exec->cmd_list->cmd_path, struct_to_array(exec->cmd_list->args),
 			envp) == -1)
 	{
 		if (errno == EACCES || errno == EISDIR)
-			free_pipex(exec, 126, "pipex: execve", strerror(errno));
+			free_child(exec, 126, "pipex: execve", strerror(errno));
 		if (errno == ENOENT || errno == EPERM)
-			free_pipex(exec, 127, "pipex: execve", strerror(errno));
+			free_child(exec, 127, "pipex: execve", strerror(errno));
 		if (errno == ENOTDIR)
-			free_pipex(exec, 127, "pipex: execve", strerror(errno));
-		free_pipex(exec, 1, "execve", strerror(errno));
+			free_child(exec, 127, "pipex: execve", strerror(errno));
+		free_child(exec, 1, "execve", strerror(errno));
 	}
 }

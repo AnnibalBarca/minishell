@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:27:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/14 19:54:33 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:59:42 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ t_cmd	*parsing_cmd(t_token *tokens)
 		cmd = parse_commands(&tokens, &cmd);
 		if (!cmd)
 		{
-			//free_cmd(head);
+			free_cmd_list(head, 0);
 			return (NULL);
 		}
 		if (tokens && tokens->type == T_PIPE)
@@ -241,7 +241,7 @@ t_cmd	*parsing_cmd(t_token *tokens)
 			cmd = append_cmd_node(cmd);
 			if (!cmd)
 			{
-				// free_cmd(head);
+				free_cmd_list(head, 0);
 				return (NULL);
 			}
 		}

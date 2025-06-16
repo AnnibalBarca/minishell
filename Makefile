@@ -72,7 +72,14 @@ OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC_ALL:%.c=%.o))
 DEPS = $(OBJ:.o=.d)
 
-SRC_EXEC =	src/exec/parsing_cmd.c		\
+SRC_EXEC =	src/exec/child_process.c	\
+			src/exec/exec_cmd.c			\
+			src/exec/exec_one.c			\
+			src/exec/here_doc.c			\
+			src/exec/open_files.c		\
+			src/exec/parsing_cmd.c		\
+			src/exec/parsing_exec.c		\
+			src/exec/pipex.c			\
 
 SRC_PARSING =	src/parsing/convert_token_list.c	\
 				src/parsing/error.c					\
@@ -85,7 +92,6 @@ SRC_PARSING =	src/parsing/convert_token_list.c	\
 
 SRC_UTILS =	src/utils/ft_close.c		\
 			src/utils/free_struct.c		\
-			src/utils/open.c			\
 			src/utils/find_last.c		\
 			src/utils/find_size.c		\
 			src/utils/find_first.c		\

@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:23:18 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 20:58:36 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:03:18 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ void	open_infile(t_exec *exec, int previous_fd)
 				O_RDONLY);
 	if (access(exec->cmd_list->files->infile_name, F_OK) == -1)
 	{
-		free_pipex(exec, 1, "No such file or directory <pipex>",
+		free_child(exec, 1, "No such file or directory <child>",
 			exec->cmd_list->files->infile_name);
 	}
 	if (access(exec->cmd_list->files->infile_name, R_OK) == -1)
 	{
-		free_pipex(exec, 1, "permission denied <pipex>",
+		free_child(exec, 1, "permission denied <child>",
 			exec->cmd_list->files->infile_name);
 	}
 	if (exec->cmd_list->fd_input == -1)
 	{
 		if (previous_fd != -1)
 			close(previous_fd);
-		free_pipex(exec, 1, "<open_infile pipex>", strerror(errno));
+		free_child(exec, 1, "<open_infile child>", strerror(errno));
 	}
 }
 
@@ -42,24 +42,24 @@ void	open_outfile(t_exec *exec, int previous_fd)
 	if (access(exec->cmd_list->files->outfile_name, F_OK) == 0)
 	{
 		if (access(exec->cmd_list->files->outfile_name, W_OK) == -1)
-			free_pipex(exec, 1, "permission denied <pipex>",
+			free_child(exec, 1, "permission denied <child>",
 				exec->cmd_list->files->outfile_name);
 	}
 	if (exec->cmd_list->files->append == 1)
-		exec->cmd_list->fd__output = open(exec->cmd_list->files->outfile_name,
+		exec->cmd_list->fd_output = open(exec->cmd_list->files->outfile_name,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
-		exec->cmd_list->fd__output = open(exec->cmd_list->files->outfile_name,
+		exec->cmd_list->fd_output = open(exec->cmd_list->files->outfile_name,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (exec->cmd_list->fd__output == -1)
+	if (exec->cmd_list->fd_output == -1)
 	{
 		if (previous_fd != -1)
 			close(previous_fd);
-		free_pipex(exec, 1, "<open_outfile pipex>", strerror(errno));
+		free_child(exec, 1, "<open_outfile child>", strerror(errno));
 	}
 }
 
-void	stuct_open_infile(t_exec *exec)
+void	struct_open_infile(t_exec *exec)
 {
 	t_files	*current;
 	int		previous_fd;
@@ -67,7 +67,7 @@ void	stuct_open_infile(t_exec *exec)
 	exec->cmd_list->fd_input = -1;
 	previous_fd = -1;
 	if (!exec->cmd_list->files)
-		return (-1);
+		return ;
 	current = exec->cmd_list->files;
 	while (current)
 	{
@@ -80,22 +80,22 @@ void	stuct_open_infile(t_exec *exec)
 	}
 }
 
-void	stuct_open_outfile(t_exec *exec)
+void	struct_open_outfile(t_exec *exec)
 {
 	t_files	*current;
 	int		previous_fd;
 
-	exec->cmd_list->fd__output = -1;
+	exec->cmd_list->fd_output = -1;
 	previous_fd = -1;
 	if (!exec->cmd_list->files)
-		return (-1);
+		return ;
 	current = exec->cmd_list->files;
 	while (current)
 	{
 		if (current->outfile_name)
 		{
 			open_outfile(exec, previous_fd);
-			previous_fd = exec->cmd_list->fd__output;
+			previous_fd = exec->cmd_list->fd_output;
 		}
 		current = current->next;
 	}

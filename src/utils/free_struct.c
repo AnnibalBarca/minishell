@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/13 16:34:35 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:08:44 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,118 +30,200 @@ void	ft_message(char *str, char *str2)
 	}
 }
 
-// void	free_exec_core(t_exec *node)
-// {
-// 	t_exec	*head;
-// 	t_exec	*next;
-// 	char	**g;
+static void	free_args_list(t_args *args)
+{
+	t_args	*current;
+	t_args	*next;
 
-// 	head = node;
-// 	if (!head)
-// 		return ;
-// 	while (head->prev)
-// 		head = head->prev;
-// 	while (head)
-// 	{
-// 		next = head->next;
-// 		if (head->group)
-// 		{
-// 			g = head->group;
-// 			while (*g)
-// 				free(*g++);
-// 			free(head->group);
-// 		}
-// 		if (head->infile > STDERR_FILENO)
-// 			close(head->infile);
-// 		if (head->outfile > STDERR_FILENO)
-// 			close(head->outfile);
-// 		if (head->infile_name >= 0)
-// 			free(head->infile_name);
-// 		if (head->outfile_name >= 0)
-// 			free(head->outfile_name);
-// 		free(head);
-// 		head = next;
-// 	}
-// }
+	current = args;
+	while (current)
+	{
+		next = current->next;
+		if (current->cmd_args)
+		{
+			free(current->cmd_args);
+			current->cmd_args = NULL;
+		}
+		free(current);
+		current = next;
+	}
+}
 
-// void	free_pipex_core(t_exec *exec)
-// {
-// 	if (!exec)
-// 		return ;
-// 	if (exec->pipex.paths)
-// 		ft_freesplit(exec->pipex.paths);
-// 	if (exec->pipex.pids)
-// 		free(exec->pipex.pids);
-// 	// if (exec->pipex.here_doc == 1)
-// 	// {
-// 	// 	unlink(exec->infile_name);
-// 	// 	free(exec->infile_name);
-// 	// }
-// 	if (exec->pipex.infile >= 0)
-// 		close(exec->pipex.infile);
-// 	if (exec->pipex.outfile >= 0)
-// 		close(exec->pipex.outfile);
-// 	if (exec->pipex.fd[0] >= 0)
-// 		close(exec->pipex.fd[0]);
-// 	if (exec->pipex.fd[1] >= 0)
-// 		close(exec->pipex.fd[1]);
-// 	if (exec->pipex.cmd_args)
-// 		ft_freesplit(exec->pipex.cmd_args);
-// 	exec->pipex.fd[0] = -1;
-// 	exec->pipex.fd[1] = -1;
-// }
+static void	free_files_list(t_files *files)
+{
+	t_files	*current;
+	t_files	*next;
 
-// void	free_pipex(t_exec *exec, int status, char *str, char *str2)
-// {
-// 	if (!exec)
-// 	{
-// 		if (status != -1)
-// 			exit(status);
-// 		return ;
-// 	}
-// 	if (str || str2)
-// 		ft_message(str, str2);
-// 	free_pipex_core(exec);
-// 	free_exec_core(exec);
-// 	if (status != -1)
-// 		exit(status);
-// }
+	current = files;
+	while (current)
+	{
+		next = current->next;
+		if (current->infile_name)
+		{
+			free(current->infile_name);
+			current->infile_name = NULL;
+		}
+		if (current->outfile_name)
+		{
+			free(current->outfile_name);
+			current->outfile_name = NULL;
+		}
+		free(current);
+		current = next;
+	}
+}
 
-// void	free_token(t_token *token, int status, char *str, char *str2)
-// {
-// 	t_token	*tmp;
+void	free_cmd_list(t_cmd *cmd_list, int is_parent)
+{
+	t_cmd	*current;
+	t_cmd	*next;
 
-// 	if (!token)
-// 	{
-// 		if (status != -1)
-// 			exit(status);
-// 		return ;
-// 	}
-// 	ft_message(str, str2);
-// 	while (token)
-// 	{
-// 		tmp = token->next;
-// 		if (token->value)
-// 			free(token->value);
-// 		free(token);
-// 		token = tmp;
-// 	}
-// 	if (status != -1)
-// 		exit(status);
-// }
+	current = cmd_list;
+	while (current)
+	{
+		next = current->next;
+		if (current->args)
+		{
+			current->args = find_first_args(current->args);
+			free_args_list(current->args);
+			current->args = NULL;
+		}
+		if (!is_parent && current->cmd_path)
+		{
+			free(current->cmd_path);
+			current->cmd_path = NULL;
+		}
+		if (current->files)
+		{
+			current->files = find_first_files(current->files);
+			free_files_list(current->files);
+			current->files = NULL;
+		}
+		if (!is_parent)
+		{
+			if (current->fd_input != -1)
+			{
+				close(current->fd_input);
+				current->fd_input = -1;
+			}
+			if (current->fd_output != -1)
+			{
+				close(current->fd_output);
+				current->fd_output = -1;
+			}
+		}
+		free(current);
+		current = next;
+	}
+}
 
-// void	free_exec(t_exec *exec, int status, char *str, char *str2)
-// {
-// 	if (!exec)
-// 	{
-// 		if (status != -1)
-// 			exit(status);
-// 		return ;
-// 	}
-// 	if (str || str2)
-// 		ft_message(str, str2);
-// 	free_exec_core(exec);
-// 	if (status != -1)
-// 		exit(status);
-// }
+void	free_parent(t_exec *exec, int status, char *str, char *str2)
+{
+	ft_message(str, str2);
+	if (!exec)
+		return ;
+	if (exec->cmd_list)
+	{
+		exec->cmd_list = find_first_cmd(exec->cmd_list);
+		free_cmd_list(exec->cmd_list, 1);
+		exec->cmd_list = NULL;
+	}
+	if (exec->paths)
+	{
+		free_split(exec->paths);
+		exec->paths = NULL;
+	}
+	if (exec->pids)
+	{
+		free(exec->pids);
+		exec->pids = NULL;
+	}
+	if (exec->pipes)
+	{
+		close_all_pipes(exec);
+		exec->pipes = NULL;
+	}
+	if (exec->stdin_backup != -1)
+	{
+		dup2(exec->stdin_backup, STDIN_FILENO);
+		close(exec->stdin_backup);
+		exec->stdin_backup = -1;
+	}
+	if (exec->stdout_backup != -1)
+	{
+		dup2(exec->stdout_backup, STDOUT_FILENO);
+		close(exec->stdout_backup);
+		exec->stdout_backup = -1;
+	}
+	exec->envp = NULL;
+	exec->cmd_count = 0;
+	exec->exit_status = 0;
+	exec->envp_exists = 0;
+	if (status != -1)
+		exit(status);
+}
 
+void	close_all_pipes(t_exec *exec)
+{
+	int	i;
+
+	i = 0;
+	if (!exec->pipes)
+		return ;
+	while (i < exec->cmd_count - 1)
+	{
+		if (exec->pipes[i])
+		{
+			if (exec->pipes[i][0] >= 0)
+				close(exec->pipes[i][0]);
+			if (exec->pipes[i][1] >= 0)
+				close(exec->pipes[i][1]);
+		}
+		i++;
+	}
+}
+
+void	free_child(t_exec *exec, int status, char *str, char *str2)
+{
+	ft_message(str, str2);
+	if (!exec)
+		return ;
+	if (exec->cmd_list)
+	{
+		exec->cmd_list = find_first_cmd(exec->cmd_list);
+		free_cmd_list(exec->cmd_list, 0);
+		exec->cmd_list = NULL;
+	}
+	if (exec->paths)
+	{
+		free_split(exec->paths);
+		exec->paths = NULL;
+	}
+	if (exec->pids)
+	{
+		free(exec->pids);
+		exec->pids = NULL;
+	}
+	if (exec->pipes)
+	{
+		close_all_pipes(exec);
+		exec->pipes = NULL;
+	}
+	if (exec->stdin_backup != -1)
+	{
+		close(exec->stdin_backup);
+		exec->stdin_backup = -1;
+	}
+
+	if (exec->stdout_backup != -1)
+	{
+		close(exec->stdout_backup);
+		exec->stdout_backup = -1;
+	}
+	exec->envp = NULL;
+	exec->cmd_count = 0;
+	exec->exit_status = 0;
+	exec->envp_exists = 0;
+	if (status != -1)
+		exit(status);
+}

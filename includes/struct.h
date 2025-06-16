@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:47:15 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/15 20:16:50 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:41:18 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ typedef struct s_cmd
 	t_files			*files;			// Liste des fichier (in/out)
 	int				is_builtin;		// 1 si c'est un builtin
 	int				fd_input;		// -1 si c'est STDIN
-	int				fd__output;		// -1 si c'est STDOUT
+	int				fd_output;		// -1 si c'est STDOUT
 	struct s_cmd	*next;			// Pour chaîner avec des pipes
 	struct s_cmd	*prev;			// Pour chaîner avec des pipes
 } t_cmd;
