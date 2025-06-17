@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/16 19:02:05 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:17:16 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	setup_redirections(t_exec *exec, int cmd_index)
 		}
 		else
 		{
-			if (dup2(exec->pipes[cmd_index][1], STDIN_FILENO) == -1)
+			if (dup2(exec->pipes[cmd_index][1], STDOUT_FILENO) == -1)
 				free_child(exec, 1, "dup2", strerror(errno));
 		}
 	}

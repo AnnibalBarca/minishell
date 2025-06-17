@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   all.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:37:52 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/05/22 16:08:14 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:19:08 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_atoi(const char *str);
 size_t				ft_strlen(const char *s);
+char				*ft_strcpy(char *dest, char *src);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 unsigned int		ft_strlcat(char *dst, char *src, size_t size);
 char				*ft_strchr(const char *s, int c);
@@ -53,8 +54,6 @@ void				*ft_memmove(void *dest, const void *src, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
-char				*ft_strjoin_free_c(char *s1, char c);
-char				*ft_strjoin_free(char *s1, const char *s2);
 
 // String Manipulation
 char				*ft_substr(char const *s, unsigned int start, size_t len);
@@ -90,8 +89,8 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 t_list				*ft_lstlast(t_list *lst);
 t_list				*ft_lstnew(char *content);
 
-	// ft_printf function
-	size_t ft_len_putaddress(void *ptr);
+// ft_printf function
+size_t ft_len_putaddress(void *ptr);
 int					ft_len_putchar(unsigned char c);
 size_t				ft_len_putnbr_hex(unsigned int nbr, int flag);
 int					ft_len_putnbr(int nb);

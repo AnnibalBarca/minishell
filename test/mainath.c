@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:47:28 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/16 17:42:13 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:31:34 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,40 +214,46 @@ void	print_cmd_list_detailed(t_cmd *cmd_list)
 
     printf("\n╚═══════════════════ END OF ANALYSIS ═══════════════════════╝\n");
 }
+void	free_token_list(t_token *tokens)
+{
+    t_token	*current;
+    t_token	*next;
+
+    current = tokens;
+    while (current)
+    {
+        next = current->next;
+        if (current->value)
+            free(current->value);
+        free(current);
+        current = next;
+    }
+}
 
 int	main(int ac, char **av, char **envp)
 {
-	t_cmd *head;
 	t_token *tokens;
 	t_token *tail;
+    int status;
 
 	(void)ac;
 	(void)av;
 	tokens = NULL;
 	tail = NULL;
-	head = NULL;
 
-	add_token(&tokens, &tail, T_HEREDOC, "<<");
-	add_token(&tokens, &tail, T_WORD, "Makefile");
-    add_token(&tokens, &tail, T_WORD, "cd");
+    add_token(&tokens, &tail, T_WORD, "cat");
+    add_token(&tokens, &tail, T_REDIRECT_IN, "<");
+    add_token(&tokens, &tail, T_WORD, "Makefile");
     add_token(&tokens, &tail, T_PIPE, "|");
     add_token(&tokens, &tail, T_WORD, "cat");
-	add_token(&tokens, &tail, T_APPEND, ">>");
+    add_token(&tokens, &tail, T_REDIRECT_OUT, ">");
     add_token(&tokens, &tail, T_WORD, "out2");
-	add_token(&tokens, &tail, T_REDIRECT_IN, "<");
-	add_token(&tokens, &tail, T_WORD, "Makefile");
-    add_token(&tokens, &tail, T_WORD, "cat");
-    add_token(&tokens, &tail, T_PIPE, "|");
-	add_token(&tokens, &tail, T_REDIRECT_OUT, ">");
-    add_token(&tokens, &tail, T_WORD, "out");
-    add_token(&tokens, &tail, T_WORD, "cat");
-    add_token(&tokens, &tail, T_WORD, "cat");
 
 
 	// // quand y'a | > bash skip tout ce qu'il y avait avant (mais pas toujours
 
 	//free_token(tokens, -1, NULL, NULL);
-    pipex(tokens, envp);
-	print_cmd_list_detailed(head);
-	return (0);
+    status = pipex(tokens, envp);
+    free_token_list(tokens);
+	return (status);
 }

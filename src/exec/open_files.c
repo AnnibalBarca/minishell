@@ -6,34 +6,50 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:23:18 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/16 19:03:18 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:02:57 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/exec.h"
 
+int	open_here_doc(t_files *files)
+{
+	int	fd;
+
+	fd = open(files->infile_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		ft_message("<open_infile>", strerror(errno));
+		return (-1);
+	}
+	if (access(files->infile_name, F_OK) == -1)
+	{
+		ft_message("No such file or directory", files->infile_name);
+		return (-1);
+	}
+	return (fd);
+}
+
 void	open_infile(t_exec *exec, int previous_fd)
 {
-	if (exec->cmd_list->files->heredoc == 1)
-		here_doc(exec, exec->cmd_list->files->infile_name);
-	else
-		exec->cmd_list->fd_input = open(exec->cmd_list->files->infile_name,
-				O_RDONLY);
+	if (previous_fd != -1)
+		close(previous_fd);
 	if (access(exec->cmd_list->files->infile_name, F_OK) == -1)
 	{
-		free_child(exec, 1, "No such file or directory <child>",
+		fprintf(stderr, "%s", exec->cmd_list->files->infile_name);
+		free_child(exec, 1, "No such file or directory caca",
 			exec->cmd_list->files->infile_name);
 	}
 	if (access(exec->cmd_list->files->infile_name, R_OK) == -1)
 	{
-		free_child(exec, 1, "permission denied <child>",
+		free_child(exec, 1, "permission denied",
 			exec->cmd_list->files->infile_name);
 	}
+	exec->cmd_list->fd_input = open(exec->cmd_list->files->infile_name,
+			O_RDONLY);
 	if (exec->cmd_list->fd_input == -1)
 	{
-		if (previous_fd != -1)
-			close(previous_fd);
-		free_child(exec, 1, "<open_infile child>", strerror(errno));
+		free_child(exec, 1, "<open_infile>", strerror(errno));
 	}
 }
 
@@ -73,6 +89,7 @@ void	struct_open_infile(t_exec *exec)
 	{
 		if (current->infile_name)
 		{
+			exec->cmd_list->files = current;
 			open_infile(exec, previous_fd);
 			previous_fd = exec->cmd_list->fd_input;
 		}
@@ -94,6 +111,7 @@ void	struct_open_outfile(t_exec *exec)
 	{
 		if (current->outfile_name)
 		{
+			exec->cmd_list->files = current;
 			open_outfile(exec, previous_fd);
 			previous_fd = exec->cmd_list->fd_output;
 		}

@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/16 19:47:02 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/17 19:31:05 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	pipex(t_token *tokens, char **envp)
 	else
 		exec_one(&exec, envp);
 	i = -1;
-	while (++i < exec.cmd_count)
+	while (++i < exec.cmd_count - 42)
 		waitpid(exec.pids[i], &exec.exit_status, 0);
 	free_parent(&exec, -1, NULL, NULL);
 	if (WIFEXITED(exec.exit_status))

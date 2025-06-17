@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:27:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/16 18:59:42 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:50:22 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_args	*append_args_node(t_args *current, char *value)
 
 	new_node = new_args_node(value);
 	if (!new_node)
-		return (current);
+		return (NULL);
 	if (!current)
 		return (new_node);
 	last = find_last_args(current);
@@ -74,15 +74,18 @@ t_files	*new_infile_node(char *value, int heredoc)
 	new_node = malloc(sizeof(t_files));
 	if (!new_node)
 		return (NULL);
-	new_node->infile_name = ft_strdup(value);
-	new_node->outfile_name = NULL;
-	new_node->heredoc = heredoc;
-	new_node->append = 0;
+	if (heredoc)
+		new_node->infile_name = here_doc(new_node, value);
+	else
+		new_node->infile_name = ft_strdup(value);
 	if (!new_node->infile_name)
 	{
 		free(new_node);
 		return (NULL);
 	}
+	new_node->outfile_name = NULL;
+	new_node->heredoc = heredoc;
+	new_node->append = 0;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);
@@ -116,7 +119,7 @@ t_files	*append_infile_node(t_files *current, char *value, int heredoc)
 
 	new_node = new_infile_node(value, heredoc);
 	if (!new_node)
-		return (current);
+		return (NULL);
 	if (!current)
 		return (new_node);
 	last = find_last_files(current);
@@ -132,7 +135,7 @@ t_files	*append_outfile_node(t_files *current, char *value, int append)
 
 	new_node = new_outfile_node(value, append);
 	if (!new_node)
-		return (current);
+		return (NULL);
 	if (!current)
 		return (new_node);
 	last = find_last_files(current);
@@ -143,18 +146,17 @@ t_files	*append_outfile_node(t_files *current, char *value, int append)
 
 int	is_redirection(t_token **tokens, t_cmd **cmd)
 {
-	int flag;
+	int	flag;
 
 	if ((*tokens)->type == T_REDIRECT_IN || (*tokens)->type == T_HEREDOC)
 	{
 		flag = ((*tokens)->type == T_HEREDOC);
 		(*tokens) = (*tokens)->next;
 		if (!(*tokens) || (*tokens)->type != T_WORD)
-			return (-1);
-		(*cmd)->files = append_infile_node((*cmd)->files, (*tokens)->value, flag);
+			return (1);
+		(*cmd)->files = append_infile_node((*cmd)->files, (*tokens)->value,
+				flag);
 		(*tokens) = (*tokens)->next;
-		return (0);
-
 	}
 	else if ((*tokens)->type == T_REDIRECT_OUT || (*tokens)->type == T_APPEND)
 	{
@@ -162,12 +164,13 @@ int	is_redirection(t_token **tokens, t_cmd **cmd)
 		(*tokens) = (*tokens)->next;
 		if (!(*tokens) || (*tokens)->type != T_WORD)
 			return (-1);
-		(*cmd)->files = append_outfile_node((*cmd)->files, (*tokens)->value, flag);
+		(*cmd)->files = append_outfile_node((*cmd)->files, (*tokens)->value,
+				flag);
 		(*tokens) = (*tokens)->next;
-		return (0);
-
 	}
-	return (-1);
+	if ((*cmd)->files == NULL)
+		return (1);
+	return (0);
 }
 
 int	is_builtin_cmd(t_args *cmd)
@@ -200,15 +203,17 @@ t_cmd	*parse_commands(t_token **tokens, t_cmd **cmd)
 		if ((*tokens)->type == T_WORD)
 		{
 			(*cmd)->args = append_args_node((*cmd)->args, (*tokens)->value);
+			if ((*cmd)->args == NULL)
+				return (NULL);
 			(*tokens) = (*tokens)->next;
 		}
 		else
-        {
-            if (is_redirection(tokens, cmd) == -1)
-                return (NULL);
-        }
+		{
+			if (is_redirection(tokens, cmd) == 1)
+				return (NULL);
+		}
+		(*cmd)->is_builtin = is_builtin_cmd(find_first_args((*cmd)->args));
 	}
-	(*cmd)->is_builtin = is_builtin_cmd(find_first_args((*cmd)->args));
 	return (*cmd);
 }
 
@@ -233,11 +238,11 @@ t_cmd	*parsing_cmd(t_token *tokens)
 		{
 			tokens = tokens->next;
 			// if (!tokens)
-            // {
+			// {
 			// 	printf("minishell: syntax error near unexpected token '|'\n");
-            //     //free_cmd(head);
-            //     return (NULL);
-            // }
+			//     //free_cmd(head);
+			//     return (NULL);
+			// }
 			cmd = append_cmd_node(cmd);
 			if (!cmd)
 			{

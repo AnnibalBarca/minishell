@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/16 19:08:44 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/06/17 18:04:49 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,35 @@ static void	free_files_list(t_files *files)
 	}
 }
 
+int unlink_heredoc(t_files *files)
+{
+	t_files	*current;
+
+	if (!files)
+		return (0);
+	current = files;
+	while (current)
+	{
+		if (current->heredoc)
+		{
+			if (access(files->outfile_name, F_OK) == -1)
+			{
+				ft_message("error in unlink", NULL);
+				return (1);
+			}
+
+			if (ft_strchr(files->infile_name, '/'))
+			{
+				ft_message("Error in unlink", NULL);
+				return (1);
+			}
+			unlink(files->infile_name);
+		}
+		current = current->next;
+	}
+	return (0);
+}
+
 void	free_cmd_list(t_cmd *cmd_list, int is_parent)
 {
 	t_cmd	*current;
@@ -96,6 +125,7 @@ void	free_cmd_list(t_cmd *cmd_list, int is_parent)
 		if (current->files)
 		{
 			current->files = find_first_files(current->files);
+			unlink_heredoc(current->files);
 			free_files_list(current->files);
 			current->files = NULL;
 		}
