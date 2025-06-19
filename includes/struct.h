@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/12 19:06:48 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:53:56 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,6 @@ typedef enum e_parse_result
 	PARSE_ERROR = -1,
 	PARSE_SUCCESS = 1
 }					t_parse_result;
-
-typedef enum e_prompt_type
-{
-	PROMPT_MAIN,
-	PROMPT_PIPE,
-	PROMPT_QUOTE,
-	PROMPT_REDIR,
-	PROMPT_HEREDOC
-}					t_prompt_type;
 typedef enum e_parser_state
 {
 	STATE_START,
