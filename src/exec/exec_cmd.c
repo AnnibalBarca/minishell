@@ -6,7 +6,7 @@
 /*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/05 19:35:25 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/05 19:44:20 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	find_path(t_exec *exec, char *cmd)
 	char	*tmp;
 
 	i = -1;
-	if (access(cmd, F_OK) == 0)
+	if (ft_strchr(cmd, '/') && access(cmd, F_OK) == 0)
 	{
 		check_exec_file(exec, cmd);
 		return ;
