@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 15:46:08 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:35:25 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,14 @@ void	check_exec_file(t_exec *exec, char *cmd)
 	struct stat	st;
 
 	if (access(cmd, F_OK) == -1)
-		free_child(exec, 127, NULL, NULL);
+		free_child(exec, 127, cmd, "No such file or directory");
 	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
-		free_child(exec, 126, NULL, NULL);
+		free_child(exec, 126, cmd, "is a directory");
 	if (access(cmd, X_OK) == -1)
-		free_child(exec, 126, NULL, NULL);
-	exec->cmd_list->cmd_path = cmd;
+		free_child(exec, 126, cmd, "Permission denied");
+	exec->cmd_list->cmd_path = ft_strdup(cmd);
+	if (!exec->cmd_list->cmd_path)
+		free_child(exec, 1, "malloc", strerror(errno));
 }
 
 void	check_exec(t_exec *exec, char *cmd)
