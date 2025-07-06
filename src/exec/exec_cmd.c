@@ -6,7 +6,7 @@
 /*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/05 19:44:20 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/06 15:45:24 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,9 @@ void	execute_bonus(t_exec *exec, char **envp)
 		exit(dir_result);
 	if (dir_result == 1)
 	{
-		exec->cmd_list->cmd_path = exec->cmd_list->args->cmd_args;
+		exec->cmd_list->cmd_path = ft_strdup(exec->cmd_list->args->cmd_args);
+		if (!exec->cmd_list->cmd_path)
+			free_child(exec, 1, "malloc", strerror(errno));
 		args_array = struct_to_array(exec->cmd_list->args);
 		if (!args_array)
 			exit(1);
@@ -139,7 +141,7 @@ void	execute_bonus(t_exec *exec, char **envp)
 				free_child(exec, 127, exec->cmd_list->cmd_path,
 					"No such file or directory");
 		}
-		free_split(args_array);
+		// free_split(args_array);
 	}
 	if (exec->cmd_list->is_builtin)
 	{
@@ -165,5 +167,5 @@ void	execute_bonus(t_exec *exec, char **envp)
 			free_child(exec, 127, exec->cmd_list->cmd_path,
 				"No such file or directory");
 	}
-	free_split(args_array);
+	// free_split(args_array);
 }
