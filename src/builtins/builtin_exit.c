@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:56:30 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/03 20:50:00 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:50:20 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,47 @@
 
 static int	is_numeric_string(const char *str)
 {
-	int	i;
+	int			i;
+	long long	result;
+	int			sign;
 
 	if (!str || !*str)
 		return (0);
 	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+	while (str[i] && ft_isspace(str[i]))
 		i++;
+	sign = 1;
 	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign = -1;
 		i++;
+	}
 	if (!str[i])
 		return (0);
+	result = 0;
 	while (str[i] && ft_isdigit(str[i]))
+	{
+		if (sign == -1 && result == 922337203685477580LL && str[i] == '8')
+		{
+			result = 9223372036854775808ULL;
+			i++;
+			break ;
+		}
+		if (result > (LLONG_MAX - (str[i] - '0')) / 10)
+			return (0);
+		result = result * 10 + (str[i] - '0');
 		i++;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+	}
+	if (sign == -1 && (unsigned long long)result > 9223372036854775808ULL)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (0);
 		i++;
-	return (!str[i]);
+	}
+	return (1);
 }
 
 int	builtin_exit(t_args *args)
@@ -39,11 +64,7 @@ int	builtin_exit(t_args *args)
 	t_args	*second_arg;
 
 	if (!args)
-	{
-		printf("exit\n");
 		exit(0);
-	}
-	printf("exit\n");
 	first_arg = args->next;
 	if (!first_arg)
 		exit(0);
@@ -54,7 +75,7 @@ int	builtin_exit(t_args *args)
 		{
 			ft_message("exit", first_arg->cmd_args,
 				"numeric argument required");
-			exit(2);
+			exit(255);
 		}
 		ft_message("exit", NULL, "too many arguments");
 		return (1);
@@ -62,7 +83,7 @@ int	builtin_exit(t_args *args)
 	if (!is_numeric_string(first_arg->cmd_args))
 	{
 		ft_message("exit", first_arg->cmd_args, "numeric argument required");
-		exit(2);
+		exit(255);
 	}
 	exit_code = ft_atoi(first_arg->cmd_args);
 	exit((unsigned char)exit_code);

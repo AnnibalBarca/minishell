@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:40:19 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/04 15:01:53 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:41:26 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+void	remove_env_variable(char ***env_ptr, const char *name)
+{
+	int	index;
+	int	i;
+
+	if (!env_ptr || !*env_ptr || !name)
+		return ;
+	index = find_env_index(*env_ptr, name);
+	if (index == -1)
+		return ;
+	free((*env_ptr)[index]);
+	i = index;
+	while ((*env_ptr)[i + 1])
+	{
+		(*env_ptr)[i] = (*env_ptr)[i + 1];
+		i++;
+	}
+	(*env_ptr)[i] = NULL;
+}
 
 static int	update_pwd_variables(char ***env_ptr, char *old_pwd)
 {
@@ -24,6 +44,10 @@ static int	update_pwd_variables(char ***env_ptr, char *old_pwd)
 	}
 	if (old_pwd)
 		set_env_var(env_ptr, "OLDPWD", old_pwd);
+	else
+	{
+		remove_env_variable(env_ptr, "OLDPWD");
+	}
 	set_env_var(env_ptr, "PWD", new_pwd);
 	free(new_pwd);
 	return (0);
@@ -44,6 +68,10 @@ static char	*find_directory(t_args *args, char **env)
 			return (NULL);
 		}
 		return (ft_strdup(target));
+	}
+	else if (first_arg->cmd_args && ft_strlen(first_arg->cmd_args) == 0)
+	{
+		return (ft_strdup("."));
 	}
 	else if (ft_strcmp(first_arg->cmd_args, "-") == 0)
 	{
@@ -79,7 +107,11 @@ int	builtin_cd(t_args *args, char ***env_ptr)
 		ft_message("cd", NULL, "too many arguments");
 		return (1);
 	}
-	old_pwd = getcwd(NULL, 0);
+	old_pwd = find_env_var(*env_ptr, "PWD");
+	if (old_pwd)
+		old_pwd = ft_strdup(old_pwd);
+	else
+		old_pwd = NULL;
 	target_dir = find_directory(args, *env_ptr);
 	if (!target_dir)
 	{
