@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_builder.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:59:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:03:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/06 15:43:48 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	sb_ensure_capacity(t_str_builder *sb, size_t needed)
 	char	*new_str;
 	size_t	new_cap;
 
+	if (!sb)
+		return (0);
 	if (needed <= sb->capacity)
 		return (1);
 	new_cap = sb->capacity;
@@ -65,6 +67,8 @@ int	sb_append_str(t_str_builder *sb, const char *s)
 		return (0);
 	s_len = ft_strlen(s);
 	if (!sb_ensure_capacity(sb, sb->len + s_len))
+		return (0);
+	if (!sb->str)
 		return (0);
 	i = 0;
 	while (i < s_len)
