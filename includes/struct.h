@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:39:52 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/06 12:02:32 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef enum e_parse_result
 	PARSE_ERROR = -1,
 	PARSE_SUCCESS = 1
 }					t_parse_result;
+
 typedef enum e_parser_state
 {
 	STATE_START,

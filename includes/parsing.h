@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/30 20:39:41 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/05 19:49:04 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_token			*free_token_list_and_return_null(t_token *list);
 
 t_token			*parse_complete_input(char **accumulated_input, char **envp,
 					int exit_status);
-void			print_token_list(t_token *tokens, const char *stage);
 void			free_token_list(t_token *list);
 
 #endif

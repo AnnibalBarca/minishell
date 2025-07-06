@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:55:28 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/19 16:40:18 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/05 20:39:53 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
