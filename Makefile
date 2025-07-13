@@ -27,7 +27,6 @@ SRC_PARSING =	src/parsing/expand_variable.c		\
 				src/parsing/operator_handling.c		\
 				src/parsing/quote_extracter.c		\
 				src/parsing/syntax_state_machine.c	\
-				src/parsing/print_tokens.c 			\
 
 
 SRC_UTILS = src/utils/find_last.c		\
@@ -39,9 +38,11 @@ SRC_UTILS = src/utils/find_last.c		\
 			src/utils/builtin_utils.c		\
 			src/utils/token_utils.c			\
 			src/utils/free_struct.c			\
+			src/utils/free_token.c			\
 			src/utils/parsing_error_utils.c	\
 			src/utils/lexer_utils.c			\
 			src/utils/shelvl_pwd.c 			\
+			src/utils/shelvl_pwd_helpers.c 	\
 			src/utils/var_handling.c 		\
 			src/utils/messaging_utils.c 	\
 			src/utils/free_parent.c 		\
@@ -57,8 +58,10 @@ SRC_BUILTINS =	src/builtins/builtin_export.c				\
 				src/builtins/builtin_exit.c					\
 				src/builtins/builtin_unset.c				\
 
-SRC_SIGNALS = src/signal/signal_handler.c		\
-
+SRC_SIGNALS = 	src/signal/signal_handlers.c		\
+				src/signal/process_group.c		\
+				src/signal/signal_setup.c		\
+				
 SRC_ALL = $(SRC_EXEC) $(SRC_UTILS) $(SRC_PARSING) $(SRC_SIGNALS) $(SRC_BUILTINS) test/main_tester.c
 
 GREEN=\033[0;32m

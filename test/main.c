@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:33:18 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:08:14 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parsing.h"
 #include "signals.h"
 
-int	g_signal_test = 0;
+extern int	g_signal_test;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -25,6 +25,8 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	init_signal_handling();
+	setup_interactive_signals();
 	env_copy = copy_env_array(envp);
 	if (!env_copy)
 		return (EXIT_FAILURE);
@@ -32,10 +34,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		input = readline("\033[1;32mminishell$\033[0m ");
 		if (!input)
-		{
-			printf("exit\n");
 			break ;
-		}
 		if (*input == '\0')
 		{
 			free(input);
@@ -48,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
-		exit_status = pipex(tokens, env_copy);
+		exit_status = pipex(tokens, &env_copy);
 		g_signal_test = exit_status;
 		free_token_list(tokens);
 		free(input);

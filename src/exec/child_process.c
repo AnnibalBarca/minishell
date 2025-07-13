@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 18:23:26 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:00:01 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	child_process(t_exec *exec, int cmd_index, char **envp)
 		free_child(exec, 1, "fork", strerror(errno));
 	if (exec->pids[cmd_index] == 0)
 	{
+		// Child process: set up signals properly
 		setup_child_signals();
 		execute_child(exec, cmd_index, envp);
 	}

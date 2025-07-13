@@ -6,94 +6,50 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 18:30:53 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/13 00:00:00 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void	free_token(t_token *token, int status, char *str, char *str2)
+static void	free_cmd_fd_cleanup(t_cmd *current, int is_parent)
 {
-	t_token	*tmp;
-
-	if (!token)
+	if (!is_parent)
 	{
-		if (status != -1)
-			exit(status);
-		return ;
-	}
-	ft_message(str, str2, NULL);
-	while (token)
-	{
-		tmp = token->next;
-		if (token->value)
-			free(token->value);
-		free(token);
-		token = tmp;
-	}
-	if (status != -1)
-		exit(status);
-}
-
-static void	free_args_list(t_args *args)
-{
-	t_args	*current;
-	t_args	*next;
-
-	current = args;
-	while (current)
-	{
-		next = current->next;
-		if (current->cmd_args)
+		if (current->fd_input != -1)
 		{
-			free(current->cmd_args);
-			current->cmd_args = NULL;
+			close(current->fd_input);
+			current->fd_input = -1;
 		}
-		free(current);
-		current = next;
+		if (current->fd_output != -1)
+		{
+			close(current->fd_output);
+			current->fd_output = -1;
+		}
 	}
 }
 
-static void	free_files_list(t_files *files)
+static void	free_cmd_resources(t_cmd *current, int is_parent)
 {
-	t_files	*current;
-	t_files	*next;
-
-	current = files;
-	while (current)
+	if (current->args)
 	{
-		next = current->next;
-		if (current->infile_name)
-		{
-			free(current->infile_name);
-			current->infile_name = NULL;
-		}
-		if (current->outfile_name)
-		{
-			free(current->outfile_name);
-			current->outfile_name = NULL;
-		}
-		free(current);
-		current = next;
+		current->args = find_first_args(current->args);
+		free_args_list(current->args);
+		current->args = NULL;
 	}
-}
-
-int	unlink_heredoc(t_files *files)
-{
-	t_files	*current;
-	int		unlinked_count;
-
-	if (!files)
-		return (0);
-	current = files;
-	unlinked_count = 0;
-	while (current)
+	if (!is_parent && current->cmd_path)
 	{
-		if (current->heredoc && current->infile_name)
-			unlink(current->infile_name);
-		current = current->next;
+		free(current->cmd_path);
+		current->cmd_path = NULL;
 	}
-	return (unlinked_count);
+	if (current->files)
+	{
+		current->files = find_first_files(current->files);
+		if (is_parent)
+			unlink_heredoc(current->files);
+		free_files_list(current->files);
+		current->files = NULL;
+	}
 }
 
 void	free_cmd_list(t_cmd *cmd_list, int is_parent)
@@ -107,40 +63,19 @@ void	free_cmd_list(t_cmd *cmd_list, int is_parent)
 	while (current)
 	{
 		next = current->next;
-		if (current->args)
-		{
-			current->args = find_first_args(current->args);
-			free_args_list(current->args);
-			current->args = NULL;
-		}
-		if (!is_parent && current->cmd_path)
-		{
-			free(current->cmd_path);
-			current->cmd_path = NULL;
-		}
-		if (current->files)
-		{
-			current->files = find_first_files(current->files);
-			if (is_parent)
-				unlink_heredoc(current->files);
-			free_files_list(current->files);
-			current->files = NULL;
-		}
-		if (!is_parent)
-		{
-			if (current->fd_input != -1)
-			{
-				close(current->fd_input);
-				current->fd_input = -1;
-			}
-			if (current->fd_output != -1)
-			{
-				close(current->fd_output);
-				current->fd_output = -1;
-			}
-		}
+		free_cmd_resources(current, is_parent);
+		free_cmd_fd_cleanup(current, is_parent);
 		free(current);
 		current = next;
+	}
+}
+
+static void	close_pipe_fd(int *fd)
+{
+	if (*fd > 2)
+	{
+		close(*fd);
+		*fd = -1;
 	}
 }
 
@@ -155,16 +90,8 @@ void	close_all_pipes(t_exec *exec)
 	{
 		if (exec->pipes[i])
 		{
-			if (exec->pipes[i][0] > 2)
-			{
-				close(exec->pipes[i][0]);
-				exec->pipes[i][0] = -1;
-			}
-			if (exec->pipes[i][1] > 2)
-			{
-				close(exec->pipes[i][1]);
-				exec->pipes[i][1] = -1;
-			}
+			close_pipe_fd(&exec->pipes[i][0]);
+			close_pipe_fd(&exec->pipes[i][1]);
 			free(exec->pipes[i]);
 			exec->pipes[i] = NULL;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_tester.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/04 18:35:43 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:08:14 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parsing.h"
 #include "signals.h"
 
-int			g_signal_test = 0;
+extern int	g_signal_test;
 
 static int	check_semicolon_syntax(char *command)
 {
@@ -157,11 +157,13 @@ int	main(int argc, char **argv, char **envp)
 	char **env_copy;
 	int exit_status;
 
+	init_signal_handling();
 	env_copy = copy_env_array(envp);
 	if (!env_copy)
 		return (EXIT_FAILURE);
 	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
 	{
+		setup_noninteractive_signals();
 		exit_status = execute_command_string(argv[2], &env_copy);
 		ft_freesplit(env_copy);
 		return (exit_status);

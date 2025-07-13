@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 16:49:17 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/13 23:19:10 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,11 @@ void	create_pipes(t_exec *exec);
 void	close_all_pipes(t_exec *exec);
 void	close_child_fds(t_exec *exec);
 void	free_cmd_list(t_cmd *cmd_list, int is_parent);
+void	free_args_list(t_args *args);
+void	free_files_list(t_files *files);
 void	cleanup_cmd_list(t_exec *exec, int parent);
-int	unlink_heredoc(t_files *files);
+int		unlink_heredoc(t_files *files);
+void	free_token(t_token *token, int status, char *str, char *str2);
 
 // t_token
 char	**safe_realloc_string_array(char **old_array, size_t new_size);
@@ -74,9 +77,10 @@ int		count_env_vars(char **envp);
 char	*find_env_var(char **envp, const char *name);
 int		find_env_index(char **envp, const char *name);
 char	**copy_env_array(char **envp);
-char	*get_env_var_value(const char *var_name, char **envp,
-			int last_exit_status);
-int		is_valid_var_char(char c);
+char	**copy_basic_env(char **envp);
+int		add_missing_pwd(char ***env_ptr);
+int		add_missing_shlvl(char ***env_ptr);
+int		add_missing_underscore(char ***env_ptr);
 
 void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,
 			t_token **tokens, char *error_msg);
