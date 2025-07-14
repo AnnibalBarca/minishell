@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_struct_new.c                                  :+:      :+:    :+:   */
+/*   free_struct_annex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/13 23:07:23 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/14 09:08:14 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,37 +68,6 @@ void	free_cmd_list(t_cmd *cmd_list, int is_parent)
 		free(current);
 		current = next;
 	}
-}
-
-static void	close_pipe_fd(int *fd)
-{
-	if (*fd > 2)
-	{
-		close(*fd);
-		*fd = -1;
-	}
-}
-
-void	close_all_pipes(t_exec *exec)
-{
-	int	i;
-
-	if (!exec || !exec->pipes)
-		return ;
-	i = 0;
-	while (i < exec->cmd_count - 1)
-	{
-		if (exec->pipes[i])
-		{
-			close_pipe_fd(&exec->pipes[i][0]);
-			close_pipe_fd(&exec->pipes[i][1]);
-			free(exec->pipes[i]);
-			exec->pipes[i] = NULL;
-		}
-		i++;
-	}
-	free(exec->pipes);
-	exec->pipes = NULL;
 }
 
 void	cleanup_cmd_list(t_exec *exec, int parent)

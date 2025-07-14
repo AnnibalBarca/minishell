@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 16:03:32 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:38:15 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 09:59:32 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**safe_realloc_string_array(char **old_array, size_t new_size)
 
 int	count_string_array(char **array)
 {
-	int count;
+	int	count;
 
 	if (!array)
 		return (0);

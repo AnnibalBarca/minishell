@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_handling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:37:24 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:38:19 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:02:29 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ static int	replace_env_var(char ***env_ptr, int index, char *name, char *value)
 	return (0);
 }
 
-static int	add_new_env_var(char ***env_ptr, char *name, char *value)
+static int	add_new_env_var(char ***env_ptr, char *name, char *value, int i)
 {
 	char	**new_env;
 	char	*new_var_string;
 	int		count;
-	int		i;
 
 	new_var_string = create_env_string(name, value);
 	if (!new_var_string)
@@ -43,7 +42,6 @@ static int	add_new_env_var(char ***env_ptr, char *name, char *value)
 		free(new_var_string);
 		return (1);
 	}
-	i = 0;
 	while (i < count)
 	{
 		new_env[i] = (*env_ptr)[i];
@@ -69,6 +67,7 @@ char	*find_env_value(char **envp, const char *name)
 		return (NULL);
 	return (equals_pos + 1);
 }
+
 int	set_env_var(char ***env_ptr, char *name, char *value)
 {
 	int	var_index;
@@ -79,5 +78,5 @@ int	set_env_var(char ***env_ptr, char *name, char *value)
 	if (var_index >= 0)
 		return (replace_env_var(env_ptr, var_index, name, value));
 	else
-		return (add_new_env_var(env_ptr, name, value));
+		return (add_new_env_var(env_ptr, name, value, 0));
 }

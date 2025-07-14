@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:15:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:03:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 09:23:38 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int	is_valid_var_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
+
 char	*find_env_var(char **envp, const char *name)
 {
-	int i;
-	size_t name_len;
+	int		i;
+	size_t	name_len;
 
 	if (!envp || !name)
 		return (NULL);

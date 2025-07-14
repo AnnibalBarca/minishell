@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shelvl_pwd_helpers.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 23:40:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/13 23:19:10 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/14 09:58:30 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ static int	increment_shlvl(char ***env_ptr)
 	int		shlvl;
 
 	shlvl_str = find_env_value(*env_ptr, "SHLVL");
-	shlvl = ft_atoi(shlvl_str ? shlvl_str : "0") + 1;
+	if (shlvl_str)
+		shlvl = ft_atoi(shlvl_str) + 1;
+	else
+		shlvl = 1;
 	new_shlvl_str = ft_itoa(shlvl);
 	if (!new_shlvl_str)
 		return (-1);

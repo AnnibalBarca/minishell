@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:42:23 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/27 14:14:59 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/14 09:57:19 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,6 @@ void	handle_syntax_error(t_syntax_result *result)
 		free(result->error_token);
 		result->error_token = NULL;
 	}
-	// if (result->tokens)
-	// {
-	// 	free_token_list(result->tokens);
-	// 	result->tokens = NULL;
-	// }
 }
 
 void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,

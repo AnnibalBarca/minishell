@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:39:08 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/03 19:53:08 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 09:23:49 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	create_and_append_token(t_token **head, char *value, t_token_type type,
 
 int	is_word_char(char c)
 {
-    return (!ft_isspace(c) && c != '|' && c != '<' && c != '>' && c != '\0');
+	return (!ft_isspace(c) && c != '|' && c != '<' && c != '>' && c != '\0');
 }
 
 int	is_operator_start(char c)
