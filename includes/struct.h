@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/06 12:02:32 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/14 15:19:58 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ typedef enum e_quote
 	Q_MIXED
 }					t_quote;
 
+// pas le choix, c'est pour la norme.
+typedef struct s_quote_flags
+{
+	int				has_single;
+	int				has_double;
+	int				has_unquoted;
+}					t_quote_flags;
+
 typedef struct s_token
 {
 	char			*value;
@@ -87,6 +95,7 @@ typedef struct s_syntax_result
 	t_parse_status	status;
 	char			*error_token;
 	t_token			*tokens;
+	t_token			*expanded_tokens;
 }					t_syntax_result;
 
 typedef enum e_type

@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:42:23 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 09:57:19 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:16:10 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_syntax_error(t_syntax_result *result)
 }
 
 void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,
-		t_token **tokens, char *error_msg)
+		t_syntax_result *result, char *error_msg)
 {
 	if (error_msg)
 		ft_putstr_fd(error_msg, STDERR_FILENO);
@@ -48,10 +48,24 @@ void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,
 	}
 	if (accumulated_input)
 		**accumulated_input = NULL;
-	if (tokens && *tokens)
+	if (result)
 	{
-		free_token_list(*tokens);
-		*tokens = NULL;
+		if (result->tokens)
+		{
+			free_token_list(result->tokens);
+			result->tokens = NULL;
+		}
+		if (result->expanded_tokens)
+		{
+			free_token_list(result->expanded_tokens);
+			result->expanded_tokens = NULL;
+		}
+		if (result->error_token)
+		{
+			free(result->error_token);
+			result->error_token = NULL;
+		}
 	}
 	return (NULL);
 }
+

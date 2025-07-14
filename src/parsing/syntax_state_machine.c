@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:38:32 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 11:29:29 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/14 14:51:17 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_syntax_result	analyze_syntax(t_token *tokens)
 
 	result.tokens = tokens;
 	result.error_token = NULL;
+	result.expanded_tokens = NULL;
 	result.status = PARSE_OK;
 	if (!handle_pipe_validation(tokens, &result))
 		return (result);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/13 23:19:10 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/14 14:57:12 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ char	**copy_basic_env(char **envp);
 int		add_missing_pwd(char ***env_ptr);
 int		add_missing_shlvl(char ***env_ptr);
 int		add_missing_underscore(char ***env_ptr);
-
 void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,
-			t_token **tokens, char *error_msg);
+		t_syntax_result *result, char *error_msg);
+
 void	report_syntax_error(char *near_token);
 void	handle_syntax_error(t_syntax_result *result);
 

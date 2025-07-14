@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_parsing_core.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:35:07 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:36:59 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 14:58:20 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ t_parse_result	handle_lexer_failure(char **line, char ***accumulated_input)
 	return (PARSE_ERROR);
 }
 
-t_parse_result	handle_syntax_success(char **line, char ***accumulated_input,
-		t_syntax_result *result, char **envp, int exit_status,
-		t_token **tokens_out)
+t_parse_result	handle_syntax_success(t_syntax_result *result, char **envp,
+		int exit_status)
 {
-	**accumulated_input = *line;
-	*tokens_out = process_complete_syntax(*result, envp, exit_status);
-	if (*tokens_out)
+	result->expanded_tokens = process_complete_syntax(*result, envp,
+			exit_status);
+	if (result->expanded_tokens)
 		return (PARSE_SUCCESS);
 	return (PARSE_ERROR);
 }

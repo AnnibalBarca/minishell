@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/05 19:49:04 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/14 14:58:54 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ int				has_unclosed_quotes(const char *line);
 t_syntax_result	analyze_syntax(t_token *tokens);
 
 t_parse_result	handle_lexer_failure(char **line, char ***accumulated_input);
-t_parse_result	handle_syntax_success(char **line, char ***accumulated_input,
-					t_syntax_result *result, char **envp, int exit_status,
-					t_token **tokens_out);
+t_parse_result	handle_syntax_success(t_syntax_result *result, char **envp,
+		int exit_status);
 t_parse_result	handle_syntax_error_case(char **line, char ***accumulated_input,
 					t_syntax_result *result);
 t_syntax_result	analyze_syntax(t_token *tokens);
@@ -59,5 +58,15 @@ t_token			*free_token_list_and_return_null(t_token *list);
 t_token			*parse_complete_input(char **accumulated_input, char **envp,
 					int exit_status);
 void			free_token_list(t_token *list);
+
+int				process_expansion(t_str_builder *sb, const char **ip,
+					char **envp, int last_exit_status);
+int				process_word_expansion(t_token *token, t_token **expanded_head,
+					char **envp, int exit_status);
+char			*expand_token_value(const char *value, t_quote quote_type,
+					char **envp, int exit_status);
+int				should_field_split(t_quote quote_type);
+int				process_word(const char **line, t_token **head);
+
 
 #endif

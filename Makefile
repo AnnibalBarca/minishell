@@ -17,16 +17,18 @@ SRC_EXEC =	src/exec/child_process.c	\
 			src/exec/utils_cmd.c		\
 			src/exec/utils_cmd_struct.c	\
 
-SRC_PARSING =	src/parsing/expand_variable.c		\
+SRC_PARSING =	src/parsing/var_expansion.c			\
 				src/parsing/expander.c				\
 				src/parsing/field_splitting.c		\
-				src/parsing/freeing_structures.c	\
 				src/parsing/lexer.c					\
 				src/parsing/main_parsing.c			\
 				src/parsing/main_parsing_core.c		\
 				src/parsing/operator_handling.c		\
 				src/parsing/quote_extracter.c		\
 				src/parsing/syntax_state_machine.c	\
+				src/parsing/var_expansion_processing.c 	\
+				src/parsing/word_expansion.c 		\
+				src/parsing/word_lexing.c 			\
 
 
 SRC_UTILS = src/utils/find_last.c		\
@@ -38,6 +40,8 @@ SRC_UTILS = src/utils/find_last.c		\
 			src/utils/builtin_utils.c		\
 			src/utils/token_utils.c			\
 			src/utils/free_struct.c			\
+			src/utils/free_struct_backup.c	\
+			src/utils/free_struct_annex.c	\
 			src/utils/free_token.c			\
 			src/utils/parsing_error_utils.c	\
 			src/utils/lexer_utils.c			\
