@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   field_splitting.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 20:30:28 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/03 19:53:26 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:13:41 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	**perform_field_splitting(const char *str, const char *sep_val)
 	int			index;
 	const char	*current_ptr;
 	const char	*current_sep;
+	char		*field;
 
 	if (!str)
 		return (NULL);
@@ -87,11 +88,12 @@ char	**perform_field_splitting(const char *str, const char *sep_val)
 		return (NULL);
 	index = 0;
 	current_ptr = str;
-	while ((fields[index] = extract_one_field(&current_ptr, current_sep)))
+	field = extract_one_field(&current_ptr, current_sep);
+	while (field)
 	{
-		if (!fields[index])
-			return (ft_freesplit(fields));
+		fields[index] = field;
 		index++;
+		field = extract_one_field(&current_ptr, current_sep);
 	}
 	fields[index] = NULL;
 	return (fields);

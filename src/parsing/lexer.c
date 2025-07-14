@@ -3,69 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:20:29 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/04 18:31:50 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:27:36 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-static t_quote	determine_quote_type(int has_single, int has_double,
-		int has_unquoted)
-{
-	int	quote_types;
-
-	quote_types = has_single + has_double + has_unquoted;
-	if (quote_types > 1)
-		return (Q_MIXED);
-	if (has_single)
-		return (Q_SINGLE);
-	if (has_double)
-		return (Q_DOUBLE);
-	return (Q_NONE);
-}
-
-static int	process_word(const char **line, t_token **head)
-{
-	t_str_builder	sb;
-	char			*word_value;
-	int				has_single;
-	int				has_double;
-	int				has_unquoted;
-
-	sb_init(&sb);
-	has_single = 0;
-	has_double = 0;
-	has_unquoted = 0;
-	while (**line && !ft_isspace(**line) && !is_operator_start(**line))
-	{
-		if (**line == '\'')
-		{
-			has_single = 1;
-			if (!extract_quoted_content(line, '\'', &sb))
-				return (sb_free_and_return_zero(&sb));
-		}
-		else if (**line == '"')
-		{
-			has_double = 1;
-			if (!extract_quoted_content(line, '"', &sb))
-				return (sb_free_and_return_zero(&sb));
-		}
-		else
-		{
-			has_unquoted = 1;
-			if (!extract_unquoted_content(line, &sb))
-				return (sb_free_and_return_zero(&sb));
-		}
-	}
-	word_value = sb_to_string_and_free(&sb);
-	if (!word_value)
-		return (0);
-	return (create_and_append_token(head, word_value, T_WORD,
-			determine_quote_type(has_single, has_double, has_unquoted)));
-}
 
 static int	process_operator(const char **line, t_token **head)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_state_machine.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:38:32 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:03:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:29:29 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,30 +66,40 @@ static int	validate_redirections(t_token *tokens, char **error_token)
 	return (1);
 }
 
+static int	handle_pipe_validation(t_token *tokens, t_syntax_result *result)
+{
+	char	*error_token;
+	int		pipe_status;
+
+	error_token = NULL;
+	pipe_status = validate_pipe_sequence(tokens, &error_token);
+	if (pipe_status == 0)
+	{
+		result->status = PARSE_SYNTAX_ERROR;
+		result->error_token = error_token;
+		return (0);
+	}
+	else if (pipe_status == 2)
+	{
+		result->status = PARSE_SYNTAX_ERROR;
+		result->error_token = ft_strdup("newline");
+		return (0);
+	}
+	return (1);
+}
+
 t_syntax_result	analyze_syntax(t_token *tokens)
 {
 	t_syntax_result	result;
 	char			*error_token;
-	int				pipe_status;
 	int				redirect_status;
 
 	result.tokens = tokens;
 	result.error_token = NULL;
 	result.status = PARSE_OK;
+	if (!handle_pipe_validation(tokens, &result))
+		return (result);
 	error_token = NULL;
-	pipe_status = validate_pipe_sequence(tokens, &error_token);
-	if (pipe_status == 0)
-	{
-		result.status = PARSE_SYNTAX_ERROR;
-		result.error_token = error_token;
-		return (result);
-	}
-	else if (pipe_status == 2)
-	{
-		result.status = PARSE_SYNTAX_ERROR;
-		result.error_token = ft_strdup("newline");
-		return (result);
-	}
 	redirect_status = validate_redirections(tokens, &error_token);
 	if (redirect_status == 0)
 	{

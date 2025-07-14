@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_extracter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:36:09 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/03 19:52:09 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:13:58 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	extract_unquoted_content(const char **line, t_str_builder *sb)
 	}
 	return (1);
 }
+
 static int	process_quoted_section(const char **line, char quote_char)
 {
 	(*line)++;

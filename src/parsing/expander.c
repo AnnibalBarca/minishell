@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/03 19:53:30 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:53:14 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static char	*expand_token_value(const char *value, t_quote quote_type,
+char	*expand_token_value(const char *value, t_quote quote_type,
 		char **envp, int exit_status)
 {
 	if (quote_type == Q_SINGLE)
@@ -20,85 +20,63 @@ static char	*expand_token_value(const char *value, t_quote quote_type,
 	return (expand_variables_in_str(value, quote_type, envp, exit_status));
 }
 
-static int	should_field_split(t_quote quote_type)
+int	should_field_split(t_quote quote_type)
 {
-    return (quote_type == Q_NONE);
+	return (quote_type == Q_NONE);
 }
 
-static int	add_expanded_tokens(char **fields, t_token **head)
-{
-	int		i;
-	char	*field_copy;
+// static int	process_word_expansion(t_token *token, t_token **expanded_head,
+// 		char **envp, int exit_status)
+// {
+// 	char	*expanded_value;
+// 	char	**fields;
 
-	i = 0;
-	while (fields && fields[i])
-	{
-		field_copy = ft_strdup(fields[i]);
-		if (!field_copy)
-			return (0);
-		if (!create_and_append_token(head, field_copy, T_WORD, Q_NONE))
-		{
-			free(field_copy);
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
-
-static int	process_word_expansion(t_token *token, t_token **expanded_head,
-		char **envp, int exit_status)
-{
-	char	*expanded_value;
-	char	**fields;
-
-	expanded_value = expand_token_value(token->value, token->quote, envp,
-			exit_status);
-	if (!expanded_value)
-		return (0);
-	if (!*expanded_value && token->quote != Q_NONE)
-	{
-		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
-				Q_NONE))
-		{
-			free(expanded_value);
-			return (0);
-		}
-		return (1);
-	}
-	if (!*expanded_value)
-	{
-		free(expanded_value);
-		return (1);
-	}
-	if (!should_field_split(token->quote))
-	{
-		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
-				Q_NONE))
-		{
-			free(expanded_value);
-			return (0);
-		}
-		return (1);
-	}
-
-	fields = perform_field_splitting(expanded_value, NULL);
-	free(expanded_value);
-	if (!fields)
-		return (0);
-	if (!fields[0])
-	{
-		ft_freesplit(fields);
-		return (1);
-	}
-	if (!add_expanded_tokens(fields, expanded_head))
-	{
-		ft_freesplit(fields);
-		return (0);
-	}
-	ft_freesplit(fields);
-	return (1);
-}
+// 	expanded_value = expand_token_value(token->value, token->quote, envp,
+// 			exit_status);
+// 	if (!expanded_value)
+// 		return (0);
+// 	if (!*expanded_value && token->quote != Q_NONE)
+// 	{
+// 		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
+// 				Q_NONE))
+// 		{
+// 			free(expanded_value);
+// 			return (0);
+// 		}
+// 		return (1);
+// 	}
+// 	if (!*expanded_value)
+// 	{
+// 		free(expanded_value);
+// 		return (1);
+// 	}
+// 	if (!should_field_split(token->quote))
+// 	{
+// 		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
+// 				Q_NONE))
+// 		{
+// 			free(expanded_value);
+// 			return (0);
+// 		}
+// 		return (1);
+// 	}
+// 	fields = perform_field_splitting(expanded_value, NULL);
+// 	free(expanded_value);
+// 	if (!fields)
+// 		return (0);
+// 	if (!fields[0])
+// 	{
+// 		ft_freesplit(fields);
+// 		return (1);
+// 	}
+// 	if (!add_expanded_tokens(fields, expanded_head))
+// 	{
+// 		ft_freesplit(fields);
+// 		return (0);
+// 	}
+// 	ft_freesplit(fields);
+// 	return (1);
+// }
 
 t_token	*expand_tokens(t_token *tokens, char **envp, int exit_status)
 {
