@@ -13,9 +13,14 @@
 #include "signals.h"
 
 int		g_signal_test = 0;
-pid_t	g_foreground_pid = 0;
 
-void	handle_sigint_heredoc(int sig);
+void	handle_sigint_heredoc(int sig)
+{
+	(void)sig;
+	g_signal_test = 130;
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	exit(130);
+}
 
 static void	handle_sigint_interactive(int sig)
 {
@@ -31,14 +36,6 @@ static void	handle_sigint_noninteractive(int sig)
 {
 	(void)sig;
 	g_signal_test = 130;
-}
-
-void	handle_sigint_heredoc(int sig)
-{
-	(void)sig;
-	g_signal_test = 130;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	exit(130);
 }
 
 void	setup_interactive_signals(void)

@@ -28,7 +28,6 @@ void	set_foreground_process_group(pid_t pid)
 {
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && pid > 0)
 	{
-		g_foreground_pid = pid;
 		if (tcgetpgrp(STDIN_FILENO) == getpgrp())
 		{
 			if (setpgid(pid, pid) == 0)
@@ -43,6 +42,5 @@ void	restore_shell_process_group(void)
 	{
 		if (tcgetpgrp(STDIN_FILENO) != getpgrp())
 			tcsetpgrp(STDIN_FILENO, getpgrp());
-		g_foreground_pid = 0;
 	}
 }
