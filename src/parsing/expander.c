@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 10:53:14 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:48:41 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,59 +24,6 @@ int	should_field_split(t_quote quote_type)
 {
 	return (quote_type == Q_NONE);
 }
-
-// static int	process_word_expansion(t_token *token, t_token **expanded_head,
-// 		char **envp, int exit_status)
-// {
-// 	char	*expanded_value;
-// 	char	**fields;
-
-// 	expanded_value = expand_token_value(token->value, token->quote, envp,
-// 			exit_status);
-// 	if (!expanded_value)
-// 		return (0);
-// 	if (!*expanded_value && token->quote != Q_NONE)
-// 	{
-// 		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
-// 				Q_NONE))
-// 		{
-// 			free(expanded_value);
-// 			return (0);
-// 		}
-// 		return (1);
-// 	}
-// 	if (!*expanded_value)
-// 	{
-// 		free(expanded_value);
-// 		return (1);
-// 	}
-// 	if (!should_field_split(token->quote))
-// 	{
-// 		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
-// 				Q_NONE))
-// 		{
-// 			free(expanded_value);
-// 			return (0);
-// 		}
-// 		return (1);
-// 	}
-// 	fields = perform_field_splitting(expanded_value, NULL);
-// 	free(expanded_value);
-// 	if (!fields)
-// 		return (0);
-// 	if (!fields[0])
-// 	{
-// 		ft_freesplit(fields);
-// 		return (1);
-// 	}
-// 	if (!add_expanded_tokens(fields, expanded_head))
-// 	{
-// 		ft_freesplit(fields);
-// 		return (0);
-// 	}
-// 	ft_freesplit(fields);
-// 	return (1);
-// }
 
 t_token	*expand_tokens(t_token *tokens, char **envp, int exit_status)
 {

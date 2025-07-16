@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:56:30 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/05 20:50:20 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/16 12:47:43 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	builtin_exit(t_args *args)
 	if (!is_numeric_string(first_arg->cmd_args))
 	{
 		ft_message("exit", first_arg->cmd_args, "numeric argument required");
-		exit(255);
+		exit(2);
 	}
 	exit_code = ft_atoi(first_arg->cmd_args);
 	exit((unsigned char)exit_code);
