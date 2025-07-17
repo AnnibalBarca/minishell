@@ -12,26 +12,40 @@
 
 #include "signals.h"
 
+void setup_signal(int signo, void (*handler)(int))
+{
+    struct sigaction	sa;
+
+    sigemptyset(&sa.sa_mask);
+    sa.sa_handler = handler;
+    if (handler == SIG_DFL || handler == SIG_IGN)
+        sa.sa_flags = SA_RESTART;
+    else
+        sa.sa_flags = 0;
+    if (sigaction(signo, &sa, NULL) != 0)
+        ft_putstr_fd("minishell: signal setup failed\n", 2);
+}
+
 void	setup_child_signals(void)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	setup_signal(SIGINT, SIG_DFL);
+	setup_signal(SIGQUIT, SIG_DFL);
 }
 
 void	setup_parent_signals(void)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	setup_signal(SIGINT, SIG_IGN);
+	setup_signal(SIGQUIT, SIG_IGN);
 }
 
 void	setup_heredoc_signals(void)
 {
-	signal(SIGINT, handle_sigint_heredoc);
-	signal(SIGQUIT, SIG_IGN);
+	setup_signal(SIGINT, handle_sigint_heredoc);
+	setup_signal(SIGQUIT, SIG_IGN);
 }
 
 void	reset_signals(void)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	setup_signal(SIGINT, SIG_DFL);
+	setup_signal(SIGQUIT, SIG_DFL);
 }

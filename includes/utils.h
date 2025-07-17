@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/14 14:57:12 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:47:48 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@
 void	cleanup_child_resources(t_exec *exec);
 void	free_child(t_exec *exec, int status, char *str1, char *str2);
 void	free_parent(t_exec *exec, int status, char *str1, char *str2);
-void	reset_exec_state(t_exec *exec);
 void	ft_message(char *command, char *arg, char *error);
-int		usage(void);
 void	free_split(char **arr);
 int		find_size(t_token *lst);
 
@@ -28,7 +26,6 @@ int		find_size(t_token *lst);
 char	**safe_realloc_string_array(char **old_array, size_t new_size);
 
 // t_exec management 1!!!
-int		usage(void);
 void	free_split(char **arr);
 t_cmd	*find_last_cmd(t_cmd *lst);
 t_args	*find_last_args(t_args *lst);
@@ -94,5 +91,7 @@ int		is_operator_start(char c);
 void	free_token_list(t_token *list);
 char	*find_env_value(char **envp, const char *name);
 int		set_env_var(char ***env_ptr, char *name, char *value);
+
+void	safe_close(int *fd);
 
 #endif

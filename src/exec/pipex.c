@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/13 23:00:06 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/17 18:45:52 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static void	free_pipes(t_exec *exec, int failed_index)
 		if (exec->pipes[j])
 		{
 			if (exec->pipes[j][0] != -1)
-				close(exec->pipes[j][0]);
+				safe_close(&exec->pipes[j][0]);
 			if (exec->pipes[j][1] != -1)
-				close(exec->pipes[j][1]);
+				safe_close(&exec->pipes[j][1]);
 			free(exec->pipes[j]);
 		}
 		j++;
@@ -95,7 +95,7 @@ int	pipex(t_token *tokens, char ***envp_ptr)
 	{
 		int status;
 		waitpid(exec.pids[i], &status, 0);
-		if (i == exec.cmd_count - 1)  // Last process determines exit status
+		if (i == exec.cmd_count - 1)
 			exec.exit_status = status;
 	}
 	exec.cmd_list = head;
