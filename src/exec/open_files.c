@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:23:18 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 18:13:49 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	struct_open_infile(t_exec *exec)
 		if (current->infile_name)
 		{
 			if (previous_fd != -1)
-				close(previous_fd);
+				safe_close(&previous_fd);
 			if (access(current->infile_name, F_OK) == -1)
 			{
 				ft_message(NULL, current->infile_name,
@@ -93,7 +93,7 @@ void	struct_open_outfile(t_exec *exec)
 		if (current->outfile_name)
 		{
 			if (previous_fd != -1)
-				close(previous_fd);
+				safe_close(&previous_fd);
 			if (access(current->outfile_name, F_OK) == 0
 				&& access(current->outfile_name, W_OK) == -1)
 			{

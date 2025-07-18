@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/06 15:45:24 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/18 11:35:37 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,7 @@ char	**struct_to_array(t_args *args)
 	{
 		array[i] = ft_strdup(current->cmd_args);
 		if (!array[i])
-		{
-			while (--i >= 0)
-				free(array[i]);
-			free(array);
-			return (NULL);
-		}
+			free_split(array);
 		current = current->next;
 		i++;
 	}

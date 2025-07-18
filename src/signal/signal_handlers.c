@@ -22,7 +22,7 @@ void	handle_sigint_heredoc(int sig)
 	exit(130);
 }
 
-static void	handle_sigint_interactive(int sig)
+void	handle_sigint_interactive(int sig)
 {
 	(void)sig;
 	g_signal_test = 130;
@@ -40,12 +40,12 @@ static void	handle_sigint_noninteractive(int sig)
 
 void	setup_interactive_signals(void)
 {
-	signal(SIGINT, handle_sigint_interactive);
-	signal(SIGQUIT, SIG_IGN);
+	setup_signal(SIGINT, handle_sigint_interactive);
+	setup_signal(SIGQUIT, SIG_IGN);
 }
 
 void	setup_noninteractive_signals(void)
 {
-	signal(SIGINT, handle_sigint_noninteractive);
-	signal(SIGQUIT, SIG_IGN);
+	setup_signal(SIGINT, handle_sigint_noninteractive);
+	setup_signal(SIGQUIT, SIG_IGN);
 }

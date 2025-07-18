@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_tester.c                                      :+:      :+:    :+:   */
+/*   maint.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/16 09:53:34 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:49:18 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,33 +121,25 @@ static int	execute_command_string(char *command, char ***env_copy_ptr)
 static void	interactive_mode(char ***env_copy_ptr)
 {
 	char	*input;
-	int		exit_status;
 
 	setup_interactive_signals();
 	while (1)
 	{
-		// g_signal_test = 0;
 		input = readline("\033[1;32mminishell$\033[0m ");
 		if (!input)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
-		if (g_signal_test == 130)
-        {
-            g_signal_test = 0;
-            free(input);
-            continue;
-        }
-		if (*input == '\0')
+		if (*input == '\0' && g_signal_test != 130)
 		{
 			free(input);
-			continue ;
+			continue;
 		}
+		if (g_signal_test == 130)
+            g_signal_test = 0;
 		add_history(input);
-		exit_status = execute_command_string(input, env_copy_ptr);
-		if (g_signal_test != 130 && g_signal_test != 131)
-        	g_signal_test = exit_status;
+		g_signal_test = execute_command_string(input, env_copy_ptr);
 		free(input);
 	}
 }

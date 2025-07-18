@@ -50,6 +50,7 @@ SRC_UTILS = src/utils/find_last.c		\
 			src/utils/messaging_utils.c 	\
 			src/utils/free_parent.c 		\
 			src/utils/free_child.c 			\
+			src/utils/safe_close.c			\
 
 
 
@@ -63,7 +64,7 @@ SRC_BUILTINS =	src/builtins/builtin_export.c				\
 
 SRC_SIGNALS = 	src/signal/signal_handlers.c		\
 				src/signal/signal_setup.c		\
-				
+
 SRC_ALL = $(SRC_EXEC) $(SRC_UTILS) $(SRC_PARSING) $(SRC_SIGNALS) $(SRC_BUILTINS) test/maint.c
 
 GREEN=\033[0;32m

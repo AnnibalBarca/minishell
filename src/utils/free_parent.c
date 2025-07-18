@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 20:03:17 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/04 17:17:00 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static void	restore_parent_fds(t_exec *exec)
 	if (exec->stdin_backup != -1)
 	{
 		dup2(exec->stdin_backup, STDIN_FILENO);
-		close(exec->stdin_backup);
+		safe_close(&exec->stdin_backup);
 		exec->stdin_backup = -1;
 	}
 	if (exec->stdout_backup != -1)
 	{
 		dup2(exec->stdout_backup, STDOUT_FILENO);
-		close(exec->stdout_backup);
+		safe_close(&exec->stdout_backup);
 		exec->stdout_backup = -1;
 	}
 }

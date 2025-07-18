@@ -3,23 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/14 09:08:00 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:46:04 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-static void	close_pipe_fd(int *fd)
-{
-	if (*fd > 2)
-	{
-		close(*fd);
-		*fd = -1;
-	}
-}
 
 void	close_all_pipes(t_exec *exec)
 {
@@ -32,8 +24,8 @@ void	close_all_pipes(t_exec *exec)
 	{
 		if (exec->pipes[i])
 		{
-			close_pipe_fd(&exec->pipes[i][0]);
-			close_pipe_fd(&exec->pipes[i][1]);
+			safe_close(&exec->pipes[i][0]);
+			safe_close(&exec->pipes[i][1]);
 			free(exec->pipes[i]);
 			exec->pipes[i] = NULL;
 		}

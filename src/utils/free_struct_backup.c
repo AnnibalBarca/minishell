@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct_backup.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/14 09:17:59 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,12 @@
 // 		{
 // 			if (current->fd_input != -1)
 // 			{
-// 				close(current->fd_input);
+// 				safe_close(&current->fd_input);
 // 				current->fd_input = -1;
 // 			}
 // 			if (current->fd_output != -1)
 // 			{
-// 				close(current->fd_output);
+// 				safe_close(&current->fd_output);
 // 				current->fd_output = -1;
 // 			}
 // 		}
@@ -157,12 +157,12 @@
 // 		{
 // 			if (exec->pipes[i][0] > 2)
 // 			{
-// 				close(exec->pipes[i][0]);
+// 				safe_close(&exec->pipes[i][0]);
 // 				exec->pipes[i][0] = -1;
 // 			}
 // 			if (exec->pipes[i][1] > 2)
 // 			{
-// 				close(exec->pipes[i][1]);
+// 				safe_close(&exec->pipes[i][1]);
 // 				exec->pipes[i][1] = -1;
 // 			}
 // 			free(exec->pipes[i]);

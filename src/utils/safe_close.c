@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   safe_close.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/05 14:42:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 11:34:27 by nagaudey         ###   ########.fr       */
+/*   Created: 2025/07/18 11:39:15 by nagaudey          #+#    #+#             */
+/*   Updated: 2025/07/18 11:47:56 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
-# define SIGNALS_H
+#include "../../includes/utils.h"
 
-# include "struct.h"
-
-extern int	g_signal_test;
-
-void		handle_sigint_heredoc(int sig);
-void		setup_interactive_signals(void);
-void		setup_child_signals(void);
-void		setup_heredoc_signals(void);
-void		reset_signals(void);
-void		setup_parent_signals(void);
-void		setup_noninteractive_signals(void);
-void		setup_signal(int signo, void (*handler)(int));
-
-#endif
+void safe_close(int *fd)
+{
+	if (*fd > 2)
+	{
+		close(*fd);
+		*fd = -1;
+	}
+}

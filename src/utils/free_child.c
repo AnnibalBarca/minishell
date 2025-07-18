@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 20:02:40 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/04 18:16:04 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,22 @@ void	close_child_fds(t_exec *exec)
 {
 	if (exec->stdin_backup != -1)
 	{
-		close(exec->stdin_backup);
+		safe_close(&exec->stdin_backup);
 		exec->stdin_backup = -1;
 	}
 	if (exec->stdout_backup != -1)
 	{
-		close(exec->stdout_backup);
+		safe_close(&exec->stdout_backup);
 		exec->stdout_backup = -1;
 	}
 	if (exec->cmd_list->fd_input != -1)
 	{
-		close(exec->cmd_list->fd_input);
+		safe_close(&exec->cmd_list->fd_input);
 		exec->cmd_list->fd_input = -1;
 	}
 	if (exec->cmd_list->fd_output != -1)
 	{
-		close(exec->cmd_list->fd_output);
+		safe_close(&exec->cmd_list->fd_output);
 		exec->cmd_list->fd_output = -1;
 	}
 }

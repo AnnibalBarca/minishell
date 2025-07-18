@@ -6,11 +6,18 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 16:15:20 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+int free_infile_name(t_files *files)
+{
+	free(files->infile_name);
+	files->infile_name = NULL;
+	return (1);
+}
 
 int	random_filename(t_files *files)
 {
@@ -18,34 +25,26 @@ int	random_filename(t_files *files)
 	unsigned char	random;
 	int				i;
 
-	if (!files)
-		return (1);
-	files->infile_name = malloc(sizeof(char) * 22);
-	if (!files->infile_name)
+	if (!files || !(files->infile_name = malloc(sizeof(char) * 22)))
 		return (1);
 	ft_strcpy(files->infile_name, "/tmp/.heredoc_");
 	urandom_fd = open("/dev/urandom", O_RDONLY);
 	if (urandom_fd < 0)
-	{
-		free(files->infile_name);
-		files->infile_name = NULL;
-		return (1);
-	}
+		return (free_infile_name(files));
 	i = 14;
-	while (i < 22)
+	while (i < 21)
 	{
 		if (read(urandom_fd, &random, 1) < 0)
 		{
-			close(urandom_fd);
+			safe_close(&urandom_fd);
 			free(files->infile_name);
 			files->infile_name = NULL;
 			return (1);
 		}
-		files->infile_name[i] = CHARSET[random % (sizeof(CHARSET) - 1)];
-		i++;
+		files->infile_name[i++] = CHARSET[random % (sizeof(CHARSET) - 1)];
 	}
-	files->infile_name[22 - 1] = '\0';
-	close(urandom_fd);
+	files->infile_name[21] = '\0';
+	safe_close(&urandom_fd);
 	return (0);
 }
 
@@ -65,7 +64,7 @@ char	*here_doc(t_files *files, char *limiter)
 		temp = readline("> ");
 		if (!temp)
 		{
-			close(fd);
+			safe_close(&fd);
 			if (g_signal_test == 130)
 			{
 				unlink(files->infile_name);
@@ -83,7 +82,7 @@ char	*here_doc(t_files *files, char *limiter)
 		write(fd, "\n", 1);
 		free(temp);
 	}
-	close(fd);
+	safe_close(&fd);
 	reset_signals();
 	return (files->infile_name);
 }

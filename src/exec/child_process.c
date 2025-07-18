@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/13 23:00:01 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/18 11:35:07 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,70 @@ void	child_process(t_exec *exec, int cmd_index, char **envp)
 		free_child(exec, 1, "fork", strerror(errno));
 	if (exec->pids[cmd_index] == 0)
 	{
-		// Child process: set up signals properly
 		setup_child_signals();
 		execute_child(exec, cmd_index, envp);
 	}
 }
 
+int	is_infile(t_exec *exec, t_files *current)
+{
+	int	previous_input_fd;
+
+	previous_input_fd = -1;
+	exec->cmd_list->fd_input = -1;
+	if (previous_input_fd != -1)
+		safe_close(&previous_input_fd);
+	if (access(current->infile_name, F_OK) == -1)
+	{
+		ft_message(NULL, current->infile_name, "No such file or directory");
+		exec->cmd_list->fd_input = -2;
+		return (1);
+	}
+	exec->cmd_list->fd_input = open(current->infile_name, O_RDONLY);
+	if (exec->cmd_list->fd_input == -1)
+	{
+		ft_message(NULL, current->infile_name, strerror(errno));
+		exec->cmd_list->fd_input = -2;
+		return (1);
+	}
+	previous_input_fd = exec->cmd_list->fd_input;
+	return (0);
+}
+
+int	is_outfile(t_exec *exec, t_files *current, int *previous_output_fd)
+{
+	int flags;
+
+	if (*previous_output_fd != -1)
+		safe_close(previous_output_fd);
+	if (access(current->outfile_name, F_OK) == 0
+		&& access(current->outfile_name, W_OK) == -1)
+	{
+		ft_message(NULL, current->outfile_name, "Permission denied");
+		exec->cmd_list->fd_output = -2;
+		return (1);
+	}
+	flags = O_WRONLY | O_CREAT;
+	if (current->append)
+		flags |= O_APPEND;
+	else
+		flags |= O_TRUNC;
+	exec->cmd_list->fd_output = open(current->outfile_name, flags, 0644);
+	if (exec->cmd_list->fd_output == -1)
+	{
+		ft_message(NULL, current->outfile_name, strerror(errno));
+		exec->cmd_list->fd_output = -2;
+		return (1);
+	}
+	*previous_output_fd = exec->cmd_list->fd_output;
+	return (0);
+}
 void	process_redirections(t_exec *exec)
 {
 	t_files	*current;
-	int		previous_input_fd;
 	int		previous_output_fd;
-	int		flags;
 
-	previous_input_fd = -1;
 	previous_output_fd = -1;
-	exec->cmd_list->fd_input = -1;
 	exec->cmd_list->fd_output = -1;
 	if (!exec->cmd_list->files)
 		return ;
@@ -43,50 +91,13 @@ void	process_redirections(t_exec *exec)
 	{
 		if (current->infile_name)
 		{
-			if (previous_input_fd != -1)
-				close(previous_input_fd);
-			if (access(current->infile_name, F_OK) == -1)
-			{
-				ft_message(NULL, current->infile_name,
-					"No such file or directory");
-				exec->cmd_list->fd_input = -2;
+			if (is_infile(exec, current))
 				return ;
-			}
-			exec->cmd_list->fd_input = open(current->infile_name, O_RDONLY);
-			if (exec->cmd_list->fd_input == -1)
-			{
-				ft_message(NULL, current->infile_name, strerror(errno));
-				exec->cmd_list->fd_input = -2;
-				return ;
-			}
-			previous_input_fd = exec->cmd_list->fd_input;
 		}
 		if (current->outfile_name)
 		{
-			if (previous_output_fd != -1)
-				close(previous_output_fd);
-
-			if (access(current->outfile_name, F_OK) == 0
-				&& access(current->outfile_name, W_OK) == -1)
-			{
-				ft_message(NULL, current->outfile_name, "Permission denied");
-				exec->cmd_list->fd_output = -2;
+			if (is_outfile(exec, current, &previous_output_fd))
 				return ;
-			}
-			flags = O_WRONLY | O_CREAT;
-			if (current->append)
-				flags |= O_APPEND;
-			else
-				flags |= O_TRUNC;
-			exec->cmd_list->fd_output = open(current->outfile_name, flags,
-					0644);
-			if (exec->cmd_list->fd_output == -1)
-			{
-				ft_message(NULL, current->outfile_name, strerror(errno));
-				exec->cmd_list->fd_output = -2;
-				return ;
-			}
-			previous_output_fd = exec->cmd_list->fd_output;
 		}
 		current = current->next;
 	}

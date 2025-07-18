@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:57:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/05 19:35:25 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	execute_single_builtin_in_parent(t_exec *exec, char ***envp_ptr)
 		if (saved_stdin == -1)
 			return (1);
 		dup2(exec->cmd_list->fd_input, STDIN_FILENO);
-		close(exec->cmd_list->fd_input);
+		safe_close(&exec->cmd_list->fd_input);
 	}
 	if (exec->cmd_list->fd_output != -1)
 	{
@@ -117,23 +117,23 @@ int	execute_single_builtin_in_parent(t_exec *exec, char ***envp_ptr)
 			if (saved_stdin != -1)
 			{
 				dup2(saved_stdin, STDIN_FILENO);
-				close(saved_stdin);
+				safe_close(&saved_stdin);
 			}
 			return (1);
 		}
 		dup2(exec->cmd_list->fd_output, STDOUT_FILENO);
-		close(exec->cmd_list->fd_output);
+		safe_close(&exec->cmd_list->fd_output);
 	}
 	exit_status = execute_builtin(exec, envp_ptr);
 	if (saved_stdin != -1)
 	{
 		dup2(saved_stdin, STDIN_FILENO);
-		close(saved_stdin);
+		safe_close(&saved_stdin);
 	}
 	if (saved_stdout != -1)
 	{
 		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdout);
+		safe_close(&saved_stdout);
 	}
 	return (exit_status);
 }

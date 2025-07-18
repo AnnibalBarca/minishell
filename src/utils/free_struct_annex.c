@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_struct_annex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/14 09:08:14 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static void	free_cmd_fd_cleanup(t_cmd *current, int is_parent)
 	{
 		if (current->fd_input != -1)
 		{
-			close(current->fd_input);
+			safe_close(&current->fd_input);
 			current->fd_input = -1;
 		}
 		if (current->fd_output != -1)
 		{
-			close(current->fd_output);
+			safe_close(&current->fd_output);
 			current->fd_output = -1;
 		}
 	}

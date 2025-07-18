@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 10:27:11 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:39:37 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,7 @@ int		is_operator_start(char c);
 void	free_token_list(t_token *list);
 char	*find_env_value(char **envp, const char *name);
 int		set_env_var(char ***env_ptr, char *name, char *value);
+
+void safe_close(int *fd);
 
 #endif

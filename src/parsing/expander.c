@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 11:21:41 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:32:50 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*expand_token_value(const char *value, t_quote quote_type, char **envp,
 		return (ft_strdup(value));
 	if (quote_type == Q_MIXED && ft_strchr(value, '='))
 		return (ft_strdup(value));
-	if (quote_type)
 	return (expand_variables_in_str(value, quote_type, envp, exit_status));
 }
 
