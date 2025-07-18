@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:56:30 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/16 12:47:43 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:07:25 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,37 @@ int	builtin_exit(t_args *args)
 	t_args	*second_arg;
 
 	if (!args)
+	{
+		ft_putstr_fd("exit\n", 2);
 		exit(0);
+	}
 	first_arg = args->next;
 	if (!first_arg)
+	{
+		ft_putstr_fd("exit\n", 2);
 		exit(0);
+	}
 	second_arg = first_arg->next;
 	if (second_arg)
 	{
 		if (!is_numeric_string(first_arg->cmd_args))
 		{
+			ft_putstr_fd("exit\n", 2);
 			ft_message("exit", first_arg->cmd_args,
 				"numeric argument required");
 			exit(255);
 		}
+		ft_putstr_fd("exit\n", 2);
 		ft_message("exit", NULL, "too many arguments");
 		return (1);
 	}
 	if (!is_numeric_string(first_arg->cmd_args))
 	{
+		ft_putstr_fd("exit\n", 2);
 		ft_message("exit", first_arg->cmd_args, "numeric argument required");
 		exit(2);
 	}
 	exit_code = ft_atoi(first_arg->cmd_args);
+	ft_putstr_fd("exit\n", 2);
 	exit((unsigned char)exit_code);
 }

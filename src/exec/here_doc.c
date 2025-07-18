@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 13:42:47 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*here_doc(t_files *files, char *limiter)
 	char	*temp;
 	int		fd;
 
+	g_signal_test = 0;  // Reset signal flag at start
 	setup_heredoc_signals();
 	if (random_filename(files) == 1)
 		return (NULL);
@@ -62,21 +63,26 @@ char	*here_doc(t_files *files, char *limiter)
 	while (1)
 	{
 		temp = readline("> ");
+		if (g_signal_test == 130)
+		{
+			if (temp)
+				free(temp);
+			safe_close(&fd);
+			unlink(files->infile_name);
+			free(files->infile_name);
+            files->infile_name = NULL;
+			return (NULL);
+		}
 		if (!temp)
 		{
 			safe_close(&fd);
-			if (g_signal_test == 130)
-			{
-				unlink(files->infile_name);
-				return (NULL);
-			}
-			break ;
+			break;
 		}
 		if (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
 			&& ft_strlen(temp) == ft_strlen(limiter))
 		{
 			free(temp);
-			break ;
+			break;
 		}
 		write(fd, temp, ft_strlen(temp));
 		write(fd, "\n", 1);

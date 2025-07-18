@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:57:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:26:31 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	is_directory(t_exec *exec)
 		}
 		if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
 		{
-			ft_message(NULL, cmd_path, "is a directory");
+			ft_message(NULL, cmd_path, "Is a directory");
 			return (126);
 		}
 		if (access(cmd_path, X_OK) == -1)

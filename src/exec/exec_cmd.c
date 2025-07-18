@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:35:37 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:27:05 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	check_exec_file(t_exec *exec, char *cmd)
 	if (access(cmd, F_OK) == -1)
 		free_child(exec, 127, cmd, "No such file or directory");
 	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
-		free_child(exec, 126, cmd, "is a directory");
+		free_child(exec, 126, cmd, "Is a directory");
 	if (access(cmd, X_OK) == -1)
 		free_child(exec, 126, cmd, "Permission denied");
 	exec->cmd_list->cmd_path = ft_strdup(cmd);

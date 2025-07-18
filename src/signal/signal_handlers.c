@@ -19,7 +19,7 @@ void	handle_sigint_heredoc(int sig)
 	(void)sig;
 	g_signal_test = 130;
 	ft_putchar_fd('\n', STDOUT_FILENO);
-	exit(130);
+	rl_done = 1;
 }
 
 void	handle_sigint_interactive(int sig)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:40:19 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/05 20:41:26 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/18 13:10:25 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*find_directory(t_args *args, char **env)
 	t_args	*first_arg;
 
 	first_arg = args->next;
-	if (!first_arg)
+	if (!first_arg || ft_strcmp(first_arg->cmd_args, "~") == 0)
 	{
 		target = find_env_var(env, "HOME");
 		if (!target)
