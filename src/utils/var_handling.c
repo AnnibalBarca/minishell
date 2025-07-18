@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:37:24 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 10:02:29 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:24:28 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	set_env_var(char ***env_ptr, char *name, char *value)
 	if (!env_ptr || !*env_ptr || !name)
 		return (1);
 	var_index = find_env_index(*env_ptr, name);
-	if (var_index >= 0)
+	if (var_index != -1)
 		return (replace_env_var(env_ptr, var_index, name, value));
 	else
 		return (add_new_env_var(env_ptr, name, value, 0));

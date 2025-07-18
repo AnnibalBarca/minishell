@@ -38,7 +38,6 @@ SRC_UTILS = src/utils/find_last.c		\
 			src/utils/string_builder_annex.c\
 			src/utils/string_builder.c		\
 			src/utils/builtin_utils.c		\
-			src/utils/token_utils.c			\
 			src/utils/free_struct.c			\
 			src/utils/free_struct_backup.c	\
 			src/utils/free_struct_annex.c	\

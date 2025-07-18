@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/16 12:56:21 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:27:11 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ void	ft_message(char *command, char *arg, char *error);
 int		usage(void);
 void	free_split(char **arr);
 int		find_size(t_token *lst);
-
-// structs
-char	**safe_realloc_string_array(char **old_array, size_t new_size);
 
 // t_exec management 1!!!
 int		usage(void);
@@ -49,10 +46,6 @@ void	free_files_list(t_files *files);
 void	cleanup_cmd_list(t_exec *exec, int parent);
 int		unlink_heredoc(t_files *files);
 void	free_token(t_token *token, int status, char *str, char *str2);
-
-// t_token
-char	**safe_realloc_string_array(char **old_array, size_t new_size);
-int		count_string_array(char **array);
 
 // t_context
 
