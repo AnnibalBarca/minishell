@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:35:07 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 14:58:20 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:47:56 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_parse_result	handle_syntax_success(t_syntax_result *result, char **envp,
 {
 	result->expanded_tokens = process_complete_syntax(*result, envp,
 			exit_status);
+	result->tokens = NULL;
 	if (result->expanded_tokens)
 		return (PARSE_SUCCESS);
 	return (PARSE_ERROR);
