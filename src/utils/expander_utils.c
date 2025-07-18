@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 20:15:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/16 13:23:06 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 12:19:30 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,3 +51,4 @@ char	*find_env_var(char **envp, const char *name)
 	}
 	return (NULL);
 }
+
