@@ -6,16 +6,18 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 10:52:59 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 11:06:31 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-char	*expand_token_value(const char *value, t_quote quote_type,
-		char **envp, int exit_status)
+char	*expand_token_value(const char *value, t_quote quote_type, char **envp,
+		int exit_status)
 {
 	if (quote_type == Q_SINGLE)
+		return (ft_strdup(value));
+	if (quote_type == Q_MIXED && ft_strchr(value, '='))
 		return (ft_strdup(value));
 	return (expand_variables_in_str(value, quote_type, envp, exit_status));
 }
