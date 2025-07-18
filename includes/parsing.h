@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/16 12:55:42 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/18 10:30:22 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,8 @@ int				extract_quoted_content(const char **line, char quote,
 int				has_unclosed_quotes(const char *line);
 
 t_syntax_result	analyze_syntax(t_token *tokens);
-
-t_parse_result	handle_lexer_failure(char **line, char ***accumulated_input);
 t_parse_result	handle_syntax_success(t_syntax_result *result, char **envp,
 		int exit_status);
-t_parse_result	handle_syntax_error_case(char **line, char ***accumulated_input,
-					t_syntax_result *result);
 t_syntax_result	analyze_syntax(t_token *tokens);
 
 t_token			*expand_tokens(t_token *tokens, char **envp, int exit_status);

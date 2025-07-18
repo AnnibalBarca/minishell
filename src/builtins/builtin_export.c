@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:58:56 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/05 20:19:02 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/07/18 10:35:01 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,20 @@ static int	export_with_value(char *name, char *value, char *original_arg,
 	return (1);
 }
 
-static int	export_without_value(char *name)
+static int	export_without_value(char *name, char ***env_ptr)
 {
+	int	existing_index;
+
 	if (!is_valid_var_name(name))
 	{
 		ft_message("export", name, "not a valid identifier");
 		return (0);
 	}
+	existing_index = find_env_index(*env_ptr, name);
+	if (existing_index != -1)
+		return (1);
+	if (set_env_var(env_ptr, name, "") != 0)
+		return (0);
 	return (1);
 }
 
@@ -54,9 +61,7 @@ static int	process_export_arg(char *arg, char ***env_ptr)
 		return (result);
 	}
 	else
-	{
-		return (export_without_value(arg));
-	}
+		return (export_without_value(arg, env_ptr));
 }
 
 static void	print_export_format(char **envp)

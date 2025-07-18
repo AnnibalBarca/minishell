@@ -302,6 +302,64 @@ minishell: export: `\': not a valid identifier$
 \B\O\N\$
 ================================================================================
 
+|> WITH export A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C\n
+|  STATUS: expected 0 actual 2
+|---------------------------------------EXPECTED--------------------------------
+minishell: export: `asdf ': not a valid identifier$
+minishell: export: ` asdf asdf asd f': not a valid identifier$
+minishell: export: ` asdf ': not a valid identifier$
+minishell: export: `': not a valid identifier$
+minishell: export: `asdf ': not a valid identifier$
+$
+|---------------------------------------ACTUAL----------------------------------
+minishell: export: `asdf ': not a valid identifier$
+minishell: export: ` asdf asdf asd f': not a valid identifier$
+minishell: export: ` asdf ': not a valid identifier$
+minishell: export: `': not a valid identifier$
+minishell: export: `asdf ': not a valid identifier$
+================================================================================
+
+|> WITH export 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf ' C; echo $A$B$C\n
+|  STATUS: expected 0 actual 2
+|---------------------------------------EXPECTED--------------------------------
+minishell: export: `asdf ': not a valid identifier$
+minishell: export: ` asdf asdf asd f': not a valid identifier$
+minishell: export: ` asdf ': not a valid identifier$
+minishell: export: `': not a valid identifier$
+minishell: export: `asdf ': not a valid identifier$
+$
+|---------------------------------------ACTUAL----------------------------------
+minishell: export: `asdf ': not a valid identifier$
+minishell: export: ` asdf asdf asd f': not a valid identifier$
+minishell: export: ` asdf ': not a valid identifier$
+minishell: export: `': not a valid identifier$
+minishell: export: `asdf ': not a valid identifier$
+================================================================================
+
+|> WITH export A 'asdf ' B ' asdf asdf asd f' ' asdf ' '' 'asdf '; echo $A$B$C\n
+|  STATUS: expected 0 actual 2
+|---------------------------------------EXPECTED--------------------------------
+minishell: export: `asdf ': not a valid identifier$
+minishell: export: ` asdf asdf asd f': not a valid identifier$
+minishell: export: ` asdf ': not a valid identifier$
+minishell: export: `': not a valid identifier$
+minishell: export: `asdf ': not a valid identifier$
+$
+|---------------------------------------ACTUAL----------------------------------
+minishell: export: `asdf ': not a valid identifier$
+minishell: export: ` asdf asdf asd f': not a valid identifier$
+minishell: export: ` asdf ': not a valid identifier$
+minishell: export: `': not a valid identifier$
+minishell: export: `asdf ': not a valid identifier$
+================================================================================
+
+|> WITH export A B C; echo $A$B$C\n
+|  STATUS: expected 0 actual 2
+|---------------------------------------EXPECTED--------------------------------
+$
+|---------------------------------------ACTUAL----------------------------------
+================================================================================
+
 |> WITH export A B C; env\n
 |---------------------------------------EXPECTED--------------------------------
 $
@@ -312,6 +370,9 @@ TERM=xterm-256color$
 _=/home/almeekel/.cache/minishell_test/bin/env
 |---------------------------------------ACTUAL----------------------------------
 $
+A=$
+B=$
+C=$
 PATH=/home/almeekel/.cache/minishell_test/bin$
 PWD=/home/almeekel/.cache/minishell_test/sandbox$
 SHLVL=1$
