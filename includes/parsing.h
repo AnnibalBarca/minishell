@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 10:30:22 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:50:08 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int				has_unclosed_quotes(const char *line);
 
 t_syntax_result	analyze_syntax(t_token *tokens);
 t_parse_result	handle_syntax_success(t_syntax_result *result, char **envp,
-		int exit_status);
+					int exit_status);
 t_syntax_result	analyze_syntax(t_token *tokens);
 
 t_token			*expand_tokens(t_token *tokens, char **envp, int exit_status);
@@ -61,6 +61,5 @@ char			*expand_token_value(const char *value, t_quote quote_type,
 					char **envp, int exit_status);
 int				should_field_split(t_quote quote_type);
 int				process_word(const char **line, t_token **head);
-
 
 #endif

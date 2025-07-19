@@ -6,13 +6,13 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 11:39:15 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:47:56 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:55:23 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
 
-void safe_close(int *fd)
+void	safe_close(int *fd)
 {
 	if (*fd > 2)
 	{

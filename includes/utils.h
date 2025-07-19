@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:39:37 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:50:20 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		add_missing_pwd(char ***env_ptr);
 int		add_missing_shlvl(char ***env_ptr);
 int		add_missing_underscore(char ***env_ptr);
 void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,
-		t_syntax_result *result, char *error_msg);
+			t_syntax_result *result, char *error_msg);
 
 void	report_syntax_error(char *near_token);
 void	handle_syntax_error(t_syntax_result *result);
@@ -88,6 +88,6 @@ void	free_token_list(t_token *list);
 char	*find_env_value(char **envp, const char *name);
 int		set_env_var(char ***env_ptr, char *name, char *value);
 
-void safe_close(int *fd);
+void	safe_close(int *fd);
 
 #endif

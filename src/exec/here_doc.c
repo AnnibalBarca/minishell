@@ -6,13 +6,13 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 13:42:47 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 14:00:46 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int free_infile_name(t_files *files)
+int	free_infile_name(t_files *files)
 {
 	free(files->infile_name);
 	files->infile_name = NULL;
@@ -53,7 +53,6 @@ char	*here_doc(t_files *files, char *limiter)
 	char	*temp;
 	int		fd;
 
-	g_signal_test = 0;  // Reset signal flag at start
 	setup_heredoc_signals();
 	if (random_filename(files) == 1)
 		return (NULL);
@@ -70,19 +69,19 @@ char	*here_doc(t_files *files, char *limiter)
 			safe_close(&fd);
 			unlink(files->infile_name);
 			free(files->infile_name);
-            files->infile_name = NULL;
+			files->infile_name = NULL;
 			return (NULL);
 		}
 		if (!temp)
 		{
 			safe_close(&fd);
-			break;
+			break ;
 		}
 		if (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
 			&& ft_strlen(temp) == ft_strlen(limiter))
 		{
 			free(temp);
-			break;
+			break ;
 		}
 		write(fd, temp, ft_strlen(temp));
 		write(fd, "\n", 1);

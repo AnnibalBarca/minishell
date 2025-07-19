@@ -3,28 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   var_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:08:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 12:58:16 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:54:46 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int	should_expand_variable(char current_char, char next_char, t_quote quote_type)
+int	should_expand_variable(char current_char, char next_char,
+		t_quote quote_type)
 {
-    if (current_char != '$')
-        return (0);
-    if (quote_type == Q_SINGLE)
-    {
-        return (0);
-    }
-    if (is_valid_var_char(next_char) || next_char == '?' || next_char == '{')
-    {
-        return (1);
-    }
-    return (0);
+	if (current_char != '$')
+		return (0);
+	if (quote_type == Q_SINGLE)
+	{
+		return (0);
+	}
+	if (is_valid_var_char(next_char) || next_char == '?' || next_char == '{')
+	{
+		return (1);
+	}
+	return (0);
 }
 
 static int	process_regular_char(t_str_builder *sb, const char **ip)

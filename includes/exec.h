@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:46:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 15:21:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:50:03 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define EXEC_H
 
 # include "builtins.h"
-# include "utils.h"
 # include "signals.h"
+# include "utils.h"
 
 void	child_process(t_exec *exec, int cmd_index, char **envp);
 char	*here_doc(t_files *files, char *limiter);
@@ -31,7 +31,7 @@ void	parsing_exec(t_token *tokens, t_exec *exec);
 void	exec_init(t_exec *exec, char **envp);
 void	free_cmd_list(t_cmd *cmd_list, int is_parent);
 int		execute_builtin(t_exec *exec, char ***envp_ptr);
-int	execute_builtin_in_child(t_exec *exec, char **envp);
+int		execute_builtin_in_child(t_exec *exec, char **envp);
 int		is_builtin(t_args *cmd);
 int		is_directory(t_exec *exec);
 void	setup_pipe_redirections(t_exec *exec, int cmd_index);

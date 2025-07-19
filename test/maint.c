@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 11:49:18 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:17:21 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parsing.h"
 #include "signals.h"
 
-extern int	g_signal_test;
+int	g_signal_test = 0;
 
 static int	check_semicolon_syntax(char *command)
 {

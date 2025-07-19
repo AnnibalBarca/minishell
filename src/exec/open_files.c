@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 15:23:18 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:40:19 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:54:15 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	struct_open_outfile(t_exec *exec)
 	int		flags;
 
 	if (exec->has_input_error)
-    	return ;
+		return ;
 	exec->cmd_list->fd_output = -1;
 	previous_fd = -1;
 	if (!exec->cmd_list->files)

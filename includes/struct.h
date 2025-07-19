@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 15:19:58 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:51:31 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef enum e_quote
 	Q_MIXED
 }					t_quote;
 
-// pas le choix, c'est pour la norme.
 typedef struct s_quote_flags
 {
 	int				has_single;
@@ -122,40 +121,40 @@ typedef struct s_args
 	struct s_args	*prev;
 }					t_args;
 
-typedef struct s_files // Un seul fichier par node
+typedef struct s_files
 {
-	char *infile_name;
-	char *outfile_name;
-	int heredoc;
-	int append;
-	struct s_files *next;
-	struct s_files *prev;
+	char			*infile_name;
+	char			*outfile_name;
+	int				heredoc;
+	int				append;
+	struct s_files	*next;
+	struct s_files	*prev;
 }					t_files;
 
 typedef struct s_cmd
 {
 	t_args			*args;
-	char *cmd_path;     // Chemin complet de la commande
-	t_files *files;     // Liste des fichier (in/out)
-	int is_builtin;     // 1 si c'est un builtin
-	int fd_input;       // -1 si c'est STDIN
-	int fd_output;      // -1 si c'est STDOUT
-	struct s_cmd *next; // Pour chaîner avec des pipes
-	struct s_cmd *prev; // Pour chaîner avec des pipes
+	char			*cmd_path;
+	t_files			*files;
+	int				is_builtin;
+	int				fd_input;
+	int				fd_output;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }					t_cmd;
 
 typedef struct s_exec
 {
-	t_cmd *cmd_list; // Liste des commandes
-	char **envp;     // Variables d'environnement
-	char **paths;    // Chemins du PATH
-	pid_t *pids;     // PIDs des processus fils
-	int **pipes;     // Pipes pour communication
+	t_cmd			*cmd_list;
+	char			**envp;
+	char			**paths;
+	pid_t			*pids;
+	int				**pipes;
 	int				cmd_count;
-	int exit_status; // Status de sortie
+	int				exit_status;
 	int				envp_exists;
-	int stdin_backup;  // Sauvegarde stdin
-	int stdout_backup; // Sauvegarde stdout
+	int				stdin_backup;
+	int				stdout_backup;
 	int				has_input_error;
 }					t_exec;
 

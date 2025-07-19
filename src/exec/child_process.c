@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/18 11:35:07 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:53:20 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	is_infile(t_exec *exec, t_files *current)
 
 int	is_outfile(t_exec *exec, t_files *current, int *previous_output_fd)
 {
-	int flags;
+	int	flags;
 
 	if (*previous_output_fd != -1)
 		safe_close(previous_output_fd);
@@ -77,6 +77,7 @@ int	is_outfile(t_exec *exec, t_files *current, int *previous_output_fd)
 	*previous_output_fd = exec->cmd_list->fd_output;
 	return (0);
 }
+
 void	process_redirections(t_exec *exec)
 {
 	t_files	*current;

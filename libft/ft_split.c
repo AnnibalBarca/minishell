@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 21:30:41 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/19 18:14:34 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:53:44 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	**ft_freesplit(char **str)
 	free(str);
 	return (NULL);
 }
+
 void	free_split(char **str)
 {
 	size_t	i;
@@ -59,7 +60,7 @@ void	free_split(char **str)
 	free(str);
 }
 
-int		ft_freesplit_int(char **str, int return_val)
+int	ft_freesplit_int(char **str, int return_val)
 {
 	size_t	i;
 
