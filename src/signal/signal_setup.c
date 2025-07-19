@@ -34,8 +34,8 @@ void	setup_child_signals(void)
 
 void	setup_parent_signals(void)
 {
-	setup_signal(SIGINT, SIG_IGN);
-	setup_signal(SIGQUIT, SIG_IGN);
+	setup_signal(SIGINT, handle_sigint_child);
+	setup_signal(SIGQUIT, handle_sigquit_child);
 }
 
 void	setup_heredoc_signals(void)

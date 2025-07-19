@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 14:42:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 11:34:27 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 12:34:42 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,9 @@ void		reset_signals(void);
 void		setup_parent_signals(void);
 void		setup_noninteractive_signals(void);
 void		setup_signal(int signo, void (*handler)(int));
+void		handle_sigint(int sig);
+void		handle_sigquit(int sig);
+void		handle_sigint_child(int sig);
+void		handle_sigquit_child(int sig);
 
 #endif
