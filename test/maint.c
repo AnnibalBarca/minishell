@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/19 18:43:23 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:18:13 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,10 @@ static void	interactive_mode(char ***env_copy_ptr)
 		if (*input == '\0' && g_signal_test != 130)
 		{
 			free(input);
-			continue;
+			continue ;
 		}
 		if (g_signal_test == 130)
-            g_signal_test = 0;
+			g_signal_test = 0;
 		add_history(input);
 		g_signal_test = execute_command_string(input, env_copy_ptr);
 		free(input);
@@ -146,8 +146,8 @@ static void	interactive_mode(char ***env_copy_ptr)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char **env_copy;
-	int exit_status;
+	char	**env_copy;
+	int		exit_status;
 
 	env_copy = copy_env_array(envp);
 	if (!env_copy)

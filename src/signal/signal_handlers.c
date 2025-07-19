@@ -48,4 +48,3 @@ void	setup_interactive_signals(void)
 	setup_signal(SIGINT, handle_sigint);
 	setup_signal(SIGQUIT, SIG_IGN);
 }
-

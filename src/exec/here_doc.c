@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/19 18:42:31 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:21:23 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd)
 		{
 			if (!temp)
 			{
-				ft_putstr_fd("minishell: warning: here-document at line 2 delimited by end-of-file (wanted `",
-					2);
+				ft_putstr_fd("minishell: warning: here-document"
+					"at line 2 delimited by end-of-file (wanted `", 2);
 				ft_putstr_fd(limiter, 2);
 				ft_putstr_fd("')\n", 2);
 			}

@@ -44,10 +44,10 @@ void	setup_heredoc_signals(void)
 	rl_event_hook = handle_event_hook;
 }
 
-void    setup_postheredoc_signals(void)
+void	setup_postheredoc_signals(void)
 {
-    setup_signal(SIGINT, handle_sigint);
-    rl_event_hook = NULL;
+	setup_signal(SIGINT, handle_sigint);
+	rl_event_hook = NULL;
 }
 
 static void	handle_sigquit_noninteractive(int sig)
