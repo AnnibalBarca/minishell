@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/19 14:00:46 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:42:31 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,46 +48,53 @@ int	random_filename(t_files *files)
 	return (0);
 }
 
-char	*here_doc(t_files *files, char *limiter)
+char	*here_doc_input(t_files *files, char *limiter, int *fd)
 {
 	char	*temp;
+
+	while (g_signal_test == 1)
+	{
+		temp = readline("> ");
+		if (!temp || (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
+				&& ft_strlen(temp) == ft_strlen(limiter)))
+		{
+			if (!temp)
+			{
+				ft_putstr_fd("minishell: warning: here-document at line 2 delimited by end-of-file (wanted `",
+					2);
+				ft_putstr_fd(limiter, 2);
+				ft_putstr_fd("')\n", 2);
+			}
+			free(temp);
+			break ;
+		}
+		write(*fd, temp, ft_strlen(temp));
+		write(*fd, "\n", 1);
+		free(temp);
+	}
+	safe_close(fd);
+	return (files->infile_name);
+}
+
+char	*here_doc(t_files *files, char *limiter)
+{
+	char	*infile_name;
 	int		fd;
 
-	setup_heredoc_signals();
+	g_signal_test = 1;
 	if (random_filename(files) == 1)
 		return (NULL);
 	fd = open_here_doc(files);
 	if (fd == -1)
 		return (NULL);
-	while (1)
+	setup_heredoc_signals();
+	infile_name = here_doc_input(files, limiter, &fd);
+	setup_postheredoc_signals();
+	if (!infile_name)
 	{
-		temp = readline("> ");
-		if (g_signal_test == 130)
-		{
-			if (temp)
-				free(temp);
-			safe_close(&fd);
-			unlink(files->infile_name);
-			free(files->infile_name);
-			files->infile_name = NULL;
-			return (NULL);
-		}
-		if (!temp)
-		{
-			safe_close(&fd);
-			break ;
-		}
-		if (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
-			&& ft_strlen(temp) == ft_strlen(limiter))
-		{
-			free(temp);
-			break ;
-		}
-		write(fd, temp, ft_strlen(temp));
-		write(fd, "\n", 1);
-		free(temp);
+		g_signal_test = 0;
+		rl_done = 0;
+		return (NULL);
 	}
-	safe_close(&fd);
-	reset_signals();
-	return (files->infile_name);
+	return (infile_name);
 }

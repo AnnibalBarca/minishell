@@ -14,67 +14,38 @@
 
 void	handle_sigint_heredoc(int sig)
 {
-	(void)sig;
-	g_signal_test = 130;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_done = 1;
-	// rl_redisplay();
+	if (sig == SIGINT)
+	{
+		g_signal_test = 130;
+		rl_replace_line("", 0);
+		rl_done = 1;
+	}
+}
+
+int	handle_event_hook(void)
+{
+	if (g_signal_test == 130 || g_signal_test == 0)
+	{
+		rl_done = 1;
+	}
+	return (0);
 }
 
 void	handle_sigint(int sig)
 {
-	(void)sig;
-	g_signal_test = 130;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	handle_sigquit(int sig)
-{
-	(void)sig;
-	g_signal_test = 131;
-	ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	handle_sigquit_child(int sig)
-{
-	(void)sig;
-	g_signal_test = 131;
-	ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
-}
-
-void	handle_sigint_child(int sig)
-{
-	(void)sig;
-	g_signal_test = 130;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-}
-
-static void	handle_sigint_noninteractive(int sig)
-{
-	(void)sig;
-	g_signal_test = 130;
-}
-
-static void	handle_sigquit_noninteractive(int sig)
-{
-	(void)sig;
-	g_signal_test = 131;
+	if (sig == SIGINT)
+	{
+		g_signal_test = 130;
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
 void	setup_interactive_signals(void)
 {
 	setup_signal(SIGINT, handle_sigint);
-	setup_signal(SIGQUIT, handle_sigquit);
+	setup_signal(SIGQUIT, SIG_IGN);
 }
 
-void	setup_noninteractive_signals(void)
-{
-	setup_signal(SIGINT, handle_sigint_noninteractive);
-	setup_signal(SIGQUIT, handle_sigquit_noninteractive);
-}

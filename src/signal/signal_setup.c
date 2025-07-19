@@ -34,18 +34,36 @@ void	setup_child_signals(void)
 
 void	setup_parent_signals(void)
 {
-	setup_signal(SIGINT, handle_sigint_child);
-	setup_signal(SIGQUIT, handle_sigquit_child);
+	setup_signal(SIGINT, SIG_IGN);
+	setup_signal(SIGQUIT, SIG_IGN);
 }
 
 void	setup_heredoc_signals(void)
 {
 	setup_signal(SIGINT, handle_sigint_heredoc);
-	setup_signal(SIGQUIT, SIG_IGN);
+	rl_event_hook = handle_event_hook;
 }
 
-void	reset_signals(void)
+void    setup_postheredoc_signals(void)
 {
-	setup_signal(SIGINT, SIG_DFL);
-	setup_signal(SIGQUIT, SIG_DFL);
+    setup_signal(SIGINT, handle_sigint);
+    rl_event_hook = NULL;
+}
+
+static void	handle_sigquit_noninteractive(int sig)
+{
+	(void)sig;
+	g_signal_test = 131;
+}
+
+static void	handle_sigint_noninteractive(int sig)
+{
+	(void)sig;
+	g_signal_test = 130;
+}
+
+void	setup_noninteractive_signals(void)
+{
+	setup_signal(SIGINT, handle_sigint_noninteractive);
+	setup_signal(SIGQUIT, handle_sigquit_noninteractive);
 }

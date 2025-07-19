@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/19 13:54:38 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:24:32 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int	pipex(t_token *tokens, char ***envp_ptr)
 	t_exec	exec;
 	int		i;
 	t_cmd	*head;
-		int status;
-	int		sig;
+	int		status;
 
 	exec_init(&exec, *envp_ptr);
 	parsing_exec(tokens, &exec);
@@ -96,22 +95,20 @@ int	pipex(t_token *tokens, char ***envp_ptr)
 	while (++i < exec.cmd_count)
 	{
 		waitpid(exec.pids[i], &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			ft_putchar_fd('\n', 2);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 2);
 		if (i == exec.cmd_count - 1)
-			exec.exit_status = status;
+		{
+			if (WIFEXITED(status))
+				exec.exit_status = WEXITSTATUS(status);
+			if (WIFSIGNALED(status))
+				exec.exit_status = 128 + WTERMSIG(status);
+		}
 	}
 	exec.cmd_list = head;
 	free_parent(&exec, -1, NULL, NULL);
 	setup_interactive_signals();
-	if (WIFEXITED(exec.exit_status))
-		return (WEXITSTATUS(exec.exit_status));
-	else if (WIFSIGNALED(exec.exit_status))
-	{
-		sig = WTERMSIG(exec.exit_status);
-		if (sig == SIGINT)
-			return (130);
-		else if (sig == SIGQUIT)
-			return (131);
-		return (128 + sig);
-	}
 	return (exec.exit_status);
 }
