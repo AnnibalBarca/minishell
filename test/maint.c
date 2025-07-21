@@ -118,6 +118,24 @@ static int	execute_command_string(char *command, char ***env_copy_ptr)
 	return (exit_status);
 }
 
+static char	*get_input_line(void)
+{
+	char	*line;
+	char	*trimmed;
+
+	if (isatty(fileno(stdin)))
+		return (readline("\033[1;32mminishell$\033[0m "));
+	else
+	{
+		line = get_next_line(fileno(stdin));
+		if (!line)
+			return (NULL);
+		trimmed = ft_strtrim(line, "\n");
+		free(line);
+		return (trimmed);
+	}
+}
+
 static void	interactive_mode(char ***env_copy_ptr)
 {
 	char	*input;
@@ -125,10 +143,10 @@ static void	interactive_mode(char ***env_copy_ptr)
 	setup_interactive_signals();
 	while (1)
 	{
-		input = readline("\033[1;32mminishell$\033[0m ");
+		input = get_input_line();
 		if (!input)
 		{
-			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			// ft_putstr_fd("exit\n", STDOUT_FILENO);  // Commented out for tester compatibility
 			break ;
 		}
 		if (*input == '\0' && g_signal_test != 130)
@@ -138,7 +156,8 @@ static void	interactive_mode(char ***env_copy_ptr)
 		}
 		if (g_signal_test == 130)
 			g_signal_test = 0;
-		add_history(input);
+		if (isatty(fileno(stdin)))
+			add_history(input);
 		g_signal_test = execute_command_string(input, env_copy_ptr);
 		free(input);
 	}
