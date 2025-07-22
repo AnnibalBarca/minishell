@@ -51,8 +51,7 @@ SRC_UTILS = src/utils/find_last.c		\
 			src/utils/free_parent.c 		\
 			src/utils/free_child.c 			\
 			src/utils/safe_close.c			\
-
-
+			src/utils/quote_removal.c		\
 
 SRC_BUILTINS =	src/builtins/builtin_export.c				\
 				src/builtins/builtin_cd.c					\
