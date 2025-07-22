@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:36:09 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 12:16:55 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:32:05 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,20 @@ int	extract_quoted_content(const char **line, char quote_char,
 	(*line)++;
 	while (**line && **line != quote_char)
 	{
-		if (!sb_append_char(sb, **line))
-			return (0);
-		(*line)++;
+		if (quote_char == '"' && **line == '\\' && 
+			(*(*line + 1) == '$' || *(*line + 1) == '"' || *(*line + 1) == '\\' || *(*line + 1) == '\n'))
+		{
+			(*line)++;
+			if (!sb_append_char(sb, **line))
+				return (0);
+			(*line)++;
+		}
+		else
+		{
+			if (!sb_append_char(sb, **line))
+				return (0);
+			(*line)++;
+		}
 	}
 	if (**line == quote_char)
 		(*line)++;
@@ -32,7 +43,15 @@ int	extract_unquoted_content(const char **line, t_str_builder *sb)
 	while (**line && is_word_char(**line) && !is_operator_start(**line)
 		&& **line != '\'' && **line != '"')
 	{
-		sb_append_char(sb, **line);
+		if (**line == '\\' && *(*line + 1))
+		{
+			(*line)++;
+			sb_append_char(sb, **line);
+		}
+		else
+		{
+			sb_append_char(sb, **line);
+		}
 		(*line)++;
 	}
 	return (1);

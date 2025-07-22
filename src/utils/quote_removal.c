@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:49:12 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/22 13:58:46 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/22 14:23:29 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ static int	process_heredoc_char(t_str_builder *sb, const char **ip,
 	}
 	else if (*current_quote == '\'')
 	{
+		if (!sb_append_char(sb, **ip))
+			return (0);
+		(*ip)++;
+	}
+	else if (*current_quote == '"' && **ip == '\\' && 
+			(*(*ip + 1) == '$' || *(*ip + 1) == '"' || *(*ip + 1) == '\\' || *(*ip + 1) == '\n'))
+	{
+		(*ip)++;
 		if (!sb_append_char(sb, **ip))
 			return (0);
 		(*ip)++;
