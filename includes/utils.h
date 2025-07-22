@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 13:11:51 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:52:04 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ char	*find_env_value(char **envp, const char *name);
 int		set_env_var(char ***env_ptr, char *name, char *value);
 
 void	safe_close(int *fd);
+char	*expand_heredoc_line(const char *line, char **envp);
 
 #endif

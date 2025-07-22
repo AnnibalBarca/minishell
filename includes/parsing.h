@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 10:48:40 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:44:26 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_token			*expand_tokens(t_token *tokens, char **envp, int exit_status);
 
 char			*expand_variables_in_str(const char *input_str,
 					t_quote quote_type, char **envp, int last_exit_status);
+int				should_expand_variable(char current_char, char next_char,
+					t_quote quote_type);
 int				is_valid_var_char(char c);
 
 char			**perform_field_splitting(const char *str, const char *sep_val);
