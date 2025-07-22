@@ -6,18 +6,18 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:27:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/06/30 20:45:50 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:54:48 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-t_files	*append_infile_node(t_files *current, char *value, int heredoc)
+t_files	*append_infile_node(t_files *current, char *value, int heredoc, char ***envp_ptr)
 {
 	t_files	*new_node;
 	t_files	*last;
 
-	new_node = new_infile_node(value, heredoc);
+	new_node = new_infile_node(value, heredoc, envp_ptr);
 	if (!new_node)
 		return (NULL);
 	if (!current)
@@ -44,7 +44,7 @@ t_files	*append_outfile_node(t_files *current, char *value, int append)
 	return (current);
 }
 
-int	is_redirection(t_token **tokens, t_cmd **cmd)
+int	is_redirection(t_token **tokens, t_cmd **cmd, char ***envp_ptr)
 {
 	int	flag;
 
@@ -55,7 +55,7 @@ int	is_redirection(t_token **tokens, t_cmd **cmd)
 		if (!(*tokens) || (*tokens)->type != T_WORD)
 			return (1);
 		(*cmd)->files = append_infile_node((*cmd)->files, (*tokens)->value,
-				flag);
+				flag, envp_ptr);
 		(*tokens) = (*tokens)->next;
 	}
 	else if ((*tokens)->type == T_REDIRECT_OUT || (*tokens)->type == T_APPEND)
@@ -73,7 +73,7 @@ int	is_redirection(t_token **tokens, t_cmd **cmd)
 	return (0);
 }
 
-t_cmd	*parse_commands(t_token **tokens, t_cmd **cmd)
+t_cmd	*parse_commands(t_token **tokens, t_cmd **cmd, char ***envp_ptr)
 {
 	if (!(*cmd))
 		return (NULL);
@@ -88,7 +88,7 @@ t_cmd	*parse_commands(t_token **tokens, t_cmd **cmd)
 		}
 		else
 		{
-			if (is_redirection(tokens, cmd) == 1)
+			if (is_redirection(tokens, cmd, envp_ptr) == 1)
 				return (NULL);
 		}
 		(*cmd)->is_builtin = is_builtin(find_first_args((*cmd)->args));
@@ -96,7 +96,7 @@ t_cmd	*parse_commands(t_token **tokens, t_cmd **cmd)
 	return (*cmd);
 }
 
-t_cmd	*parsing_cmd(t_token *tokens)
+t_cmd	*parsing_cmd(t_token *tokens, char ***envp_ptr)
 {
 	t_cmd	*cmd;
 	t_cmd	*head;
@@ -107,7 +107,7 @@ t_cmd	*parsing_cmd(t_token *tokens)
 	head = cmd;
 	while (tokens)
 	{
-		cmd = parse_commands(&tokens, &cmd);
+		cmd = parse_commands(&tokens, &cmd, envp_ptr);
 		if (!cmd)
 		{
 			free_cmd_list(head, 0);

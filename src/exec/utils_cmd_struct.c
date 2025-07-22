@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 20:08:48 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/04 16:44:56 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:55:31 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_args	*append_args_node(t_args *current, char *value)
 	return (current);
 }
 
-t_files	*new_infile_node(char *value, int heredoc)
+t_files	*new_infile_node(char *value, int heredoc, char ***envp_ptr)
 {
 	t_files	*new_node;
 
@@ -77,7 +77,7 @@ t_files	*new_infile_node(char *value, int heredoc)
 	if (!new_node)
 		return (NULL);
 	if (heredoc)
-		new_node->infile_name = here_doc(new_node, value);
+		new_node->infile_name = here_doc(new_node, value, envp_ptr);
 	else
 		new_node->infile_name = ft_strdup(value);
 	if (!new_node->infile_name)

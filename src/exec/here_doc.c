@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/19 19:21:23 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:58:17 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	random_filename(t_files *files)
 	return (0);
 }
 
-char	*here_doc_input(t_files *files, char *limiter, int *fd)
+char	*here_doc_input(t_files *files, char *limiter, int *fd, char ***envp_ptr)
 {
 	char	*temp;
 
@@ -61,14 +61,21 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd)
 			if (!temp)
 			{
 				ft_putstr_fd("minishell: warning: here-document"
-					"at line 2 delimited by end-of-file (wanted `", 2);
+								"at line 2 delimited by end-of-file (wanted `",
+								2);
 				ft_putstr_fd(limiter, 2);
 				ft_putstr_fd("')\n", 2);
 			}
 			free(temp);
 			break ;
 		}
-		write(*fd, temp, ft_strlen(temp));
+		else if (temp && ft_strncmp(temp[0], "$", 1) == 0 && temp[1]
+			&& ft_strncmp(temp[1], "$", 1) != 0)
+			{
+				expand_variables_in_str(temp,
+					NULL, &envp_ptr, 0);
+			}
+			write(*fd, temp, ft_strlen(temp));
 		write(*fd, "\n", 1);
 		free(temp);
 	}
@@ -76,7 +83,7 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd)
 	return (files->infile_name);
 }
 
-char	*here_doc(t_files *files, char *limiter)
+char	*here_doc(t_files *files, char *limiter, char ***envp_ptr)
 {
 	char	*infile_name;
 	int		fd;
@@ -88,7 +95,7 @@ char	*here_doc(t_files *files, char *limiter)
 	if (fd == -1)
 		return (NULL);
 	setup_heredoc_signals();
-	infile_name = here_doc_input(files, limiter, &fd);
+	infile_name = here_doc_input(files, limiter, &fd, envp_ptr);
 	setup_postheredoc_signals();
 	if (!infile_name)
 	{

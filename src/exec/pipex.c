@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/20 17:36:36 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:50:49 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	pipex(t_token *tokens, char ***envp_ptr)
 	int		status;
 
 	exec_init(&exec, *envp_ptr);
-	parsing_exec(tokens, &exec);
+	parsing_exec(tokens, &exec, envp_ptr);
 	if (!exec.cmd_list)
 		return (1);
 	exec.cmd_count = find_size_cmd(exec.cmd_list);
