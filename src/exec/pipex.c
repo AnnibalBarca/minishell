@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 10:50:49 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 12:48:03 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	pipex(t_token *tokens, char ***envp_ptr)
 	if (exec.cmd_count == 1 && exec.cmd_list->is_builtin)
 	{
 		exec.exit_status = execute_single_builtin_in_parent(&exec, envp_ptr);
+		//free_parent(&exec, -1, NULL, NULL);
 		return (exec.exit_status);
 	}
 	setup_parent_signals();

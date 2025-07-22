@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:56:30 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/21 14:01:27 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:20:54 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,28 @@ static int	is_numeric_string(const char *str)
 	return (1);
 }
 
-int	builtin_exit(t_args *args)
+int	builtin_exit(t_exec *exec, int parent)
 {
 	int		exit_code;
 	t_args	*first_arg;
 	t_args	*second_arg;
 
-	if (!args)
+	if (!exec->cmd_list->args)
 	{
 		// ft_putstr_fd("exit\n", 2);
-		exit(0);
+		if (parent)
+			free_parent(exec, 0, NULL, NULL);
+		else
+			free_child(exec, 0, NULL, NULL);
 	}
-	first_arg = args->next;
+	first_arg = exec->cmd_list->args->next;
 	if (!first_arg)
 	{
 		// ft_putstr_fd("exit\n", 2);
-		exit(0);
+		if (parent)
+			free_parent(exec, 0, NULL, NULL);
+		else
+			free_child(exec, 0, NULL, NULL);
 	}
 	second_arg = first_arg->next;
 	if (second_arg)
@@ -82,7 +88,10 @@ int	builtin_exit(t_args *args)
 			// ft_putstr_fd("exit\n", 2);
 			ft_message("exit", first_arg->cmd_args,
 				"numeric argument required");
-			exit(255);
+			if (parent)
+				free_parent(exec, 255, NULL, NULL);
+			else
+				free_child(exec, 255, NULL, NULL);
 		}
 		// ft_putstr_fd("exit\n", 2);
 		ft_message("exit", NULL, "too many arguments");
@@ -92,9 +101,16 @@ int	builtin_exit(t_args *args)
 	{
 		// ft_putstr_fd("exit\n", 2);
 		ft_message("exit", first_arg->cmd_args, "numeric argument required");
-		exit(2);
+		if (parent)
+			free_parent(exec, 2, NULL, NULL);
+		else
+			free_child(exec, 2, NULL, NULL);
 	}
 	exit_code = ft_atoi(first_arg->cmd_args);
 	// ft_putstr_fd("exit\n", 2);
-	exit((unsigned char)exit_code);
+	if (parent)
+		free_parent(exec, (unsigned char)exit_code, NULL, NULL);
+	else
+		free_child(exec, (unsigned char)exit_code, NULL, NULL);
+	return ((unsigned char)exit_code);
 }

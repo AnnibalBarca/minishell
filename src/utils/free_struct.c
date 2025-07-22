@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/19 19:29:18 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:11:18 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,17 @@ void	close_all_pipes(t_exec *exec)
 	}
 	free(exec->pipes);
 	exec->pipes = NULL;
+}
+
+void	free_split(char **str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }

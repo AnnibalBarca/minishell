@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 12:32:51 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:12:47 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd, char ***envp_ptr)
 {
 	char	*temp;
 
+	(void)envp_ptr;
 	while (g_signal_test == 1)
 	{
 		temp = readline("> ");
@@ -70,13 +71,13 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd, char ***envp_ptr)
 			free(temp);
 			break ;
 		}
-		else if (temp && ft_strncmp(&temp[0], "$", 1) == 0 && temp[1]
-			&& ft_strncmp(&temp[1], "$", 1) != 0)
-			{
-				expand_variables_in_str(temp,
-					, *envp_ptr, 0);
-			}
-			write(*fd, temp, ft_strlen(temp));
+		// else if (temp && ft_strncmp(&temp[0], "$", 1) == 0 && temp[1]
+		// 	&& ft_strncmp(&temp[1], "$", 1) != 0)
+		// 	{
+		// 		expand_variables_in_str(temp,
+		// 			, *envp_ptr, 0);
+		// 	}
+		write(*fd, temp, ft_strlen(temp));
 		write(*fd, "\n", 1);
 		free(temp);
 	}
