@@ -6,12 +6,12 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:49:12 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/22 13:52:28 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:58:46 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
 #include "parsing.h"
+#include "utils.h"
 
 static int	process_heredoc_char(t_str_builder *sb, const char **ip,
 		char **envp, char *current_quote)
@@ -36,8 +36,12 @@ static int	process_heredoc_char(t_str_builder *sb, const char **ip,
 			return (0);
 		(*ip)++;
 	}
-	else if (should_expand_variable(**ip, *(*ip + 1),
-			(*current_quote == '"') ? Q_DOUBLE : Q_NONE))
+	else if (should_expand_variable(**ip, *(*ip + 1), Q_DOUBLE))
+	{
+		if (!process_expansion(sb, ip, envp, 0))
+			return (0);
+	}
+	else if (should_expand_variable(**ip, *(*ip + 1), Q_NONE))
 	{
 		if (!process_expansion(sb, ip, envp, 0))
 			return (0);
@@ -53,9 +57,9 @@ static int	process_heredoc_char(t_str_builder *sb, const char **ip,
 
 char	*expand_heredoc_line(const char *line, char **envp)
 {
-	t_str_builder	sb;
-	const char		*ip;
-	char			current_quote;
+	t_str_builder sb;
+	const char *ip;
+	char current_quote;
 
 	if (!line)
 		return (NULL);
