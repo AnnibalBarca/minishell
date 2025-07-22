@@ -6,11 +6,12 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 10:58:17 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/22 12:32:51 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "parsing.h"
 
 int	free_infile_name(t_files *files)
 {
@@ -69,11 +70,11 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd, char ***envp_ptr)
 			free(temp);
 			break ;
 		}
-		else if (temp && ft_strncmp(temp[0], "$", 1) == 0 && temp[1]
-			&& ft_strncmp(temp[1], "$", 1) != 0)
+		else if (temp && ft_strncmp(&temp[0], "$", 1) == 0 && temp[1]
+			&& ft_strncmp(&temp[1], "$", 1) != 0)
 			{
 				expand_variables_in_str(temp,
-					NULL, &envp_ptr, 0);
+					, *envp_ptr, 0);
 			}
 			write(*fd, temp, ft_strlen(temp));
 		write(*fd, "\n", 1);
