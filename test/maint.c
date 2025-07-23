@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/19 19:18:13 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:04:14 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static int	execute_command_string(char *command, char ***env_copy_ptr)
 			if (input_copy)
 			{
 				tokens = parse_complete_input(&input_copy, *env_copy_ptr,
-						g_signal_test);
+						exit_status);
 				if (tokens)
 				{
 					exit_status = pipex(tokens, env_copy_ptr);
@@ -139,14 +139,17 @@ static char	*get_input_line(void)
 static void	interactive_mode(char ***env_copy_ptr)
 {
 	char	*input;
+	int		exit_status;
 
+	exit_status = g_signal_test;
 	setup_interactive_signals();
 	while (1)
 	{
 		input = get_input_line();
 		if (!input)
 		{
-			// ft_putstr_fd("exit\n", STDOUT_FILENO);  // Commented out for tester compatibility
+			// ft_putstr_fd("exit\n", STDOUT_FILENO);
+				// Commented out for tester compatibility
 			break ;
 		}
 		if (*input == '\0' && g_signal_test != 130)
@@ -154,8 +157,12 @@ static void	interactive_mode(char ***env_copy_ptr)
 			free(input);
 			continue ;
 		}
-		if (g_signal_test == 130)
+		if (g_signal_test)
+		{
+			if (g_signal_test == 130)
+				exit_status = 130;
 			g_signal_test = 0;
+		}
 		if (isatty(fileno(stdin)))
 			add_history(input);
 		g_signal_test = execute_command_string(input, env_copy_ptr);
@@ -181,6 +188,7 @@ int	main(int argc, char **argv, char **envp)
 	else if (argc == 1)
 	{
 		interactive_mode(&env_copy);
+		fprintf(stderr, "%d\n", g_signal_test);
 		ft_freesplit(env_copy);
 		return (g_signal_test);
 	}
