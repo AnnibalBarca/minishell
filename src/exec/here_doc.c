@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 13:52:49 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:40:29 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd,
 	char	*temp;
 	char	*expanded_line;
 
-	while (g_signal_test == 1)
+	while (g_signal_status == 1)
 	{
 		temp = readline("> ");
 		if (!temp || (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
@@ -91,7 +91,7 @@ char	*here_doc(t_files *files, char *limiter, char ***envp_ptr)
 	char	*infile_name;
 	int		fd;
 
-	g_signal_test = 1;
+	g_signal_status = 1;
 	if (random_filename(files) == 1)
 		return (NULL);
 	fd = open_here_doc(files);
@@ -102,7 +102,7 @@ char	*here_doc(t_files *files, char *limiter, char ***envp_ptr)
 	setup_postheredoc_signals();
 	if (!infile_name)
 	{
-		g_signal_test = 0;
+		g_signal_status = 0;
 		rl_done = 0;
 		return (NULL);
 	}

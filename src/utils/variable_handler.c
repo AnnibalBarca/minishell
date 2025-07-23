@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   var_handling.c                                     :+:      :+:    :+:   */
+/*   variable_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:37:24 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 11:12:38 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:52:12 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,20 @@ static int	add_new_env_var(char ***env_ptr, char *name, char *value, int i)
 	}
 	while (i < count)
 	{
-		new_env[i] = (*env_ptr)[i];
+		new_env[i] = ft_strdup((*env_ptr)[i]);
+		if (!new_env[i])
+		{
+			while (--i >= 0)
+				free(new_env[i]);
+			free(new_env);
+			free(new_var_string);
+			return (1);
+		}
 		i++;
 	}
 	new_env[count] = new_var_string;
 	new_env[count + 1] = NULL;
-	free(*env_ptr);
+	ft_freesplit(*env_ptr);
 	*env_ptr = new_env;
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/13 00:00:00 by Mimoulapino      #+#    #+#             */
-/*   Updated: 2025/07/13 00:00:00 by Mimoulapino      ###   ########.fr       */
+/*   Created: 2025/07/23 15:41:25 by almeekel          #+#    #+#             */
+/*   Updated: 2025/07/23 15:47:06 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,20 @@ void	setup_postheredoc_signals(void)
 	rl_event_hook = NULL;
 }
 
-// static void	handle_sigquit_noninteractive(int sig)
-// {
-// 	(void)sig;
-// 	g_signal_test = 131;
-// }
+static void	handle_sigquit_noninteractive(int sig)
+{
+	(void)sig;
+	g_signal_status = 131;
+}
 
-// static void	handle_sigint_noninteractive(int sig)
-// {
-// 	(void)sig;
-// 	g_signal_test = 130;
-// }
+static void	handle_sigint_noninteractive(int sig)
+{
+	(void)sig;
+	g_signal_status = 130;
+}
 
-// void	setup_noninteractive_signals(void)
-// {
-// 	setup_signal(SIGINT, handle_sigint_noninteractive);
-// 	setup_signal(SIGQUIT, handle_sigquit_noninteractive);
-// }
+void	setup_noninteractive_signals(void)
+{
+	setup_signal(SIGINT, handle_sigint_noninteractive);
+	setup_signal(SIGQUIT, handle_sigquit_noninteractive);
+}

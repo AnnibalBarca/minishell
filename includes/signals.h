@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 14:42:53 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/19 17:23:28 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:40:29 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "struct.h"
 
-extern int	g_signal_test;
+extern int	g_signal_status;
 
 void		handle_sigint_heredoc(int sig);
 void		setup_interactive_signals(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 13:22:56 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:35:27 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ char	**struct_to_array(t_args *args)
 	{
 		array[i] = ft_strdup(current->cmd_args);
 		if (!array[i])
+		{
 			free_split(array);
+			return (NULL);
+		}
 		current = current->next;
 		i++;
 	}

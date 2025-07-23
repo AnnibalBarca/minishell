@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_parsing.c                                     :+:      :+:    :+:   */
+/*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:31:48 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 09:48:12 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:52:26 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ t_token	*process_complete_syntax(t_syntax_result syntax_result, char **envp,
 
 static int	check_signal_interruption(void)
 {
-	if (g_signal_test == 130)
+	if (g_signal_status == 130)
 	{
-		g_signal_test = 130;
+		g_signal_status = 130;
 		return (1);
 	}
 	return (0);
