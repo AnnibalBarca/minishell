@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_error_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:42:23 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/19 13:55:13 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:28:21 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	*cleanup_parsing_and_return_null(char **line, char ***accumulated_input,
 		ft_putstr_fd(error_msg, STDERR_FILENO);
 	if (line && *line)
 	{
-		free(*line);
 		*line = NULL;
 	}
 	if (accumulated_input)

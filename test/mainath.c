@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mainath.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:40:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 14:00:01 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:37:39 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	ft_readline(t_token *tokens, char ***env_ptr)
 		rl_done = 0;
 		line = readline("\033[1;32mminishell$\033[0m ");
 		if (!line)
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
+		}
 		if (*line == '\0' && g_signal_test != 130)
 		{
 			free(line);
@@ -76,7 +79,8 @@ void	ft_readline(t_token *tokens, char ***env_ptr)
 		if (isatty(fileno(stdin)))
 			add_history(line);
 		minishell(tokens, line, env_ptr);
-		free(line);
+		if (line)
+			free(line);
 	}
 }
 

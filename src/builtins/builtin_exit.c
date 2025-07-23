@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:56:30 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/22 13:20:54 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:30:59 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	builtin_exit(t_exec *exec, int parent)
 
 	if (!exec->cmd_list->args)
 	{
-		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 2);
 		if (parent)
 			free_parent(exec, 0, NULL, NULL);
 		else
@@ -74,7 +74,7 @@ int	builtin_exit(t_exec *exec, int parent)
 	first_arg = exec->cmd_list->args->next;
 	if (!first_arg)
 	{
-		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 2);
 		if (parent)
 			free_parent(exec, 0, NULL, NULL);
 		else
@@ -85,7 +85,7 @@ int	builtin_exit(t_exec *exec, int parent)
 	{
 		if (!is_numeric_string(first_arg->cmd_args))
 		{
-			// ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("exit\n", 2);
 			ft_message("exit", first_arg->cmd_args,
 				"numeric argument required");
 			if (parent)
@@ -93,13 +93,13 @@ int	builtin_exit(t_exec *exec, int parent)
 			else
 				free_child(exec, 255, NULL, NULL);
 		}
-		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 2);
 		ft_message("exit", NULL, "too many arguments");
 		return (1);
 	}
 	if (!is_numeric_string(first_arg->cmd_args))
 	{
-		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", 2);
 		ft_message("exit", first_arg->cmd_args, "numeric argument required");
 		if (parent)
 			free_parent(exec, 2, NULL, NULL);
@@ -107,7 +107,7 @@ int	builtin_exit(t_exec *exec, int parent)
 			free_child(exec, 2, NULL, NULL);
 	}
 	exit_code = ft_atoi(first_arg->cmd_args);
-	// ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit\n", 2);
 	if (parent)
 		free_parent(exec, (unsigned char)exit_code, NULL, NULL);
 	else
