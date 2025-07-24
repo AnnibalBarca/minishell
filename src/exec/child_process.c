@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/21 15:18:19 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:49:06 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	execute_child(t_exec *exec, int cmd_index, char **envp)
 	close_all_pipes(exec);
 	close_child_fds(exec);
 	exec->cmd_list->args = find_first_args(exec->cmd_list->args);
-	execute_bonus(exec, envp);
+	ft_execute(exec, envp);
 }
 
 void	secure_dup(int old_fd, int new_fd, t_exec *exec)

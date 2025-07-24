@@ -13,7 +13,7 @@ SRC_EXEC =	src/exec/child_process.c	\
 			src/exec/open_files.c		\
 			src/exec/parsing_cmd.c		\
 			src/exec/parsing_exec.c		\
-			src/exec/pipex.c			\
+			src/exec/exec.c			\
 			src/exec/utils_cmd.c		\
 			src/exec/utils_cmd_struct.c	\
 
@@ -64,7 +64,7 @@ SRC_BUILTINS =	src/builtins/builtin_export.c				\
 SRC_SIGNALS = 	src/signal/signal_handlers.c		\
 				src/signal/signal_setup.c		\
 
-SRC_ALL = $(SRC_EXEC) $(SRC_UTILS) $(SRC_PARSING) $(SRC_SIGNALS) $(SRC_BUILTINS) main/mainith.c
+SRC_ALL = $(SRC_EXEC) $(SRC_UTILS) $(SRC_PARSING) $(SRC_SIGNALS) $(SRC_BUILTINS) main/mainath.c
 
 GREEN=\033[0;32m
 BLUE=\033[38;2;64;224;208m

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 15:35:27 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/23 16:12:53 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	ft_execve(t_exec *exec, char ***args_array, char **envp)
 	}
 }
 
-void	execute_bonus(t_exec *exec, char **envp)
+void	ft_execute(t_exec *exec, char **envp)
 {
 	char	**args_array;
 	int		exit_status;

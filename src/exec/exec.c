@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 14:54:15 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:56:43 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	create_pipes(t_exec *exec)
 	}
 }
 
-int	pipex(t_token *tokens, char ***envp_ptr)
+int	exec(t_token *tokens, char ***envp_ptr)
 {
 	t_exec	exec;
 	int		i;
