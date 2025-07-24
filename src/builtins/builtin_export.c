@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:58:56 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/22 10:32:24 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:51:43 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	print_export_format(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd("export ", STDOUT_FILENO);
 		j = 0;
 		while (envp[i][j] && envp[i][j] != '=')
 		{
