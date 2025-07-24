@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 15:40:29 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:35:58 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	random_filename(t_files *files)
 	unsigned char	random;
 	int				i;
 
-	if (!files || !(files->infile_name = malloc(sizeof(char) * 22)))
+	if (!files)
+		return (1);
+	files->infile_name = malloc(sizeof(char) * 22);
+	if (!files->infile_name)
 		return (1);
 	ft_strcpy(files->infile_name, "/tmp/.heredoc_");
 	urandom_fd = open("/dev/urandom", O_RDONLY);
@@ -48,6 +51,18 @@ int	random_filename(t_files *files)
 	return (0);
 }
 
+void	is_delimiter(char **temp, char *limiter)
+{
+	if (!*temp)
+	{
+		ft_putstr_fd("minishell: warning: here-document"
+			"at line 2 delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd(limiter, 2);
+		ft_putstr_fd("')\n", 2);
+	}
+	free(*temp);
+}
+
 char	*here_doc_input(t_files *files, char *limiter, int *fd,
 		char ***envp_ptr)
 {
@@ -60,15 +75,7 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd,
 		if (!temp || (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
 				&& ft_strlen(temp) == ft_strlen(limiter)))
 		{
-			if (!temp)
-			{
-				ft_putstr_fd("minishell: warning: here-document"
-								"at line 2 delimited by end-of-file (wanted `",
-								2);
-				ft_putstr_fd(limiter, 2);
-				ft_putstr_fd("')\n", 2);
-			}
-			free(temp);
+			is_delimiter(&temp, limiter);
 			break ;
 		}
 		expanded_line = expand_heredoc_line(temp, *envp_ptr);

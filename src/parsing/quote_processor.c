@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote_extracter.c                                  :+:      :+:    :+:   */
+/*   quote_processor.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:36:09 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/22 14:32:05 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:35:29 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ int	extract_quoted_content(const char **line, char quote_char,
 	(*line)++;
 	while (**line && **line != quote_char)
 	{
-		if (quote_char == '"' && **line == '\\' && 
-			(*(*line + 1) == '$' || *(*line + 1) == '"' || *(*line + 1) == '\\' || *(*line + 1) == '\n'))
+		if (quote_char == '"' && **line == '\\' && (*(*line + 1) == '$'
+				|| *(*line + 1) == '"' || *(*line + 1) == '\\' || *(*line
+					+ 1) == '\n'))
 		{
 			(*line)++;
 			if (!sb_append_char(sb, **line))

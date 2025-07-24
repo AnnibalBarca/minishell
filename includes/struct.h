@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:40:29 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:21:48 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,5 @@ typedef struct s_exec_list_builder_state
 	t_list			*temp_arg_list;
 	int				build_status;
 }					t_exec_list_builder_state;
-
-extern int			g_signal_status;
 
 #endif

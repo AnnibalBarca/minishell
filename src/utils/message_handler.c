@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   messaging_utils.c                                  :+:      :+:    :+:   */
+/*   message_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 16:12:09 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/14 09:57:03 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:13:45 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,10 @@ void	ft_message(char *command, char *arg, char *error)
 	if (error)
 		ft_putstr_fd(error, STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);
+}
+
+int	ft_return_message(char *command, char *arg, char *error, int status)
+{
+	ft_message(command, arg, error);
+	return (status);
 }

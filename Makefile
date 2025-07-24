@@ -10,12 +10,15 @@ DEPS = $(OBJ:.o=.d)
 SRC_EXEC =	src/exec/child_process.c	\
 			src/exec/exec_cmd.c			\
 			src/exec/here_doc.c			\
-			src/exec/open_files.c		\
 			src/exec/parsing_cmd.c		\
 			src/exec/parsing_exec.c		\
 			src/exec/exec.c			\
 			src/exec/utils_cmd.c		\
 			src/exec/utils_cmd_struct.c	\
+			src/exec/open_infiles.c		\
+			src/exec/open_outfiles.c	\
+			src/exec/find_path.c		\
+			src/exec/redirections.c		\
 
 SRC_PARSING =	src/parsing/variable_expander.c		\
 				src/parsing/token_expander.c			\
