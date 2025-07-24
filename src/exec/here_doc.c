@@ -6,14 +6,15 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/24 14:35:58 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:18:59 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	free_infile_name(t_files *files)
+int	ft_read_error(t_files *files, int *urandom_fd)
 {
+	safe_close(urandom_fd);
 	free(files->infile_name);
 	files->infile_name = NULL;
 	return (1);
@@ -39,10 +40,7 @@ int	random_filename(t_files *files)
 	{
 		if (read(urandom_fd, &random, 1) < 0)
 		{
-			safe_close(&urandom_fd);
-			free(files->infile_name);
-			files->infile_name = NULL;
-			return (1);
+			return (ft_read_error(files, &urandom_fd));
 		}
 		files->infile_name[i++] = CHARSET[random % (sizeof(CHARSET) - 1)];
 	}

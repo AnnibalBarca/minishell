@@ -19,6 +19,7 @@ SRC_EXEC =	src/exec/child_process.c	\
 			src/exec/open_outfiles.c	\
 			src/exec/find_path.c		\
 			src/exec/redirections.c		\
+			src/exec/exec_builtin.c		\
 
 SRC_PARSING =	src/parsing/variable_expander.c		\
 				src/parsing/token_expander.c			\

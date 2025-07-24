@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parent_cleanup.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 20:03:17 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:51:52 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:31:09 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ static void	restore_parent_fds(t_exec *exec)
 {
 	if (exec->stdin_backup != -1)
 	{
-		dup2(exec->stdin_backup, STDIN_FILENO);
-		safe_close(&exec->stdin_backup);
+		dup_and_close(&exec->stdin_backup, STDIN_FILENO);
 		exec->stdin_backup = -1;
 	}
 	if (exec->stdout_backup != -1)
 	{
-		dup2(exec->stdout_backup, STDOUT_FILENO);
-		safe_close(&exec->stdout_backup);
+		dup_and_close(&exec->stdout_backup, STDOUT_FILENO);
 		exec->stdout_backup = -1;
 	}
 }
