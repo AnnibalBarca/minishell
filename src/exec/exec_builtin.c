@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 15:35:41 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/24 15:37:00 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:03:13 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int	check_input_and_output(t_exec *exec, int *saved_stdin, int *saved_stdout)
 
 int	execute_single_builtin_in_parent(t_exec *exec, char ***envp_ptr)
 {
-	int saved_stdin;
-	int saved_stdout;
-	int exit_status;
+	int	saved_stdin;
+	int	saved_stdout;
+	int	exit_status;
 
 	saved_stdin = -1;
 	saved_stdout = -1;
