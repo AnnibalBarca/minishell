@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:57:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 13:21:45 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:34:57 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,18 @@ int	is_directory(t_exec *exec)
 	{
 		if (access(cmd_path, F_OK) == -1)
 		{
-			ft_message(NULL, cmd_path, "No such file or directory");
-			return (127);
+			return (ft_return_message(NULL, cmd_path,
+					"No such file or directory", 127));
 		}
 		if (stat(cmd_path, &st) == 0 && S_ISDIR(st.st_mode))
 		{
-			ft_message(NULL, cmd_path, "Is a directory");
-			return (126);
+			return (ft_return_message(NULL, cmd_path, "Is a directory", 126));
 		}
 		if (access(cmd_path, X_OK) == -1)
 		{
-			ft_message(NULL, cmd_path, "Permission denied");
-			return (126);
+			return (ft_return_message(NULL, cmd_path, "Permission denied",
+					126));
 		}
-		return (0);
 	}
 	return (0);
 }
@@ -84,58 +82,6 @@ int	is_builtin(t_args *cmd)
 	if (ft_strcmp(cmd->cmd_args, "exit") == 0)
 		return (1);
 	return (0);
-}
-
-int	execute_single_builtin_in_parent(t_exec *exec, char ***envp_ptr)
-{
-	int	saved_stdin;
-	int	saved_stdout;
-	int	exit_status;
-
-	saved_stdin = -1;
-	saved_stdout = -1;
-	if (!exec || !exec->cmd_list || !exec->cmd_list->args
-		|| !exec->cmd_list->args->cmd_args)
-		return (0);
-	struct_open_infile(exec);
-	struct_open_outfile(exec);
-	if (exec->cmd_list->fd_input == -2 || exec->cmd_list->fd_output == -2)
-		return (1);
-	if (exec->cmd_list->fd_input != -1)
-	{
-		saved_stdin = dup(STDIN_FILENO);
-		if (saved_stdin == -1)
-			return (1);
-		dup2(exec->cmd_list->fd_input, STDIN_FILENO);
-		safe_close(&exec->cmd_list->fd_input);
-	}
-	if (exec->cmd_list->fd_output != -1)
-	{
-		saved_stdout = dup(STDOUT_FILENO);
-		if (saved_stdout == -1)
-		{
-			if (saved_stdin != -1)
-			{
-				dup2(saved_stdin, STDIN_FILENO);
-				safe_close(&saved_stdin);
-			}
-			return (1);
-		}
-		dup2(exec->cmd_list->fd_output, STDOUT_FILENO);
-		safe_close(&exec->cmd_list->fd_output);
-	}
-	exit_status = execute_builtin(exec, envp_ptr);
-	if (saved_stdin != -1)
-	{
-		dup2(saved_stdin, STDIN_FILENO);
-		safe_close(&saved_stdin);
-	}
-	if (saved_stdout != -1)
-	{
-		dup2(saved_stdout, STDOUT_FILENO);
-		safe_close(&saved_stdout);
-	}
-	return (exit_status);
 }
 
 int	execute_builtin_in_child(t_exec *exec, char **envp)

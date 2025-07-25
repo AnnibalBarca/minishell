@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 15:40:29 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:18:59 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	free_infile_name(t_files *files)
+int	ft_read_error(t_files *files, int *urandom_fd)
 {
+	safe_close(urandom_fd);
 	free(files->infile_name);
 	files->infile_name = NULL;
 	return (1);
@@ -25,7 +26,10 @@ int	random_filename(t_files *files)
 	unsigned char	random;
 	int				i;
 
-	if (!files || !(files->infile_name = malloc(sizeof(char) * 22)))
+	if (!files)
+		return (1);
+	files->infile_name = malloc(sizeof(char) * 22);
+	if (!files->infile_name)
 		return (1);
 	ft_strcpy(files->infile_name, "/tmp/.heredoc_");
 	urandom_fd = open("/dev/urandom", O_RDONLY);
@@ -36,16 +40,25 @@ int	random_filename(t_files *files)
 	{
 		if (read(urandom_fd, &random, 1) < 0)
 		{
-			safe_close(&urandom_fd);
-			free(files->infile_name);
-			files->infile_name = NULL;
-			return (1);
+			return (ft_read_error(files, &urandom_fd));
 		}
 		files->infile_name[i++] = CHARSET[random % (sizeof(CHARSET) - 1)];
 	}
 	files->infile_name[21] = '\0';
 	safe_close(&urandom_fd);
 	return (0);
+}
+
+void	is_delimiter(char **temp, char *limiter)
+{
+	if (!*temp)
+	{
+		ft_putstr_fd("minishell: warning: here-document"
+			"at line 2 delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd(limiter, 2);
+		ft_putstr_fd("')\n", 2);
+	}
+	free(*temp);
 }
 
 char	*here_doc_input(t_files *files, char *limiter, int *fd,
@@ -60,15 +73,7 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd,
 		if (!temp || (ft_strncmp(temp, limiter, ft_strlen(limiter)) == 0
 				&& ft_strlen(temp) == ft_strlen(limiter)))
 		{
-			if (!temp)
-			{
-				ft_putstr_fd("minishell: warning: here-document"
-								"at line 2 delimited by end-of-file (wanted `",
-								2);
-				ft_putstr_fd(limiter, 2);
-				ft_putstr_fd("')\n", 2);
-			}
-			free(temp);
+			is_delimiter(&temp, limiter);
 			break ;
 		}
 		expanded_line = expand_heredoc_line(temp, *envp_ptr);

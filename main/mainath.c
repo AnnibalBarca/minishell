@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mainath.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:40:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 15:40:29 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:27:57 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ static void	minishell(t_token *tokens, char *line, char ***env_ptr)
 		tokens = parse_complete_input(line, *env_ptr, exit_status);
 	if (tokens)
 	{
-		exit_status = pipex(tokens, env_ptr);
+		exit_status = exec(tokens, env_ptr);
 		g_signal_status = exit_status;
 		free_token_list(tokens);
 	}
 	else
-		g_signal_status = 2;
+		g_signal_status = exit_status;
 }
 
 void	ft_readline(t_token *tokens, char ***env_ptr)
@@ -65,7 +65,7 @@ void	ft_readline(t_token *tokens, char ***env_ptr)
 	while (1)
 	{
 		rl_done = 0;
-		line = readline("\033[1;32mminishell$\033[0m ");
+		line = readline("minishell$ ");
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);

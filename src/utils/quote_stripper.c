@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_stripper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:49:12 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:51:55 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:34:47 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static int	process_heredoc_char(t_str_builder *sb, const char **ip,
 			return (0);
 		(*ip)++;
 	}
-	else if (*current_quote == '"' && **ip == '\\' && 
-			(*(*ip + 1) == '$' || *(*ip + 1) == '"' || *(*ip + 1) == '\\' || *(*ip + 1) == '\n'))
+	else if (*current_quote == '"' && **ip == '\\' && (*(*ip + 1) == '$'
+			|| *(*ip + 1) == '"' || *(*ip + 1) == '\\' || *(*ip + 1) == '\n'))
 	{
 		(*ip)++;
 		if (!sb_append_char(sb, **ip))
@@ -65,9 +65,9 @@ static int	process_heredoc_char(t_str_builder *sb, const char **ip,
 
 char	*expand_heredoc_line(const char *line, char **envp)
 {
-	t_str_builder sb;
-	const char *ip;
-	char current_quote;
+	t_str_builder	sb;
+	const char		*ip;
+	char			current_quote;
 
 	if (!line)
 		return (NULL);

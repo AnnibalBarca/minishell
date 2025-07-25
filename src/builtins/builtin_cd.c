@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:40:19 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/18 13:10:25 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:00:53 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static char	*find_directory(t_args *args, char **env)
 	t_args	*first_arg;
 
 	first_arg = args->next;
-	if (!first_arg || ft_strcmp(first_arg->cmd_args, "~") == 0)
+	if (!first_arg || ft_strcmp(first_arg->cmd_args, "~") == 0
+		|| ft_strcmp(first_arg->cmd_args, "~/") == 0)
 	{
 		target = find_env_var(env, "HOME");
 		if (!target)
@@ -89,6 +90,33 @@ static char	*find_directory(t_args *args, char **env)
 		return (ft_strdup(first_arg->cmd_args));
 }
 
+int	error_dir(t_args *args, char **target_dir, char **old_pwd, char ***env_ptr)
+{
+	*target_dir = find_directory(args, *env_ptr);
+	if (!*target_dir)
+	{
+		if (*old_pwd)
+			free(*old_pwd);
+		return (1);
+	}
+	if (chdir(*target_dir) == -1)
+	{
+		if (errno == ENOENT)
+			ft_message("cd", *target_dir, "No such file or directory");
+		else if (errno == EACCES)
+			ft_message("cd", *target_dir, "Permission denied");
+		else if (errno == ENOTDIR)
+			ft_message("cd", *target_dir, "Not a directory");
+		else
+			ft_message("cd", *target_dir, strerror(errno));
+		free(*target_dir);
+		if (*old_pwd)
+			free(*old_pwd);
+		return (1);
+	}
+	return (0);
+}
+
 int	builtin_cd(t_args *args, char ***env_ptr)
 {
 	char	*target_dir;
@@ -103,37 +131,14 @@ int	builtin_cd(t_args *args, char ***env_ptr)
 	else
 		second_arg = NULL;
 	if (first_arg && second_arg)
-	{
-		ft_message("cd", NULL, "too many arguments");
-		return (1);
-	}
+		ft_return_message("cd", NULL, "too many arguments", 1);
 	old_pwd = find_env_var(*env_ptr, "PWD");
 	if (old_pwd)
 		old_pwd = ft_strdup(old_pwd);
 	else
 		old_pwd = NULL;
-	target_dir = find_directory(args, *env_ptr);
-	if (!target_dir)
-	{
-		if (old_pwd)
-			free(old_pwd);
+	if (error_dir(args, &target_dir, &old_pwd, env_ptr) == 1)
 		return (1);
-	}
-	if (chdir(target_dir) == -1)
-	{
-		if (errno == ENOENT)
-			ft_message("cd", target_dir, "No such file or directory");
-		else if (errno == EACCES)
-			ft_message("cd", target_dir, "Permission denied");
-		else if (errno == ENOTDIR)
-			ft_message("cd", target_dir, "Not a directory");
-		else
-			ft_message("cd", target_dir, strerror(errno));
-		free(target_dir);
-		if (old_pwd)
-			free(old_pwd);
-		return (1);
-	}
 	result = update_pwd_variables(env_ptr, old_pwd);
 	free(target_dir);
 	if (old_pwd)

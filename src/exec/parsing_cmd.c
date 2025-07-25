@@ -6,13 +6,14 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:27:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 10:54:48 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:02:05 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-t_files	*append_infile_node(t_files *current, char *value, int heredoc, char ***envp_ptr)
+t_files	*append_infile_node(t_files *current, char *value, int heredoc,
+		char ***envp_ptr)
 {
 	t_files	*new_node;
 	t_files	*last;
@@ -109,19 +110,13 @@ t_cmd	*parsing_cmd(t_token *tokens, char ***envp_ptr)
 	{
 		cmd = parse_commands(&tokens, &cmd, envp_ptr);
 		if (!cmd)
-		{
-			free_cmd_list(head, 0);
-			return (NULL);
-		}
+			return (free_parsing_cmd(&head));
 		if (tokens && tokens->type == T_PIPE)
 		{
 			tokens = tokens->next;
 			cmd = append_cmd_node(cmd);
 			if (!cmd)
-			{
-				free_cmd_list(head, 0);
-				return (NULL);
-			}
+				return (free_parsing_cmd(&head));
 		}
 	}
 	return (head);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:52:23 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:35:17 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ t_token	*expand_tokens(t_token *tokens, char **envp, int exit_status)
 			if (prev && prev->type == T_HEREDOC)
 			{
 				op_copy = ft_strdup(current->value);
-				if (!op_copy || !create_and_append_token(&expanded_head, op_copy,
-						current->type, current->quote))
+				if (!op_copy || !create_and_append_token(&expanded_head,
+						op_copy, current->type, current->quote))
 					return (free_token_list_and_return_null(expanded_head));
 			}
 			else

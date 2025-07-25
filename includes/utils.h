@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 15:44:01 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:36:49 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,10 @@ char	*find_env_value(char **envp, const char *name);
 int		set_env_var(char ***env_ptr, char *name, char *value);
 void	safe_close(int *fd);
 char	*expand_heredoc_line(const char *line, char **envp);
+void	free_pipes(t_exec *exec, int failed_index);
+t_cmd	*free_parsing_cmd(t_cmd **head);
+int		ft_return_message(char *command, char *arg, char *error, int status);
+int		free_infile_name(t_files *files);
+void	dup_and_close(int *fd, int std);
 
 #endif

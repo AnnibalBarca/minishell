@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:46:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 12:32:26 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:58:49 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 void	child_process(t_exec *exec, int cmd_index, char **envp);
 char	*here_doc(t_files *files, char *limiter, char ***envp_ptr);
 void	find_path(t_exec *exec, char *cmd);
-void	execute_bonus(t_exec *exec, char **envp);
-int		pipex(t_token *tokens, char ***envp_ptr);
+void	ft_execute(t_exec *exec, char **envp);
+int		exec(t_token *tokens, char ***envp_ptr);
 int		open_here_doc(t_files *files);
 void	struct_open_infile(t_exec *exec);
 void	struct_open_outfile(t_exec *exec);
