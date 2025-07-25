@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 11:37:24 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:52:12 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:04:19 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,24 @@ int	set_env_var(char ***env_ptr, char *name, char *value)
 		return (replace_env_var(env_ptr, var_index, name, value));
 	else
 		return (add_new_env_var(env_ptr, name, value, 0));
+}
+
+void	remove_env_variable(char ***env_ptr, const char *name)
+{
+	int	index;
+	int	i;
+
+	if (!env_ptr || !*env_ptr || !name)
+		return ;
+	index = find_env_index(*env_ptr, name);
+	if (index == -1)
+		return ;
+	free((*env_ptr)[index]);
+	i = index;
+	while ((*env_ptr)[i + 1])
+	{
+		(*env_ptr)[i] = (*env_ptr)[i + 1];
+		i++;
+	}
+	(*env_ptr)[i] = NULL;
 }

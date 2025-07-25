@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/25 11:12:53 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:04:37 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ t_cmd	*free_parsing_cmd(t_cmd **head);
 int		ft_return_message(char *command, char *arg, char *error, int status);
 int		free_infile_name(t_files *files);
 void	dup_and_close(int *fd, int std);
+void	remove_env_variable(char ***env_ptr, const char *name);
 
 #endif

@@ -6,31 +6,11 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:40:19 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/24 16:00:53 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:04:05 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-void	remove_env_variable(char ***env_ptr, const char *name)
-{
-	int	index;
-	int	i;
-
-	if (!env_ptr || !*env_ptr || !name)
-		return ;
-	index = find_env_index(*env_ptr, name);
-	if (index == -1)
-		return ;
-	free((*env_ptr)[index]);
-	i = index;
-	while ((*env_ptr)[i + 1])
-	{
-		(*env_ptr)[i] = (*env_ptr)[i + 1];
-		i++;
-	}
-	(*env_ptr)[i] = NULL;
-}
 
 static int	update_pwd_variables(char ***env_ptr, char *old_pwd)
 {
@@ -53,11 +33,25 @@ static int	update_pwd_variables(char ***env_ptr, char *old_pwd)
 	return (0);
 }
 
+char	*old_dir(char *target, char **env)
+{
+	target = find_env_var(env, "OLDPWD");
+	if (!target)
+	{
+		ft_message("cd", NULL, "OLDPWD not set");
+		return (NULL);
+	}
+	ft_putstr_fd(target, STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	return (ft_strdup(target));
+}
+
 static char	*find_directory(t_args *args, char **env)
 {
 	char	*target;
 	t_args	*first_arg;
 
+	target = NULL;
 	first_arg = args->next;
 	if (!first_arg || ft_strcmp(first_arg->cmd_args, "~") == 0
 		|| ft_strcmp(first_arg->cmd_args, "~/") == 0)
@@ -75,17 +69,7 @@ static char	*find_directory(t_args *args, char **env)
 		return (ft_strdup("."));
 	}
 	else if (ft_strcmp(first_arg->cmd_args, "-") == 0)
-	{
-		target = find_env_var(env, "OLDPWD");
-		if (!target)
-		{
-			ft_message("cd", NULL, "OLDPWD not set");
-			return (NULL);
-		}
-		ft_putstr_fd(target, STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		return (ft_strdup(target));
-	}
+		return (old_dir(target, env));
 	else
 		return (ft_strdup(first_arg->cmd_args));
 }

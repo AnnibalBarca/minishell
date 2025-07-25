@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:42:23 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/25 11:11:20 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/25 12:05:23 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	handle_syntax_error(t_syntax_result *result)
 	}
 }
 
-void	*cleanup_parsing_and_return_null(t_syntax_result *result, char *error_msg)
+void	*cleanup_parsing_and_return_null(t_syntax_result *result,
+		char *error_msg)
 {
 	if (error_msg)
 		ft_putstr_fd(error_msg, STDERR_FILENO);
