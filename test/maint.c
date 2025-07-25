@@ -94,7 +94,7 @@ static int	execute_command_string(char *command, char ***env_copy_ptr)
 			input_copy = ft_strdup(trimmed);
 			if (input_copy)
 			{
-				tokens = parse_complete_input(&input_copy, *env_copy_ptr,
+				tokens = parse_complete_input(input_copy, *env_copy_ptr,
 						exit_status);
 				if (tokens)
 				{

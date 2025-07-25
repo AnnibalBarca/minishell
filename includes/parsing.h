@@ -42,8 +42,7 @@ t_token			*process_complete_syntax(t_syntax_result syntax_result,
 					char **envp, int exit_status);
 void			handle_syntax_error(t_syntax_result *result);
 t_token			*free_token_list_and_return_null(t_token *list);
-t_token			*parse_complete_input(char **accumulated_input, char **envp,
-					int exit_status);
+t_token			*parse_complete_input(char *line, char **envp, int exit_status);
 void			free_token_list(t_token *list);
 int				process_expansion(t_str_builder *sb, const char **ip,
 					char **envp, int last_exit_status);

@@ -47,7 +47,7 @@ static void	minishell(t_token *tokens, char *line, char ***env_ptr)
 		g_signal_test = 0;
 	}
 	if (line)
-		tokens = parse_complete_input(&line, *env_ptr, exit_status);
+		tokens = parse_complete_input(line, *env_ptr, exit_status);
 	if (tokens)
 	{
 		exit_status = pipex(tokens, env_ptr);
