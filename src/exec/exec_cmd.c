@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:47:43 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/28 13:29:55 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:40:02 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void	ft_execute(t_exec *exec, char **envp)
 	int		exit_status;
 	int		dir_result;
 
-	if (!exec->cmd_list->args || !exec->cmd_list->args->cmd_args)
-		free_child(exec, 127, NULL, NULL);
 	if (exec->cmd_list->fd_input == -2 || exec->cmd_list->fd_output == -2)
 		exit(1);
 	dir_result = is_directory(exec);

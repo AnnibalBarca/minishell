@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/24 13:24:29 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:40:09 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,8 @@ void	execute_child(t_exec *exec, int cmd_index, char **envp)
 	close_all_pipes(exec);
 	close_child_fds(exec);
 	exec->cmd_list->args = find_first_args(exec->cmd_list->args);
+	if (!exec->cmd_list->args || !exec->cmd_list->args->cmd_args
+		|| !*exec->cmd_list->args->cmd_args)
+		free_child(exec, 127, "", "command not found");
 	ft_execute(exec, envp);
 }

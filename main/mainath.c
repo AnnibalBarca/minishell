@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:40:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/28 13:42:50 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 13:52:34 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	main(int ac, char **av, char **envp)
 	{
 		setup_interactive_signals();
 		ft_readline(tokens, &env_copy);
-		// fprintf(stderr, "%d\n", g_signal_status);
 		ft_freesplit(env_copy);
 		return (g_signal_status);
 	}

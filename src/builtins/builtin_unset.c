@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:14 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:35:22 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:24:48 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	builtin_unset(t_args *args, char ***env_ptr)
 	while (current)
 	{
 		if (!is_valid_var_name(current->cmd_args))
-			exit_status = 1;
+			exit_status = 0;
 		else
 		{
 			result = remove_env_var_return(env_ptr, current->cmd_args);
