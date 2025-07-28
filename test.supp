@@ -1,8 +1,6 @@
 {
-   readline_leak
+   Readline_All_Functions
    Memcheck:Leak
-   match-leak-kinds: definite
-   fun:malloc
    ...
-   fun:readline
+   obj:*/libreadline.so*
 }
