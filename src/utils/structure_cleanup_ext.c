@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure_cleanup_ext.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:11:14 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/23 15:52:08 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/28 13:32:31 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ void	free_cmd_list(t_cmd *cmd_list, int is_parent)
 
 void	cleanup_cmd_list(t_exec *exec, int parent)
 {
+	if (!parent)
+	{
+		if (exec->envp_exists == 1 && exec->envp)
+		{
+			free_split(exec->envp);
+			exec->envp = NULL;
+		}
+	}
 	if (exec->cmd_list)
 	{
 		exec->cmd_list = find_first_cmd(exec->cmd_list);

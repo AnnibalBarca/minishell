@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mainath.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:40:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/28 13:42:50 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/25 11:11:10 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,25 @@
 #include "signals.h"
 
 int			g_signal_status = 0;
+
+// int	handle_signals(int new_signal, int from_command)
+// {
+// 	int	result;
+
+// 	if (!from_command)
+// 	{
+// 		g_signal_status = new_signal;
+// 		return (new_signal);
+// 	}
+// 	if (g_signal_status && new_signal == 0)
+// 	{
+// 		result = g_signal_status;
+// 		g_signal_status = 0;
+// 		return (result);
+// 	}
+// 	g_signal_status = new_signal;
+// 	return (new_signal);
+// }
 
 static void	minishell(t_token *tokens, char *line, char ***env_ptr)
 {
@@ -67,8 +86,8 @@ void	ft_readline(t_token *tokens, char ***env_ptr)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	**env_copy;
-	t_token	*tokens;
+	char **env_copy;
+	t_token *tokens;
 
 	(void)av;
 	tokens = NULL;
@@ -79,7 +98,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		setup_interactive_signals();
 		ft_readline(tokens, &env_copy);
-		// fprintf(stderr, "%d\n", g_signal_status);
+		//fprintf(stderr, "%d\n", g_signal_status);
 		ft_freesplit(env_copy);
 		return (g_signal_status);
 	}
