@@ -6,15 +6,16 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:58:59 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/28 16:31:57 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:34:50 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int is_argument(t_args *args)
+int	is_argument(t_args *args)
 {
-	if (args && args->next && args->next->cmd_args && args->next->cmd_args[0] != '-')
+	if (args && args->next && args->next->cmd_args
+		&& args->next->cmd_args[0] != '-')
 	{
 		ft_putstr_fd("env: arguments not accepted\n", 2);
 		return (1);
@@ -22,9 +23,10 @@ int is_argument(t_args *args)
 	return (0);
 }
 
-int is_option(t_args *args)
+int	is_option(t_args *args)
 {
-	if (args && args->next && args->next->cmd_args && args->next->cmd_args[0] == '-')
+	if (args && args->next && args->next->cmd_args
+		&& args->next->cmd_args[0] == '-')
 	{
 		ft_putstr_fd("env: invalid option -- '", 2);
 		ft_putchar_fd(args->next->cmd_args[1], 2);
