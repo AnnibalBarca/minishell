@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:07:53 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/25 12:04:37 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:57:01 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@
 void	cleanup_child_resources(t_exec *exec);
 void	free_child(t_exec *exec, int status, char *str1, char *str2);
 void	free_parent(t_exec *exec, int status, char *str1, char *str2);
-void	reset_exec_state(t_exec *exec);
 void	ft_message(char *command, char *arg, char *error);
-int		usage(void);
 void	free_split(char **arr);
 int		find_size(t_token *lst);
-int		usage(void);
 void	free_split(char **arr);
 t_cmd	*find_last_cmd(t_cmd *lst);
 t_args	*find_last_args(t_args *lst);

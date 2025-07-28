@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 18:36:22 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/24 13:21:48 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:56:04 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,6 @@ typedef enum e_parse_result
 	PARSE_ERROR = -1,
 	PARSE_SUCCESS = 1
 }					t_parse_result;
-
-typedef enum e_parser_state
-{
-	STATE_START,
-	STATE_EXPECT_COMMAND,
-	STATE_EXPECT_ARG,
-	STATE_EXPECT_FILENAME
-}					e_parser_state;
 
 typedef struct s_str_builder
 {
@@ -108,12 +100,6 @@ typedef enum e_type
 	FD1
 }					t_type;
 
-typedef enum e_env
-{
-	NO_ENV,
-	ENV
-}					t_env;
-
 typedef struct s_args
 {
 	char			*cmd_args;
@@ -157,14 +143,5 @@ typedef struct s_exec
 	int				stdout_backup;
 	int				has_input_error;
 }					t_exec;
-
-typedef struct s_exec_list_builder_state
-{
-	t_token			*current_token;
-	t_exec			*list_head;
-	t_exec			*current_exec_node;
-	t_list			*temp_arg_list;
-	int				build_status;
-}					t_exec_list_builder_state;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/25 11:11:15 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:56:23 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int				should_expand_variable(char current_char, char next_char,
 					t_quote quote_type);
 int				is_valid_var_char(char c);
 char			**perform_field_splitting(const char *str, const char *sep_val);
-int				handle_glob_matches(char **glob_matches, t_token **head,
-					char **fields);
 t_token			*process_complete_syntax(t_syntax_result syntax_result,
 					char **envp, int exit_status);
 void			handle_syntax_error(t_syntax_result *result);
