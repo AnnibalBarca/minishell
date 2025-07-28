@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:58:56 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/28 15:31:13 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:01:50 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,17 @@ static int	export_with_value(char *name, char *value, char *original_arg,
 		ft_putstr_fd("minishell: export: -", 2);
 		ft_putchar_fd(name[1], 2);
 		ft_putstr_fd(": invalid option\n", 2);
-		return (0);
+		return (2);
 	}
-	if (!is_valid_var_name(name))
+	if (!is_valid_var_name(name) && name[1] != 'p' && name[1] != 'f'
+		&& name[1] != 'n')
 	{
 		ft_message("export", original_arg, "not a valid identifier");
-		return (0);
+		return (1);
 	}
 	if (set_env_var(env_ptr, name, value) != 0)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 static int	export_without_value(char *name, char ***env_ptr)
@@ -41,19 +42,19 @@ static int	export_without_value(char *name, char ***env_ptr)
 		ft_putstr_fd("minishell: export: -", 2);
 		ft_putchar_fd(name[1], 2);
 		ft_putstr_fd(": invalid option\n", 2);
-		return (0);
+		return (2);
 	}
 	if (!is_valid_var_name(name))
 	{
 		ft_message("export", name, "not a valid identifier");
-		return (0);
+		return (1);
 	}
 	existing_index = find_env_index(*env_ptr, name);
 	if (existing_index != -1)
-		return (1);
-	if (set_env_var(env_ptr, name, "") != 0)
 		return (0);
-	return (1);
+	if (set_env_var(env_ptr, name, "") != 0)
+		return (1);
+	return (0);
 }
 
 static int	process_export_arg(char *arg, char ***env_ptr)
@@ -120,8 +121,7 @@ int	builtin_export(t_args *args, char ***env_ptr)
 	current = args->next;
 	while (current)
 	{
-		if (!process_export_arg(current->cmd_args, env_ptr))
-			exit_status = 1;
+		exit_status = process_export_arg(current->cmd_args, env_ptr);
 		current = current->next;
 	}
 	return (exit_status);

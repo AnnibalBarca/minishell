@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:57:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/28 14:27:40 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:09:37 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ int	execute_builtin(t_exec *exec, char ***envp_ptr)
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "cd") == 0)
 		return (builtin_cd(exec->cmd_list->args, envp_ptr));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "pwd") == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(exec->cmd_list->args));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "export") == 0)
 		return (builtin_export(exec->cmd_list->args, envp_ptr));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "unset") == 0)
 		return (builtin_unset(exec->cmd_list->args, envp_ptr));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "env") == 0)
-		return (builtin_env(envp_ptr));
+		return (builtin_env(exec->cmd_list->args, envp_ptr));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "exit") == 0)
 		return (builtin_exit(exec, 1));
 	else
@@ -91,9 +91,9 @@ int	execute_builtin_in_child(t_exec *exec, char **envp)
 	if (ft_strcmp(exec->cmd_list->args->cmd_args, "echo") == 0)
 		return (builtin_echo(exec->cmd_list->args));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "pwd") == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(exec->cmd_list->args));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "env") == 0)
-		return (builtin_env(&envp));
+		return (builtin_env(exec->cmd_list->args, &envp));
 	else if (ft_strcmp(exec->cmd_list->args->cmd_args, "exit") == 0)
 		return (builtin_exit(exec, 0));
 	else

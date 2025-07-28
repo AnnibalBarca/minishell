@@ -6,16 +6,23 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 19:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/06/30 20:35:22 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:55:38 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	builtin_pwd(void)
+int	builtin_pwd(t_args *args)
 {
 	char	*pwd;
 
+	if (args && args->next && args->next->cmd_args && args->next->cmd_args[0] == '-')
+	{
+		ft_putstr_fd("minishell: pwd: -", 2);
+		ft_putchar_fd(args->next->cmd_args[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		return (2);
+	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

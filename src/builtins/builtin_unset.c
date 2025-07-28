@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 18:55:14 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/28 14:24:48 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:59:21 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,18 @@ static int	remove_env_var_return(char ***env_ptr, char *name)
 	return (1);
 }
 
+int	is_valid_option(t_args *current)
+{
+	if (current->cmd_args[0] == '-')
+	{
+		ft_putstr_fd("minishell: unset: -", 2);
+		ft_putchar_fd(current->cmd_args[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
 int	builtin_unset(t_args *args, char ***env_ptr)
 {
 	int		exit_status;
@@ -45,6 +57,8 @@ int	builtin_unset(t_args *args, char ***env_ptr)
 	current = args->next;
 	while (current)
 	{
+		if (is_valid_option(current) == 1)
+			return (2);
 		if (!is_valid_var_name(current->cmd_args))
 			exit_status = 0;
 		else
