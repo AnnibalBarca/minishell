@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:39:17 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/22 10:51:12 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/29 14:28:36 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	parsing_exec(t_token *tokens, t_exec *exec, char ***envp_ptr)
 	if (!tokens || !exec)
 		return ;
 	exec->cmd_list = parsing_cmd(tokens, envp_ptr);
+	free_token_list(tokens);
+	tokens = NULL;
 	if (!exec->cmd_list)
 		return ;
 }

@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 22:58:16 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/28 14:40:09 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/29 15:48:18 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,13 @@ int	is_infile(t_exec *exec, t_files *current)
 		safe_close(&previous_input_fd);
 	if (access(current->infile_name, F_OK) == -1)
 	{
-		ft_message(NULL, current->infile_name, "No such file or directory");
-		exec->cmd_list->fd_input = -2;
+		free_child(exec, 1, current->infile_name, "No such file or directory");
 		return (1);
 	}
 	exec->cmd_list->fd_input = open(current->infile_name, O_RDONLY);
 	if (exec->cmd_list->fd_input == -1)
 	{
-		ft_message(NULL, current->infile_name, strerror(errno));
-		exec->cmd_list->fd_input = -2;
+		free_child(exec, 1, current->infile_name, strerror(errno));
 		return (1);
 	}
 	previous_input_fd = exec->cmd_list->fd_input;
@@ -58,9 +56,7 @@ int	is_outfile(t_exec *exec, t_files *current, int *previous_output_fd)
 	if (access(current->outfile_name, F_OK) == 0
 		&& access(current->outfile_name, W_OK) == -1)
 	{
-		ft_message(NULL, current->outfile_name, "Permission denied");
-		exec->cmd_list->fd_output = -2;
-		return (1);
+		free_child(exec, 1, current->outfile_name, "Permission denied");
 	}
 	flags = O_WRONLY | O_CREAT;
 	if (current->append)
@@ -70,9 +66,7 @@ int	is_outfile(t_exec *exec, t_files *current, int *previous_output_fd)
 	exec->cmd_list->fd_output = open(current->outfile_name, flags, 0644);
 	if (exec->cmd_list->fd_output == -1)
 	{
-		ft_message(NULL, current->outfile_name, strerror(errno));
-		exec->cmd_list->fd_output = -2;
-		return (1);
+		free_child(exec, 1, current->outfile_name, strerror(errno));
 	}
 	*previous_output_fd = exec->cmd_list->fd_output;
 	return (0);

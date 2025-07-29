@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 11:40:50 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/28 13:52:34 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/07/29 14:29:17 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	minishell(t_token *tokens, char *line, char ***env_ptr)
 	{
 		exit_status = exec(tokens, env_ptr);
 		g_signal_status = exit_status;
-		free_token_list(tokens);
 	}
 	else
 		g_signal_status = exit_status;
