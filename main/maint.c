@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maint.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/25 11:14:17 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/07/29 15:50:39 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ static int	execute_command_string(char *command, char ***env_copy_ptr)
 				{
 					exit_status = exec(tokens, env_copy_ptr);
 					g_signal_status = exit_status;
-					free_token_list(tokens);
 				}
 				else
 				{
