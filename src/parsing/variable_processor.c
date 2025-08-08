@@ -6,14 +6,14 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:21:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/23 15:52:20 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:36:47 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
 static char	*process_question_mark_expansion(const char **str_ptr, char **envp,
-		int last_exit_status)
+		int *last_exit_status)
 {
 	(*str_ptr)++;
 	return (get_env_var_value("?", envp, last_exit_status));
@@ -60,7 +60,7 @@ static char	*process_regular_variable_expansion(const char **str_ptr)
 }
 
 static char	*process_variable_expansion(const char **str_ptr, char **envp,
-		int last_exit_status)
+		int *last_exit_status)
 {
 	char	*var_name;
 	char	*var_value;
@@ -81,7 +81,7 @@ static char	*process_variable_expansion(const char **str_ptr, char **envp,
 }
 
 int	process_expansion(t_str_builder *sb, const char **ip, char **envp,
-		int last_exit_status)
+		int *last_exit_status)
 {
 	char	*expanded_part;
 

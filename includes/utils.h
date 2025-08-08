@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 14:20:40 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/31 16:41:45 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:31:08 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	*cleanup_parsing_and_return_null(t_syntax_result *result,
 			char *error_msg);
 void	report_syntax_error(char *near_token);
 void	handle_syntax_error(t_syntax_result *result);
-int		create_and_append_token(t_token **head, char *value1);
+int		create_and_append_token(t_token **head, char *value, t_token_type type,
+			t_quote quote_status);
 int		is_word_char(char c);
 int		is_operator_start(char c);
 void	free_token_list(t_token *list);
@@ -91,6 +92,5 @@ void	print_str_builder(const t_str_builder *sb);
 void	print_token_list(const t_token *head);
 char	*remove_outer_quotes(const char *str);
 void	print_escaped_value(const char *value);
-
 
 #endif

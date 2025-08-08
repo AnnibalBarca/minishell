@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:42:46 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/31 16:36:33 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:42:30 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ static int	handle_quoted_expansion(char *expanded_value,
 	free(expanded_value);
 	if (!final_value)
 		return (0);
-	if (!create_and_append_token(expanded_head, final_value, T_WORD))
+	if (!create_and_append_token(expanded_head, final_value, T_WORD, Q_DOUBLE))
 	{
 		free(final_value);
 		return (0);
 	}
+	// CHECKDOUBLE
 	return (1);
 }
 
@@ -100,7 +101,7 @@ static int	handle_field_split_expansion(char *expanded_value,
 }
 
 int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
-		int exit_status)
+		int *exit_status)
 {
 	char	*expanded_value;
 	int		empty_result;
@@ -116,20 +117,20 @@ int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
 		return (handle_quoted_expansion(expanded_value, expanded_head));
 	return (handle_field_split_expansion(expanded_value, expanded_head));
 }
-int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
-		int exit_status)
-{
-	char	*expanded_value;
-	int		empty_result;
+// int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
+// 		int *exit_status)
+// {
+// 	char	*expanded_value;
+// 	int		empty_result;
 
-	expanded_value = expand_heredoc_line(token->value, envp, exit_status);
-	printf("%s/n", expanded_value);
-	if (!expanded_value)
-		return (0);
-	empty_result = handle_empty_expansion(expanded_value, token, expanded_head);
-	if (empty_result != -1)
-		return (empty_result);
-	if (!should_field_split(token->quote))
-		return (handle_quoted_expansion(expanded_value, expanded_head));
-	return (handle_field_split_expansion(expanded_value, expanded_head));
-}
+// 	expanded_value = expand_heredoc_line(token->value, envp);
+// 	printf("%s/n", expanded_value);
+// 	if (!expanded_value)
+// 		return (0);
+// 	empty_result = handle_empty_expansion(expanded_value, token, expanded_head);
+// 	if (empty_result != -1)
+// 		return (empty_result);
+// 	if (!should_field_split(token->quote))
+// 		return (handle_quoted_expansion(expanded_value, expanded_head));
+// 	return (handle_field_split_expansion(expanded_value, expanded_head));
+// }

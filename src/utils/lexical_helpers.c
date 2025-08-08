@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:39:08 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/31 16:36:46 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:29:56 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ t_token	*free_token_list_and_return_null(t_token *list)
 	return (NULL);
 }
 
-int	create_and_append_token(t_token **head, char *value)
+int	create_and_append_token(t_token **head, char *value, t_token_type type,
+		t_quote quote_status)
 {
 	t_token	*new_token;
 	t_token	*current;
@@ -63,6 +64,8 @@ int	create_and_append_token(t_token **head, char *value)
 		return (0);
 	}
 	new_token->value = value;
+	new_token->type = type;
+	new_token->quote = quote_status;
 	new_token->next = NULL;
 	if (*head == NULL)
 		*head = new_token;

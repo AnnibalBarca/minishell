@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 17:50:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/29 17:53:36 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:42:41 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	process_regular_word(t_token *current, t_token **expanded_head,
 	t_expand_context *ctx)
 {
 	return (process_word_expansion(current, expanded_head, ctx->envp,
-			ctx->exit_status));
+			&ctx->exit_status));
 }
 
 int	process_word_token(t_token *current, t_token *prev,

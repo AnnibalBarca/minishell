@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 23:08:05 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/31 14:03:21 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/08 11:36:15 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	process_regular_char(t_str_builder *sb, const char **ip)
 }
 
 static int	process_quoted_expansion_single(t_str_builder *sb, const char **ip,
-		char **envp, int exit_status)
+		char **envp, int *exit_status)
 {
 	t_quote	quote_type;
 
@@ -71,7 +71,7 @@ static int	process_quoted_expansion_single(t_str_builder *sb, const char **ip,
 }
 
 static int	process_quoted_expansion_double(t_str_builder *sb, const char **ip,
-		char **envp, int exit_status)
+		char **envp, int *exit_status)
 {
 	t_quote	quote_type;
 
@@ -110,7 +110,7 @@ static int	process_quoted_expansion_double(t_str_builder *sb, const char **ip,
 }
 
 char	*expand_variables_in_str(const char *input_str, char **envp,
-		int last_exit_status)
+		int *last_exit_status)
 {
 	t_str_builder	sb;
 	const char		*ip;
