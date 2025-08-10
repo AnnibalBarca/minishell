@@ -6,19 +6,20 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 17:50:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/08 11:42:41 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/10 17:01:17 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "utils.h"
 
 int	process_heredoc_word(t_token *current, t_token **expanded_head)
 {
-	char	*op_copy;
+	char	*processed_value;
 
-	op_copy = ft_strdup(current->value);
-	if (!op_copy || !create_and_append_token(expanded_head,
-			op_copy, current->type, current->quote))
+	processed_value = remove_outer_quotes(current->value);
+	if (!processed_value || !create_and_append_token(expanded_head,
+			processed_value, current->type, Q_NONE))
 		return (0);
 	return (1);
 }

@@ -1,0 +1,16 @@
+minishell$ ECHO "-"""n""n""n""n""n""nnnnnn -n
+
+=== DEBUG: Tokens after lexical analysis ===
+[token 0] type: WORD, quote: NONE, value: 'ECHO'
+[token 1] type: WORD, quote: DOUBLE, value: '"-"""n""n""n""n""n""nnnnnn'
+[token 2] type: WORD, quote: NONE, value: '-n'
+============================================
+
+
+=== DEBUG: Tokens after lexical analysis ===
+[token 0] type: WORD, quote: NONE, value: 'ECHO'
+[token 1] type: WORD, quote: DOUBLE, value: '"-"""n""n""n""n""n""nnnnnn'
+[token 2] type: WORD, quote: NONE, value: '-n'
+============================================
+
+minishell$ exit
