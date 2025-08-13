@@ -6,7 +6,7 @@
 /*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:01:49 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/24 13:56:55 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:25:42 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,27 +59,41 @@ void	ft_childs(t_exec *exec, char ***envp_ptr)
 	}
 }
 
+void	set_status(t_exec *exec, int status)
+{
+	if (WIFEXITED(status))
+		exec->exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		exec->exit_status = 128 + WTERMSIG(status);
+}
+
 void	ft_waitpid(t_exec *exec)
 {
 	int	i;
+	int flag;
 	int	status;
 
 	i = -1;
+	flag = 0;
 	while (++i < exec->cmd_count)
 	{
 		waitpid(exec->pids[i], &status, 0);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			ft_putchar_fd('\n', 2);
+		{
+			flag = 1;
+		}
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
-			ft_putstr_fd("Quit (core dumped)\n", 2);
+		{
+			ft_putstr_fd("Quit (core dumped)", 2);
+			flag = 1;
+		}
 		if (i == exec->cmd_count - 1)
 		{
-			if (WIFEXITED(status))
-				exec->exit_status = WEXITSTATUS(status);
-			if (WIFSIGNALED(status))
-				exec->exit_status = 128 + WTERMSIG(status);
+			set_status(exec, status);
 		}
 	}
+	if (flag)
+		ft_putstr_fd("\n", 2);
 }
 
 int	exec(t_token *tokens, char ***envp_ptr)

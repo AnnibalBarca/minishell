@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 15:31:48 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/13 15:49:36 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/13 16:13:26 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ t_token	*parse_complete_input(char *line, char **envp, int *exit_status)
 	tokens = lexer(line);
 	if (!tokens)
 		return (cleanup_parsing_and_return_null(NULL, NULL));
-	printf("\n=== DEBUG: Tokens after lexical analysis ===\n");
-	print_token_list(tokens);
-	printf("============================================\n\n");
+	// printf("\n=== DEBUG: Tokens after lexical analysis ===\n");
+	// print_token_list(tokens);
+	// printf("============================================\n\n");
 	syntax_result = analyze_syntax(tokens);
 	return (handle_syntax_processing(&syntax_result, envp, exit_status));
 }

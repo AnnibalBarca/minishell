@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maint.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:00:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/31 14:30:17 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/13 16:16:22 by nagaudey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,7 @@ static char	*get_input_line(void)
 static void	interactive_mode(char ***env_copy_ptr)
 {
 	char	*input;
-	int		exit_status;
 
-	exit_status = g_signal_status;
 	setup_interactive_signals();
 	while (1)
 	{
@@ -159,8 +157,7 @@ static void	interactive_mode(char ***env_copy_ptr)
 		if (g_signal_status)
 		{
 			if (g_signal_status == 130)
-				exit_status = 130;
-			g_signal_status = 0;
+				g_signal_status = 0;
 		}
 		if (isatty(fileno(stdin)))
 			add_history(input);
