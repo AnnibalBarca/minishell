@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_tokenizer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 11:27:45 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/30 18:35:25 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/08/13 15:28:57 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static t_quote	determine_quote_type(int has_single, int has_double,
 	int	quote_types;
 
 	quote_types = has_single + has_double + has_unquoted;
+	if (quote_types > 1)
+		return (Q_MIXED);
 	if (has_single)
 		return (Q_SINGLE);
 	if (has_double)
