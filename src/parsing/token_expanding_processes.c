@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expanding_processes.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 17:50:04 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/10 17:01:17 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:50:11 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	process_heredoc_word(t_token *current, t_token **expanded_head)
 
 	processed_value = remove_outer_quotes(current->value);
 	if (!processed_value || !create_and_append_token(expanded_head,
-			processed_value, current->type, Q_NONE))
+			processed_value, current->type))
 		return (0);
 	return (1);
 }
@@ -46,7 +46,7 @@ int	process_non_word_token(t_token *current, t_token **expanded_head)
 
 	op_copy = ft_strdup(current->value);
 	if (!op_copy || !create_and_append_token(expanded_head, op_copy,
-			current->type, Q_NONE))
+			current->type))
 		return (0);
 	return (1);
 }

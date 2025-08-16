@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_stripper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 13:49:12 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/08 11:40:30 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:50:11 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 static int	handle_variable_expansion(t_str_builder *sb, const char **ip,
 		char **envp)
 {
-	if (should_expand_variable(**ip, *(*ip + 1), Q_DOUBLE)
-		|| should_expand_variable(**ip, *(*ip + 1), Q_NONE))
+	if (should_expand_variable(**ip, *(*ip + 1)))
 	{
 		if (!process_expansion(sb, ip, envp, 0))
 			return (0);

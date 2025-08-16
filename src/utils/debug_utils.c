@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 14:30:00 by almeekel          #+#    #+#             */
-/*   Updated: 2025/07/31 14:19:31 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:50:11 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,6 @@ static const char	*get_token_type_name(t_token_type type)
 	return ("UNKNOWN");
 }
 
-static const char	*get_quote_type_name(t_quote quote)
-{
-	if (quote == Q_NONE)
-		return ("NONE");
-	if (quote == Q_SINGLE)
-		return ("SINGLE");
-	if (quote == Q_DOUBLE)
-		return ("DOUBLE");
-	return ("UNKNOWN");
-}
-
 void	print_token(const t_token *token, int index)
 {
 	if (!token)
@@ -48,10 +37,9 @@ void	print_token(const t_token *token, int index)
 		printf("[token %d] NULL\n", index);
 		return ;
 	}
-	printf("[token %d] type: %s, quote: %s, value: '%s'\n",
+	printf("[token %d] type: %s, value: '%s'\n",
 		index,
 		get_token_type_name(token->type),
-		get_quote_type_name(token->quote),
 		token->value ? token->value : "(null)");
 }
 

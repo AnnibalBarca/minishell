@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expander.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:42:46 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/08 11:42:30 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:54:24 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 static int	handle_empty_expansion(char *expanded_value, t_token *token,
 		t_token **expanded_head)
 {
-	if (!*expanded_value && token->quote != Q_NONE)
+	if (!*expanded_value && token_has_quotes(token->value))
 	{
-		if (!create_and_append_token(expanded_head, expanded_value, T_WORD,
-				Q_NONE))
+		if (!create_and_append_token(expanded_head, expanded_value, T_WORD))
 		{
 			free(expanded_value);
 			return (0);
@@ -42,12 +41,11 @@ static int	handle_quoted_expansion(char *expanded_value,
 	free(expanded_value);
 	if (!final_value)
 		return (0);
-	if (!create_and_append_token(expanded_head, final_value, T_WORD, Q_DOUBLE))
+	if (!create_and_append_token(expanded_head, final_value, T_WORD))
 	{
 		free(final_value);
 		return (0);
 	}
-	// CHECKDOUBLE
 	return (1);
 }
 
@@ -62,7 +60,7 @@ static int	add_expanded_tokens(char **fields, t_token **head)
 		field_copy = ft_strdup(fields[i]);
 		if (!field_copy)
 			return (0);
-		if (!create_and_append_token(head, field_copy, T_WORD, Q_NONE))
+		if (!create_and_append_token(head, field_copy, T_WORD))
 		{
 			free(field_copy);
 			return (0);
@@ -106,31 +104,13 @@ int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
 	char	*expanded_value;
 	int		empty_result;
 
-	expanded_value = expand_token_value(token->value, token->quote, envp,
-			exit_status);
+	expanded_value = expand_variables_in_str(token->value, envp, exit_status);
 	if (!expanded_value)
 		return (0);
 	empty_result = handle_empty_expansion(expanded_value, token, expanded_head);
 	if (empty_result != -1)
 		return (empty_result);
-	if (!should_field_split(token->quote))
+	if (!should_field_split(token->value))
 		return (handle_quoted_expansion(expanded_value, expanded_head));
 	return (handle_field_split_expansion(expanded_value, expanded_head));
 }
-// int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
-// 		int *exit_status)
-// {
-// 	char	*expanded_value;
-// 	int		empty_result;
-
-// 	expanded_value = expand_heredoc_line(token->value, envp);
-// 	printf("%s/n", expanded_value);
-// 	if (!expanded_value)
-// 		return (0);
-// 	empty_result = handle_empty_expansion(expanded_value, token, expanded_head);
-// 	if (empty_result != -1)
-// 		return (empty_result);
-// 	if (!should_field_split(token->quote))
-// 		return (handle_quoted_expansion(expanded_value, expanded_head));
-// 	return (handle_field_split_expansion(expanded_value, expanded_head));
-// }

@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:11:15 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/08 11:36:21 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:52:33 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-char	*expand_token_value(const char *value, t_quote quote_type, char **envp,
-		int *exit_status)
-{
-	if (quote_type == Q_SINGLE)
-		return (ft_strdup(value));
-	return (expand_variables_in_str(value, envp, exit_status));
-}
-
-int	should_field_split(t_quote quote_type)
-{
-	return (quote_type == Q_NONE);
-}
 
 t_token	*expand_tokens(t_token *tokens, char **envp, int *exit_status)
 {
