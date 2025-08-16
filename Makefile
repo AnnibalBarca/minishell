@@ -61,6 +61,7 @@ SRC_UTILS = src/utils/search_last.c		\
 			src/utils/env_setting.c			\
 			src/utils/heredoc_quoting_utils.c	\
 			src/utils/debug_utils.c			\
+			src/utils/expanding_decision_taking.c	\
 
 SRC_BUILTINS =	src/builtins/builtin_export.c				\
 				src/builtins/builtin_cd.c					\
