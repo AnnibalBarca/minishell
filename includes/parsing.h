@@ -6,7 +6,7 @@
 /*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 21:32:35 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/08/16 12:55:39 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/16 20:31:40 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_parse_result	handle_syntax_success(t_syntax_result *result, char **envp,
 t_syntax_result	analyze_syntax(t_token *tokens);
 t_token			*expand_tokens(t_token *tokens, char **envp, int *exit_status);
 char			*expand_variables_in_str(const char *input_str, char **envp,
-					int *last_exit_status);
+					int *exit_status);
 int				should_expand_variable(char current_char, char next_char);
 int				is_valid_var_char(char c);
 char			**perform_field_splitting(const char *str, const char *sep_val);

@@ -6,50 +6,23 @@
 /*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:42:46 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/16 12:54:24 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/16 19:45:01 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-static int	handle_empty_expansion(char *expanded_value, t_token *token,
-		t_token **expanded_head)
+static int	create_word_token(t_token **expanded_head, char *value)
 {
-	if (!*expanded_value && token_has_quotes(token->value))
+	if (!create_and_append_token(expanded_head, value, T_WORD))
 	{
-		if (!create_and_append_token(expanded_head, expanded_value, T_WORD))
-		{
-			free(expanded_value);
-			return (0);
-		}
-		return (1);
-	}
-	if (!*expanded_value)
-	{
-		free(expanded_value);
-		return (1);
-	}
-	return (-1);
-}
-
-static int	handle_quoted_expansion(char *expanded_value,
-		t_token **expanded_head)
-{
-	char	*final_value;
-
-	final_value = remove_outer_quotes(expanded_value);
-	free(expanded_value);
-	if (!final_value)
-		return (0);
-	if (!create_and_append_token(expanded_head, final_value, T_WORD))
-	{
-		free(final_value);
+		free(value);
 		return (0);
 	}
 	return (1);
 }
 
-static int	add_expanded_tokens(char **fields, t_token **head)
+static int	add_field_tokens(char **fields, t_token **expanded_head)
 {
 	int		i;
 	char	*field_copy;
@@ -60,26 +33,17 @@ static int	add_expanded_tokens(char **fields, t_token **head)
 		field_copy = ft_strdup(fields[i]);
 		if (!field_copy)
 			return (0);
-		if (!create_and_append_token(head, field_copy, T_WORD))
-		{
-			free(field_copy);
+		if (!create_word_token(expanded_head, field_copy))
 			return (0);
-		}
 		i++;
 	}
 	return (1);
 }
 
-static int	handle_field_split_expansion(char *expanded_value,
-		t_token **expanded_head)
+static int	handle_field_split(char *unquoted_value, t_token **expanded_head)
 {
 	char	**fields;
-	char	*unquoted_value;
 
-	unquoted_value = remove_outer_quotes(expanded_value);
-	free(expanded_value);
-	if (!unquoted_value)
-		return (0);
 	fields = perform_field_splitting(unquoted_value, NULL);
 	free(unquoted_value);
 	if (!fields)
@@ -89,7 +53,7 @@ static int	handle_field_split_expansion(char *expanded_value,
 		ft_freesplit(fields);
 		return (1);
 	}
-	if (!add_expanded_tokens(fields, expanded_head))
+	if (!add_field_tokens(fields, expanded_head))
 	{
 		ft_freesplit(fields);
 		return (0);
@@ -98,19 +62,37 @@ static int	handle_field_split_expansion(char *expanded_value,
 	return (1);
 }
 
+static int	process_expanded_token(char *expanded_value,
+		const char *original_value, t_token **expanded_head)
+{
+	char	*unquoted_value;
+
+	unquoted_value = remove_outer_quotes(expanded_value);
+	if (!unquoted_value)
+		return (0);
+	if (!*unquoted_value)
+	{
+		if (token_has_quotes(original_value))
+			return (create_word_token(expanded_head, unquoted_value));
+		free(unquoted_value);
+		return (1);
+	}
+	if (!should_field_split(original_value))
+		return (create_word_token(expanded_head, unquoted_value));
+	return (handle_field_split(unquoted_value, expanded_head));
+}
+
 int	process_word_expansion(t_token *token, t_token **expanded_head, char **envp,
 		int *exit_status)
 {
 	char	*expanded_value;
-	int		empty_result;
+	int		result;
 
 	expanded_value = expand_variables_in_str(token->value, envp, exit_status);
 	if (!expanded_value)
 		return (0);
-	empty_result = handle_empty_expansion(expanded_value, token, expanded_head);
-	if (empty_result != -1)
-		return (empty_result);
-	if (!should_field_split(token->value))
-		return (handle_quoted_expansion(expanded_value, expanded_head));
-	return (handle_field_split_expansion(expanded_value, expanded_head));
+	result = process_expanded_token(expanded_value, token->value,
+			expanded_head);
+	free(expanded_value);
+	return (result);
 }

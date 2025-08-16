@@ -59,9 +59,9 @@ SRC_UTILS = src/utils/search_last.c		\
 			src/utils/safe_closer.c			\
 			src/utils/quote_stripper.c		\
 			src/utils/env_setting.c			\
-			src/utils/heredoc_quoting_utils.c	\
 			src/utils/debug_utils.c			\
 			src/utils/expanding_decision_taking.c	\
+			src/utils/spec_expansion_processing.c   \
 
 SRC_BUILTINS =	src/builtins/builtin_export.c				\
 				src/builtins/builtin_cd.c					\

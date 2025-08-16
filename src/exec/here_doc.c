@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 00:43:04 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/24 15:18:59 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/08/16 19:34:33 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,17 @@ void	is_delimiter(char **temp, char *limiter)
 	if (!*temp)
 	{
 		ft_putstr_fd("minishell: warning: here-document"
-			"at line 2 delimited by end-of-file (wanted `", 2);
+						"at line 2 delimited by end-of-file (wanted `",
+						2);
 		ft_putstr_fd(limiter, 2);
 		ft_putstr_fd("')\n", 2);
 	}
 	free(*temp);
 }
 
-char	*here_doc_input(t_files *files, char *limiter, int *fd,
-		char ***envp_ptr)
+char	*here_doc_input(t_files *files, char *limiter, int *fd)
 {
 	char	*temp;
-	char	*expanded_line;
 
 	while (g_signal_status == 1)
 	{
@@ -76,22 +75,15 @@ char	*here_doc_input(t_files *files, char *limiter, int *fd,
 			is_delimiter(&temp, limiter);
 			break ;
 		}
-		expanded_line = expand_heredoc_line(temp, *envp_ptr);
-		free(temp);
-		if (!expanded_line)
-		{
-			safe_close(fd);
-			return (NULL);
-		}
-		write(*fd, expanded_line, ft_strlen(expanded_line));
+		write(*fd, temp, ft_strlen(temp));
 		write(*fd, "\n", 1);
-		free(expanded_line);
+		free(temp);
 	}
 	safe_close(fd);
 	return (files->infile_name);
 }
 
-char	*here_doc(t_files *files, char *limiter, char ***envp_ptr)
+char	*here_doc(t_files *files, char *limiter)
 {
 	char	*infile_name;
 	int		fd;
@@ -103,7 +95,7 @@ char	*here_doc(t_files *files, char *limiter, char ***envp_ptr)
 	if (fd == -1)
 		return (NULL);
 	setup_heredoc_signals();
-	infile_name = here_doc_input(files, limiter, &fd, envp_ptr);
+	infile_name = here_doc_input(files, limiter, &fd);
 	setup_postheredoc_signals();
 	if (!infile_name)
 	{

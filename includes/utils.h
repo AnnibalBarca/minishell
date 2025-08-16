@@ -6,7 +6,7 @@
 /*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 14:20:40 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/16 12:55:53 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/16 19:30:03 by Mimoulapino      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,9 @@ void	print_str_builder(const t_str_builder *sb);
 void	print_token_list(const t_token *head);
 char	*remove_outer_quotes(const char *str);
 void	print_escaped_value(const char *value);
+char	*process_question_mark_expansion(const char **str_ptr, char **envp,
+			int *last_exit_status);
+char	*process_accolades_expansion(const char **str_ptr);
+char	*process_regular_variable_expansion(const char **str_ptr);
 
 #endif
