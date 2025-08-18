@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_processor.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:21:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/16 19:28:30 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/18 14:42:27 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

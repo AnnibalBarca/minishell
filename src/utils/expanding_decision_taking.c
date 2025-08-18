@@ -15,20 +15,20 @@ int	token_has_quotes(const char *token_value)
 	return (0);
 }
 
-int	token_is_fully_quoted(const char *token_value)
-{
-	int	len;
+// int	token_is_fully_quoted(const char *token_value)
+// {
+// 	int	len;
 
-	if (!token_value)
-		return (0);
-	len = ft_strlen(token_value);
-	if (len < 2)
-		return (0);
-	if ((token_value[0] == '\'' && token_value[len - 1] == '\'')
-		|| (token_value[0] == '"' && token_value[len - 1] == '"'))
-		return (1);
-	return (0);
-}
+// 	if (!token_value)
+// 		return (0);
+// 	len = ft_strlen(token_value);
+// 	if (len < 2)
+// 		return (0);
+// 	if ((token_value[0] == '\'' && token_value[len - 1] == '\'')
+// 		|| (token_value[0] == '"' && token_value[len - 1] == '"'))
+// 		return (1);
+// 	return (0);
+// }
 
 int	should_field_split(const char *token_value)
 {

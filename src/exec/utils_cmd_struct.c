@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_cmd_struct.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 20:08:48 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/08/16 19:39:29 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/18 14:23:37 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

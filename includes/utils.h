@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 14:20:40 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/16 19:30:03 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/18 14:50:27 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 # include "struct.h"
 
 int		should_field_split(const char *token_value);
-int		token_has_quotes(const char *token_value);
-int		token_is_fully_quoted(const char *token_value);
 void	cleanup_child_resources(t_exec *exec);
+int		token_has_quotes(const char *token_value);
 void	free_child(t_exec *exec, int status, char *str1, char *str2);
 void	free_parent(t_exec *exec, int status, char *str1, char *str2);
 void	ft_message(char *command, char *arg, char *error);
