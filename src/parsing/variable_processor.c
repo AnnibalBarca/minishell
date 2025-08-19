@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:21:31 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/18 14:42:27 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/19 16:04:58 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ int	process_expansion(t_str_builder *sb, const char **ip, char **envp,
 	expanded_part = process_variable_expansion(ip, envp, last_exit_status);
 	if (expanded_part)
 	{
+		if (*expanded_part == '\0')
+		{
+			free(expanded_part);
+			return (1);
+		}
 		if (!sb_append_str(sb, expanded_part))
 		{
 			free(expanded_part);
