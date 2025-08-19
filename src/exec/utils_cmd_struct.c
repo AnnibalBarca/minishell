@@ -6,7 +6,7 @@
 /*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 20:08:48 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/08/18 14:23:37 by almeekel         ###   ########.fr       */
+/*   Updated: 2025/08/19 17:13:15 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ t_args	*append_args_node(t_args *current, char *value)
 	new_node = new_args_node(value);
 	if (!new_node)
 		return (NULL);
+	// Debug: Print t_args node creation
+	// ft_putstr_fd("[ARGS DEBUG] appending t_args node with value: '", 2);
+	// ft_putstr_fd(value, 2);
+	// ft_putstr_fd("'\n", 2);
 	if (!current)
 		return (new_node);
 	last = find_last_args(current);

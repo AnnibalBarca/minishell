@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagaudey <nagaudey@student.42.fr>          +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:27:37 by nagaudey          #+#    #+#             */
-/*   Updated: 2025/07/24 14:02:05 by nagaudey         ###   ########.fr       */
+/*   Updated: 2025/08/19 17:13:20 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ t_cmd	*parse_commands(t_token **tokens, t_cmd **cmd, char ***envp_ptr)
 		}
 		(*cmd)->is_builtin = is_builtin(find_first_args((*cmd)->args));
 	}
+	// Debug: Print final args list
+	// print_args_list((*cmd)->args);
 	return (*cmd);
 }
 
