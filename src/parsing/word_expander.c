@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_expander.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mimoulapinou <bebefripouille@chaton.fr>    +#+  +:+       +#+        */
+/*   By: almeekel <almeekel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 10:42:46 by almeekel          #+#    #+#             */
-/*   Updated: 2025/08/16 19:45:01 by Mimoulapino      ###   ########.fr       */
+/*   Updated: 2025/08/19 17:14:31 by almeekel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	process_expanded_token(char *expanded_value,
 		const char *original_value, t_token **expanded_head)
 {
 	char	*unquoted_value;
+	const char *p = original_value;
+
 
 	unquoted_value = remove_outer_quotes(expanded_value);
 	if (!unquoted_value)
@@ -79,6 +81,14 @@ static int	process_expanded_token(char *expanded_value,
 	}
 	if (!should_field_split(original_value))
 		return (create_word_token(expanded_head, unquoted_value));
+	if (token_has_quotes(original_value))
+	{
+		while (*p && *p != '=' && *p != '"' && *p != '\'')
+			p++;
+		if (*p == '=')
+			return (create_word_token(expanded_head, unquoted_value));
+	}
+	
 	return (handle_field_split(unquoted_value, expanded_head));
 }
 
