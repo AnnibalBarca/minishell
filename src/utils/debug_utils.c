@@ -73,3 +73,29 @@ void	print_str_builder(const t_str_builder *sb)
 	printf("[str_builder] len: %zu, cap: %zu, str: '%s'\n",
 		sb->len, sb->capacity, sb->str ? sb->str : "(null)");
 }
+
+void	print_args_list(const t_args *head)
+{
+	const t_args	*current;
+	int				index;
+
+	ft_putstr_fd("=== ARGS LIST DEBUG ===\n", 2);
+	if (!head)
+	{
+		ft_putstr_fd("Args list is empty\n", 2);
+		return ;
+	}
+	current = head;
+	index = 0;
+	while (current)
+	{
+		ft_putstr_fd("[arg ", 2);
+		ft_putstr_fd(ft_itoa(index), 2);
+		ft_putstr_fd("] value: '", 2);
+		ft_putstr_fd(current->cmd_args ? current->cmd_args : "(null)", 2);
+		ft_putstr_fd("'\n", 2);
+		current = current->next;
+		index++;
+	}
+	ft_putstr_fd("========================\n", 2);
+}
